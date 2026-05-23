@@ -8,7 +8,7 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: ipfaccount_mysql
+    container_name: igtaccount_mysql
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
@@ -16,9 +16,9 @@ services:
       MYSQL_USER:          ${DB_USER}
       MYSQL_PASSWORD:      ${DB_PASSWORD}
     volumes:
-      - ipfaccount_mysql_data:/var/lib/mysql
+      - igtaccount_mysql_data:/var/lib/mysql
     networks:
-      - ipfaccount-network
+      - igtaccount-network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost",
              "-u", "root", "--password=${DB_ROOT_PASSWORD}"]
@@ -32,7 +32,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
       target: production
-    container_name: ipfaccount_backend
+    container_name: igtaccount_backend
     restart: unless-stopped
     env_file:
       - ./backend/.env
@@ -47,7 +47,7 @@ services:
       db:
         condition: service_healthy
     networks:
-      - ipfaccount-network
+      - igtaccount-network
     command: >
       sh -c "
         npx prisma migrate deploy &&
@@ -73,7 +73,7 @@ services:
       target: production
       args:
         VITE_API_URL: ${VITE_API_URL}
-    container_name: ipfaccount_frontend
+    container_name: igtaccount_frontend
     restart: unless-stopped
     ports:
       - "127.0.0.1:${FRONTEND_HOST_PORT:-3000}:80"
@@ -81,12 +81,12 @@ services:
       backend:
         condition: service_healthy
     networks:
-      - ipfaccount-network
+      - igtaccount-network
 
 volumes:
-  ipfaccount_mysql_data:
+  igtaccount_mysql_data:
     driver: local
 
 networks:
-  ipfaccount-network:
+  igtaccount-network:
     driver: bridge

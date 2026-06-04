@@ -8,7 +8,7 @@ FROM node:20-alpine AS development
 
 WORKDIR /app
 
-# package.json আগে copy করো (Docker layer cache)
+# package.json আগে copy করো (Docker layer cache..)
 COPY package*.json ./
 COPY tsconfig.json ./
 COPY prisma ./prisma/

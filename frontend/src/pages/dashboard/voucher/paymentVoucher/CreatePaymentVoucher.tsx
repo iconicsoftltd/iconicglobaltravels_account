@@ -28,7 +28,7 @@ import { Calendar } from "@/components/ui/calendar";
 
 import {
   useGetAllAccountsParticularQuery,
-  useGetAllSupplierParticularQuery,
+  useGetAllParticularQuery,
 } from "@/components/store/api/particularAccount/particularAccountApi";
 import { useCreateVoucherMutation } from "@/components/store/api/voucher/receiptVoucherApi";
 
@@ -43,6 +43,20 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectDatePermission } from "@/components/store/store";
+
+const isAllowedParticular = (item: any) => {
+  const names = [item?.accountType, item?.name, item?.ledger?.ledgerType]
+    .filter(Boolean)
+    .map((value) => String(value).trim().toLowerCase());
+
+  return !names.some(
+    (name) =>
+      name.includes("payable") ||
+      name.includes("receivable") ||
+      name.includes("received"),
+  );
+};
+
 const CreatePaymentVoucher = () => {
   const navigate = useNavigate();
 
@@ -53,8 +67,8 @@ const CreatePaymentVoucher = () => {
 
   const { data: accounts, isLoading: accountsLoading } =
     useGetAllAccountsParticularQuery({});
-  const { data: customers, isLoading: customerLoading } =
-    useGetAllSupplierParticularQuery({});
+  const { data: allParticulars, isLoading: particularLoading } =
+    useGetAllParticularQuery({ size: 1000 });
   const selectedBranch = localStorage.getItem("selectedBranch");
   const {
     control,
@@ -79,7 +93,10 @@ const CreatePaymentVoucher = () => {
     },
   });
 
-  const accountCurrentBalance = customers?.data?.find(
+  const particularOptions =
+    allParticulars?.data?.filter(isAllowedParticular) || [];
+
+  const accountCurrentBalance = particularOptions.find(
     (account: any) => account?.id === watch("entries")?.[0]?.particularId,
   );
   const customerCurrentBalance = accounts?.data?.find(
@@ -98,7 +115,7 @@ const CreatePaymentVoucher = () => {
     }
   }, [fields, append]);
 
-  if (accountsLoading || customerLoading) return <HomeLoader />;
+  if (accountsLoading || particularLoading) return <HomeLoader />;
 
   // Calculate totals
   const entries = watch("entries");
@@ -206,7 +223,7 @@ const CreatePaymentVoucher = () => {
         {/* Dynamic Rows */}
         {fields.map((field, index) => {
           const isAccount = index === 0;
-          const options = isAccount ? customers?.data : accounts?.data;
+          const options = isAccount ? particularOptions : accounts?.data;
 
           return (
             <div

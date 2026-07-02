@@ -40,7 +40,7 @@ import ButtonLoader from "@/components/loader/ButtonLoader";
 import HomeLoader from "@/components/loader/HomeLoader";
 import {
   useGetAllAccountsParticularQuery,
-  useGetAllCustomerParticularQuery,
+  useGetAllParticularQuery,
 } from "@/components/store/api/particularAccount/particularAccountApi";
 import { useCreateVoucherMutation } from "@/components/store/api/voucher/receiptVoucherApi";
 import {
@@ -51,6 +51,19 @@ import { generateVoucherNo } from "@/utils/helper/randomValueGenerator";
 import { useSelector } from "react-redux";
 import { selectDatePermission } from "@/components/store/store";
 
+const isAllowedParticular = (item: any) => {
+  const names = [item?.accountType, item?.name, item?.ledger?.ledgerType]
+    .filter(Boolean)
+    .map((value) => String(value).trim().toLowerCase());
+
+  return !names.some(
+    (name) =>
+      name.includes("payable") ||
+      name.includes("receivable") ||
+      name.includes("paid"),
+  );
+};
+
 const CreateReceiptVoucherList = () => {
   const navigate = useNavigate();
   const datePermission = useSelector(selectDatePermission);
@@ -60,8 +73,8 @@ const CreateReceiptVoucherList = () => {
 
   const { data: accounts, isLoading: accountsLoading } =
     useGetAllAccountsParticularQuery({});
-  const { data: customers, isLoading: customerLoading } =
-    useGetAllCustomerParticularQuery({});
+  const { data: allParticulars, isLoading: particularLoading } =
+    useGetAllParticularQuery({ size: 1000 });
 
   const selectedBranch = localStorage.getItem("selectedBranch");
   const branchName = selectedBranch ? JSON.parse(selectedBranch)?.name : "";
@@ -104,7 +117,10 @@ const CreateReceiptVoucherList = () => {
     );
   }, [watchEntries]);
 
-  if (accountsLoading || customerLoading) return <HomeLoader />;
+  if (accountsLoading || particularLoading) return <HomeLoader />;
+
+  const particularOptions =
+    allParticulars?.data?.filter(isAllowedParticular) || [];
 
   const onSubmit = async (data: FormData) => {
     if (totalDebit !== totalCredit) {
@@ -194,7 +210,7 @@ const CreateReceiptVoucherList = () => {
             const entryType = entry?.type;
 
             const options =
-              entryType === "Debit" ? accounts?.data : customers?.data;
+              entryType === "Debit" ? accounts?.data : particularOptions;
 
             const selectedParticular = options?.find(
               (opt: any) => opt.id === entry?.particularId,

@@ -26,7 +26,7 @@ import toast from "react-hot-toast";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
 import { GrNotes } from "react-icons/gr";
 
-import { useGetParticularOptionsQuery } from "@/components/store/api/particularAccount/particularAccountApi";
+import { useGetAllParticularQuery } from "@/components/store/api/particularAccount/particularAccountApi";
 import { useCreateVoucherMutation } from "@/components/store/api/voucher/receiptVoucherApi";
 
 import { generateVoucherNo } from "@/utils/helper/randomValueGenerator";
@@ -64,7 +64,8 @@ const CreateJournalVoucher = () => {
 
   // ✅ SEARCHABLE API CALL
   const { data: accounts, isLoading: accountsLoading } =
-    useGetParticularOptionsQuery({
+    useGetAllParticularQuery({
+      size: 1000,
       search: debouncedSearch,
     });
 
@@ -212,7 +213,7 @@ const CreateJournalVoucher = () => {
           // Find current balance for the selected item in this specific row
           const selectedId = watch(`entries.${index}.particularId`);
           const currentAccount = accounts?.data?.find(
-            (acc: any) => acc.value === selectedId,
+            (acc: any) => acc.id === selectedId,
           );
 
           return (
@@ -267,10 +268,10 @@ const CreateJournalVoucher = () => {
                         )}
                         {accounts?.data?.map((item: any) => (
                           <SelectItem
-                            key={item.value}
-                            value={item.value.toString()}
+                            key={item.id}
+                            value={item.id.toString()}
                           >
-                            {item.label}
+                            {item.accountType}
                           </SelectItem>
                         ))}
                       </SelectContent>

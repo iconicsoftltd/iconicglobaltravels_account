@@ -153,7 +153,7 @@ const IncomeStatementReport = () => {
                     <td className="px-6 py-3 text-zinc-500 italic">{item.classification}</td>
                     {/* <td className="px-6 py-3 text-right font-semibold text-emerald-600"> */}
                     <td className="px-6 py-3 text-right font-semibold ">
-                      {formatWithDrCr(item.amount,item.amount >= 0 ? "Dr" : "Cr")}
+                      {formatWithDrCr(item.amount,item.amount >= 0 ? "Cr" : "Dr")}
                     </td>
                     <td className="px-6 py-3 text-right"></td>
                   </tr>
@@ -164,7 +164,7 @@ const IncomeStatementReport = () => {
                   <td colSpan={2} className="px-6 py-4"></td>
                   {/* <td className="px-6 py-4 text-right font-bold text-emerald-700 text-lg "> */}
                   <td className="px-6 py-4 text-right font-bold  text-lg ">
-                    {formatWithDrCr(report.totalRevenue,report.totalRevenue >=0?"Dr": "Cr")}
+                    {formatWithDrCr(report.totalRevenue,report.totalRevenue >=0?"Cr": "Dr")}
                   </td>
                 </tr>
 
@@ -205,7 +205,7 @@ const IncomeStatementReport = () => {
                   </td>
                   <td colSpan={2} className="px-4 py-4"></td>
                   <td className={`px-4 py-4 text-right font-black text-2xl ${report.netIncome < 0 ? "text-rose-500" : "text-primary-500"}`}>
-                    {formatWithDrCr(report.netIncome)}
+                    {formatWithDrCr(report.netIncome, report.netIncome >= 0 ? "Cr" : "Dr")}
                   </td>
                 </tr>
               </tbody>

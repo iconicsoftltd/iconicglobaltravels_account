@@ -18,7 +18,7 @@ const sendMail = async ({
   });
 
   const mailOptions: any = {
-    from: `"Tech Element IT" <${process.env.EMAIL_USER}>`,
+    from: `"Iconic Soft Ltd" <${process.env.EMAIL_USER}>`,
     to: email,
     subject,
   };

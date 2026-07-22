@@ -52,7 +52,7 @@ const ReusableSelect: React.FC<ReusableSelectProps> = ({
       >
         <SelectTrigger
           id={id}
-          className="border-primary-100 focus:ring-0 focus:border-indigo-500 bg-white [&>span]:text-gray-500"
+          className="border-secondary/20 focus:ring-0 focus:border-secondary bg-white [&>span]:text-gray-500"
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

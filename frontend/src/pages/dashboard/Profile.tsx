@@ -53,7 +53,7 @@ const CompanyProfilePage = () => {
                 }
               >
                 <DialogHeader>
-                  <Heading className={`text-[#5e48d8] font-semibold`}>
+                  <Heading className={`text-secondary font-semibold`}>
                     Update Profile
                   </Heading>
                 </DialogHeader>
@@ -201,7 +201,7 @@ const CompanyProfilePage = () => {
                     <p className="text-xs text-gray-400">Email</p>
                     <a
                       href={`mailto:${employee.email}`}
-                      className="text-sm font-medium text-blue-600 hover:underline"
+                      className="text-sm font-medium text-secondary hover:underline"
                     >
                       {employee.email}
                     </a>

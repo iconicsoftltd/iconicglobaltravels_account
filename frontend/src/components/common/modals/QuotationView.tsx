@@ -116,7 +116,6 @@
 //                 {/* --- LINE ITEM TABLE --- */}
 //                 <div className="mb-6">
 //                     <Table className="border rounded-t-lg">
-//                         <TableHeader className="bg-primary/5">
 //                             <TableRow className="border-b-2 border-primary/20">
 //                                 <TableHead className="w-[80px] text-xs font-bold text-primary">Index No.</TableHead>
 //                                 <TableHead className="text-xs font-bold text-primary">Product Name</TableHead>
@@ -196,7 +195,6 @@
 //                     <Button type="button" variant="secondary" className="px-6 text-red-600 border-red-200 bg-red-50 hover:bg-red-100">
 //                         Cancel
 //                     </Button>
-//                     <Button type="button" className="px-6 bg-primary hover:bg-primary/90">
 //                         Print
 //                     </Button>
 //                 </div>
@@ -281,7 +279,7 @@ const columns: ColumnDef<QuotationItem>[] = [
       <Input
         readOnly
         value={row.index + 1}
-        className="h-full w-full max-w-[98px] border border-primary-100 focus:border-primary-100 bg-[#F2F2F2] py-3"
+        className="h-full w-full max-w-[98px] border border-secondary/20 focus:border-secondary/20 bg-[#F2F2F2] py-3"
       />
     ),
   },
@@ -292,7 +290,7 @@ const columns: ColumnDef<QuotationItem>[] = [
       <Input
         readOnly
         value={row.original.productName}
-        className=" border w-full max-w-[466px] border-primary-100 focus:border-primary-100 bg-[#F2F2F2] py-3"
+        className=" border w-full max-w-[466px] border-secondary/20 focus:border-secondary/20 bg-[#F2F2F2] py-3"
       />
     ),
   },
@@ -303,7 +301,7 @@ const columns: ColumnDef<QuotationItem>[] = [
       <Input
         readOnly
         value={row.original.capacity}
-        className=" border w-full max-w-[206px] border-primary-100 focus:border-primary-100 bg-[#F2F2F2] py-3"
+        className=" border w-full max-w-[206px] border-secondary/20 focus:border-secondary/20 bg-[#F2F2F2] py-3"
       />
     ),
   },
@@ -314,7 +312,7 @@ const columns: ColumnDef<QuotationItem>[] = [
       <Input
         readOnly
         value={row.original.quantity}
-        className=" border w-full max-w-[206px] border-primary-100 focus:border-primary-100 bg-[#F2F2F2] py-3"
+        className=" border w-full max-w-[206px] border-secondary/20 focus:border-secondary/20 bg-[#F2F2F2] py-3"
       />
     ),
   },
@@ -325,7 +323,7 @@ const columns: ColumnDef<QuotationItem>[] = [
       <Input
         readOnly
         value={row.original.unitPrice}
-        className=" border w-full max-w-[206px] border-primary-100 focus:border-primary-100 bg-[#F2F2F2] py-3"
+        className=" border w-full max-w-[206px] border-secondary/20 focus:border-secondary/20 bg-[#F2F2F2] py-3"
       />
     ),
     footer: () => (
@@ -341,7 +339,7 @@ const columns: ColumnDef<QuotationItem>[] = [
       <Input
         readOnly
         value={row.original.subTotal}
-        className=" border w-full max-w-[206px] border-primary-100 focus:border-primary-100 bg-[#F2F2F2] py-3"
+        className=" border w-full max-w-[206px] border-secondary/20 focus:border-secondary/20 bg-[#F2F2F2] py-3"
       />
     ),
     footer: ({ table }) => {
@@ -353,7 +351,7 @@ const columns: ColumnDef<QuotationItem>[] = [
         <Input
           readOnly
           value={total.toFixed(2)}
-          className="border w-full max-w-[206px] border-primary-100 focus:border-primary-100 bg-[#F2F2F2] py-3"
+          className="border w-full max-w-[206px] border-secondary/20 focus:border-secondary/20 bg-[#F2F2F2] py-3"
         />
       );
     },
@@ -417,22 +415,22 @@ const QuotationViewPage = () => {
 
         {/* --- QUOTATION TITLE & DETAILS --- */}
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-semibold mb-4 text-purple-700">
+          <h2 className="text-2xl font-semibold mb-4 text-secondary">
             Quotation
           </h2>
           <div className="flex justify-between items-center text-sm">
-            <p className="font-medium text-purple-700">
+            <p className="font-medium text-secondary">
               Quotation No. :{" "}
               <span className="text-primary font-bold">{data.quotationNo}</span>
             </p>
-            <p className="font-medium text-purple-700">
+            <p className="font-medium text-secondary">
               Date :{" "}
               <span className="text-gray-700 font-bold">{data.date}</span>
             </p>
           </div>
         </div>
 
-        <div className="mb-6 border-t border-l border-r border-purple-200">
+        <div className="mb-6 border-t border-l border-r border-secondary/20">
           <ReusableTable data={data.items} columns={columns} />
         </div>
 
@@ -478,7 +476,7 @@ const QuotationViewPage = () => {
           >
             Cancel
           </Button>
-          <Button type="button" className="px-6 bg-primary hover:bg-primary/90">
+          <Button type="button" className="px-6 bg-secondary text-white hover:shadow-md hover:-translate-y-0.5">
             Print
           </Button>
         </div>

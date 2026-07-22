@@ -17,7 +17,7 @@
 
 //     return (
 //         <div className="p-4 bg-white rounded-md mx-auto">
-//             <h2 className="text-xl font-semibold text-indigo-700 mb-6">
+//             <h2 className="text-xl font-semibold text-secondary mb-6">
 //                 Service Sale Information
 //             </h2>
 
@@ -101,7 +101,7 @@ const DateAndCustomerFilter: React.FC<ReusableDateAndSelectFilterProps> = ({
     return (
         <div className="p-4 bg-white rounded-md shadow-sm mx-auto">
             {title && (
-                <h2 className="text-xl font-semibold text-indigo-700 mb-6">{title}</h2>
+                <h2 className="text-xl font-semibold text-secondary mb-6">{title}</h2>
             )}
 
             <div className="flex items-center flex-col sm:flex-row gap-4">

@@ -54,7 +54,7 @@ const PaginationLink = ({
       }),
       className,
       "rounded-sm cursor-pointer font-semibold text-[#4B4B4B]",
-      isActive && " text-white",
+      isActive && "bg-secondary text-white",
     )}
     {...props}
   />

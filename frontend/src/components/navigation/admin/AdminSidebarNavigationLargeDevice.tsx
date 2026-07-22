@@ -6,6 +6,7 @@ import { FaSquareCheck } from "react-icons/fa6";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 
+
 import { adminNavigationLinks } from "@/components/navigationLinks/adminNavigationLink/adminNavigationLinks";
 import {
   AlertDialog,
@@ -93,7 +94,7 @@ const AdminSidebarNavigation = () => {
       initial={{ width: 280 }}
       animate={{ width: 280 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="fixed h-full pb-16 mt-16 shadow-lg z-40 bg-primary-50 border-r dark:border-border lg:flex flex-col hidden"
+      className="fixed h-full pb-16 mt-16 shadow-lg z-40 bg-white border-r dark:border-border lg:flex flex-col hidden"
     >
       {/* NAVIGATION LINKS */}
       <nav className="flex-1 overflow-y-auto custom-scrollbar pb-4 pt-4 pl-4">
@@ -116,7 +117,7 @@ const AdminSidebarNavigation = () => {
                     to={link.href || "#"}
                     className={({ isActive }) =>
                       cn(
-                        "flex items-center px-4 py-3 gap-3 text-[14px] font-semibold rounded transition-all w-full justify-between hover:bg-primary hover:text-white dark:hover:bg-gray-700",
+                        "flex items-center px-4 py-3 gap-3 text-[14px] font-semibold rounded transition-all w-full justify-between hover:bg-primary hover:text-white",
                         isActive ? "bg-primary text-white" : ""
                       )
                     }
@@ -134,7 +135,7 @@ const AdminSidebarNavigation = () => {
                       )
                     }
                     className={cn(
-                      "flex items-center px-4 py-3 text-[14px] font-semibold gap-3 rounded transition-all w-full justify-between hover:bg-primary hover:text-white dark:hover:bg-gray-700",
+                      "flex items-center px-4 py-3 text-[14px] font-semibold gap-3 rounded transition-all w-full justify-between hover:bg-primary hover:text-white",
                       activeSubmenu === link.key ? "bg-primary text-white" : ""
                     )}
                   >
@@ -160,7 +161,7 @@ const AdminSidebarNavigation = () => {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="ml-3 border-l border-white/20 overflow-hidden space-y-2 py-1"
+                        className="ml-3 border-l border-secondary/20 overflow-hidden space-y-2 py-1"
                       >
                         {filteredSubLinks.map((subLink, subIndex) => {
                           if (!subLink) return null;
@@ -182,7 +183,7 @@ const AdminSidebarNavigation = () => {
                                   className={({ isActive }) =>
                                     cn(
                                       "px-6 py-2 text-sm transition-all flex items-center gap-2 font-semibold",
-                                      isActive ? "text-black" : ""
+                                      isActive ? "text-secondary" : ""
                                     )
                                   }
                                 >
@@ -203,10 +204,9 @@ const AdminSidebarNavigation = () => {
                                           : subLink.key
                                       )
                                     }
-                                    // className="flex items-center w-full px-6 py-2 text-sm justify-between hover:bg-blue-600 dark:hover:bg-gray-700"
                                     className={cn(
-                                      "flex items-center px-4 py-3 text-[14px] font-semibold gap-3 rounded transition-all w-full justify-between hover:bg-primary hover:text-white dark:hover:bg-gray-700",
-                                      activeSubSubmenu === subLink.key ? "bg-primary text-white" : ""
+                                      "flex items-center px-4 py-3 text-[14px] font-semibold gap-3 rounded transition-all w-full justify-between hover:bg-secondary/10 hover:text-secondary",
+                                      activeSubSubmenu === subLink.key ? "bg-secondary/10 text-secondary" : ""
                                     )}
                                   >
                                     <span>
@@ -236,7 +236,7 @@ const AdminSidebarNavigation = () => {
                                           }}
                                           exit={{ height: 0, opacity: 0 }}
                                           transition={{ duration: 0.3 }}
-                                          className="ml-2 pt-2 space-y-2 border-l border-white/10"
+                                          className="ml-2 pt-2 space-y-2 border-l border-secondary/20"
                                         >
                                           {filteredSubSubLinks.map(
                                             (subSubLink, subSubIndex) => (
@@ -254,7 +254,7 @@ const AdminSidebarNavigation = () => {
                                                     cn(
                                                       "flex items-center gap-2 px-7 py-1 text-sm font-semibold transition-all",
                                                       isActive
-                                                        ? "text-black"
+                                                        ? "text-secondary"
                                                         : ""
                                                     )
                                                   }

@@ -59,7 +59,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ role }) => {
                 <div className="mb-10 flex justify-end">
                   {getPermission("User", "create") && (
                     <Button
-                      className="flex items-center gap-2 bg-[#6E56CF] text-white"
+                      className="flex items-center gap-2 bg-secondary text-white"
                       onClick={handleEdit}
                     >
                       <FaRegEdit />
@@ -75,7 +75,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ role }) => {
                 <div className="mb-10 flex justify-end">
                   {getPermission("User", "create") && (
                     <Button
-                      className="flex items-center gap-2 bg-[#6E56CF] text-white"
+                      className="flex items-center gap-2 bg-secondary text-white"
                       onClick={handleEdit}
                     >
                       <FaRegEdit />
@@ -113,7 +113,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ role }) => {
                 <div className="mt-10 flex justify-end">
                   {getPermission("Role", "create") && (
                     <Button
-                      className="flex items-center gap-2 bg-[#6E56CF] text-white"
+                      className="flex items-center gap-2 bg-secondary text-white"
                       onClick={handleEdit}
                     >
                       <FaRegEdit />

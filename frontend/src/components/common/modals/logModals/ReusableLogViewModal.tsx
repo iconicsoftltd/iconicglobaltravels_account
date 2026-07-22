@@ -209,7 +209,7 @@ const ReusableLogViewModal: React.FC<ViewDetailsModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <Heading className="text-[#5e48d8] font-semibold">{title}</Heading>
+          <Heading className="text-secondary font-semibold">{title}</Heading>
         </DialogHeader>
 
         <div className="mt-4 space-y-4">

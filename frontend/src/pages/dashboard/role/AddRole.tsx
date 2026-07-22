@@ -471,7 +471,7 @@ const AddRole = ({ onClose, editingRole }: AddRoleProps) => {
       <div className="text-right">
         <Button
           onClick={handleSubmit}
-          className="bg-primary text-white px-6 py-2 rounded hover:bg-blue-700"
+          className="bg-secondary text-white px-6 py-2 rounded hover:shadow-md hover:-translate-y-0.5"
           disabled={isSaving}
         >
           <GrNotes className="mr-2" />

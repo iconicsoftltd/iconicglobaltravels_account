@@ -212,7 +212,7 @@ const CreatePaymentVoucher = () => {
       {/* Table */}
       <div className="overflow-hidden border rounded-md">
         {/* Header */}
-        <div className="grid grid-cols-12 bg-[#efedf7] p-2 font-semibold text-gray-700 text-center">
+        <div className="grid grid-cols-12 bg-secondary/10 p-2 font-semibold text-gray-700 text-center">
           <div className="col-span-2">Dr / Cr</div>
           <div className="col-span-5">Particulars</div>
           <div className="col-span-2">Debit</div>
@@ -424,7 +424,7 @@ const CreatePaymentVoucher = () => {
               <Textarea
                 {...field}
                 placeholder="Add any notes or remarks..."
-                className="mt-1 border border-primary-100 focus-visible:ring-0 focus-visible:border-primary-600 transition-colors"
+                className="mt-1 border border-secondary/20 focus-visible:ring-0 focus-visible:border-secondary transition-colors"
               />
             )}
           />

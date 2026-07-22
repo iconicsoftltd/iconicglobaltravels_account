@@ -30,14 +30,14 @@ const InfoItem: React.FC<{ label: string; value: string }> = ({ label, value }) 
 const ContactItem: React.FC<{ icon: React.ReactNode; label: string; value: string }> = ({ icon, label, value }) => (
     <div className="flex items-center gap-4">
         {/* Icon container: light purple background, rounded corners */}
-        <div className="p-3 bg-primary-50 border border-primary-100 rounded-md flex items-center justify-center flex-shrink-0">
+        <div className="p-3 bg-secondary/10 border border-secondary/20 rounded-md flex items-center justify-center flex-shrink-0">
             {/* The icon itself, styled with the darker purple/indigo color */}
-            {cloneElement(icon as React.ReactElement, { className: 'h-4 w-4 text-indigo-700' })}
+            {cloneElement(icon as React.ReactElement, { className: 'h-4 w-4 text-secondary' })}
         </div>
 
         {/* Text container for the label and value */}
         <div className="flex flex-col space-y-1">
-            <p className="text-[14px] font-semibold text-[#453985]">
+            <p className="text-[14px] font-semibold text-secondary">
                 {label}
             </p>
 
@@ -65,10 +65,10 @@ const CustomerInfoCard = () => {
 
     return (
         <Card className="shadow-lg border-none rounded-none w-full bg-white h-full">
-            <CardHeader className="flex flex-row items-center justify-between p-4 border-b border-primary-50">
+            <CardHeader className="flex flex-row items-center justify-between p-4 border-b border-secondary/20">
                 <Heading children="CRM Details" />
                 <div className="flex gap-2">
-                    <Button variant="outline" size="icon" className="text-gray-600 hover:text-blue-500">
+                    <Button variant="outline" size="icon" className="text-gray-600 hover:text-secondary">
                         <LuPencil className="h-4 w-4" />
                     </Button>
                     <Button variant="outline" size="icon" className="text-gray-600 hover:text-red-500">
@@ -104,7 +104,7 @@ const CustomerInfoCard = () => {
 
                 <div className="">
                     {/* Basic Information Section */}
-                    <Heading children="Basic Information" size="14" className="text-[14px] font-semibold text-[#0A0A0A] bg-primary-50 px-6 py-4 border border-primary-100" />
+                    <Heading children="Basic Information" size="14" className="text-[14px] font-semibold text-[#0A0A0A] bg-secondary/10 px-6 py-4 border border-secondary/20" />
                     <div className="space-y-[30px] py-[30px] px-6">
                         <InfoItem label="Lead Status" value={details.leadStatus} />
                         <InfoItem label="Lead Source" value={details.leadSource} />
@@ -112,10 +112,10 @@ const CustomerInfoCard = () => {
                     </div>
 
                     {/* Primary Contact Info Section */}
-                    <Heading children="Primary Contact Info" size="14" className="text-[14px] font-semibold text-[#0A0A0A] bg-primary-50 px-6 py-4 border border-primary-100" />
+                    <Heading children="Primary Contact Info" size="14" className="text-[14px] font-semibold text-[#0A0A0A] bg-secondary/10 px-6 py-4 border border-secondary/20" />
                     <div className="space-y-6 py-[30px] px-6">
-                        <ContactItem icon={<LuPhoneCall className="h-5 w-5 text-[#453985]" />} value={details.phone} label={"Phone Number"} />
-                        <ContactItem icon={<LuMail className="h-5 w-5 text-[#453985]" />} value={details.email} label={"Email Address"} />
+                        <ContactItem icon={<LuPhoneCall className="h-5 w-5 text-secondary" />} value={details.phone} label={"Phone Number"} />
+                        <ContactItem icon={<LuMail className="h-5 w-5 text-secondary" />} value={details.email} label={"Email Address"} />
                     </div>
                 </div>
             </CardContent>

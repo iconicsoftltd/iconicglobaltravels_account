@@ -30,7 +30,7 @@ const DashboardCard = ({ title, value, icon, className }: IDashboardCard) => {
       <div className="flex items-center justify-between">
         {/* Icon */}
         <div
-          className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 
+          className="dashboard-card-icon w-12 h-12 rounded-xl bg-secondary/10 text-secondary
           flex items-center justify-center 
           group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
         >

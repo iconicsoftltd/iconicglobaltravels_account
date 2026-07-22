@@ -25,7 +25,7 @@ const AttachmentTabContent = () => {
             id: "select",
             header: ({ table }) => (
                 <div className="flex justify-center">
-                    <input type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    <input type="checkbox" className="h-4 w-4 rounded border-gray-300 text-secondary focus:ring-secondary"
                         checked={table.getIsAllPageRowsSelected()}
                         onChange={(e) => table.toggleAllPageRowsSelected(!!e.target.checked)}
                     />
@@ -33,7 +33,7 @@ const AttachmentTabContent = () => {
             ),
             cell: ({ row }) => (
                 <div className="flex justify-center">
-                    <input type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    <input type="checkbox" className="h-4 w-4 rounded border-gray-300 text-secondary focus:ring-secondary"
                         checked={row.getIsSelected()}
                         onChange={(e) => row.toggleSelected(!!e.target.checked)}
                     />
@@ -50,7 +50,7 @@ const AttachmentTabContent = () => {
             header: "Action",
             cell: () => (
                 <div className="flex gap-2">
-                    <Button variant="ghost" size="icon" className="text-gray-500 hover:text-blue-500">
+                    <Button variant="ghost" size="icon" className="text-gray-500 hover:text-secondary">
                         <FaRegEdit className="h-4 w-4" />
                     </Button>
                     <Button variant="ghost" size="icon" className="text-red-400 hover:text-red-600">

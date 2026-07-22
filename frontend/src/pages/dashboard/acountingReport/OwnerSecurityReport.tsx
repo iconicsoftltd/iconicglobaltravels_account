@@ -85,7 +85,7 @@ const OwnerSecurityReport = () => {
               variant="outline"
               className="bg-white text-zinc-700 border-zinc-200 hover:bg-zinc-50 shadow-none transition-all active:scale-95"
             >
-              <FaPrint className="mr-2 text-primary-500" />
+              <FaPrint className="mr-2 text-secondary" />
               Print
             </Button>
             <Button
@@ -123,7 +123,7 @@ const OwnerSecurityReport = () => {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[800px] border-collapse text-sm">
               <thead>
-                <tr className="bg-primary-500 text-white">
+                <tr className="bg-secondary text-white">
                   <th className="px-6 py-4 font-semibold text-left uppercase tracking-wider text-[11px] border-r border-white/10 w-2/5">Account Name</th>
                   <th className="px-6 py-4 font-semibold text-left uppercase tracking-wider text-[11px] border-r border-white/10">Classification</th>
                   <th className="px-6 py-4 font-semibold text-right uppercase tracking-wider text-[11px] border-r border-white/10">Amount ({currentCurrency?.name})</th>
@@ -191,12 +191,12 @@ const OwnerSecurityReport = () => {
                 </tr>
 
                 {/* Ending Capital Footer */}
-                <tr className="bg-zinc-100  border-t-4 border-primary-500">
+                <tr className="bg-zinc-100  border-t-4 border-secondary">
                   <td className="px-4 py-4 font-bold text-lg uppercase tracking-tight">
                     Ending Capital (DIRECTOR'S SHARE)
                   </td>
                   <td colSpan={2} className="px-4 py-4"></td>
-                  <td className={`px-4 py-4 text-right font-black text-2xl ${report.endingCapital < 0 ? "text-rose-500" : "text-primary-500"}`}>
+                  <td className={`px-4 py-4 text-right font-black text-2xl ${report.endingCapital < 0 ? "text-rose-500" : "text-secondary"}`}>
                     {formatWithDrCr(report.endingCapital)}
                   </td>
                 </tr>
@@ -209,7 +209,7 @@ const OwnerSecurityReport = () => {
       {/* Loading & Empty States logic remains same */}
       {isLoading && (
         <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-zinc-200">
-          <div className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mb-4" />
+          <div className="w-10 h-10 border-4 border-secondary border-t-transparent rounded-full animate-spin mb-4" />
           <p className="text-zinc-500 font-medium">Generating Owner's Equity Report...</p>
         </div>
       )}

@@ -96,7 +96,7 @@ const ProfitLossReport = () => {
               variant="outline"
               className="bg-white text-zinc-700 border-zinc-200 hover:bg-zinc-50 transition-all shadow-none"
             >
-              <FaPrint className="mr-2 text-primary-500" /> Print
+              <FaPrint className="mr-2 text-secondary" /> Print
             </Button>
             <Button
               variant="destructive"
@@ -131,7 +131,7 @@ const ProfitLossReport = () => {
         <div className="bg-white rounded-xl shadow-sm border border-zinc-200 overflow-hidden max-w-4xl mx-auto">
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="bg-primary-500 text-white">
+              <tr className="bg-secondary text-white">
                 <th className="px-6 py-4 text-left font-semibold uppercase tracking-wider text-[11px]">Description</th>
                 <th className="px-6 py-4 text-right font-semibold uppercase tracking-wider text-[11px]">Amount ({currentCurrency?.name})</th>
               </tr>
@@ -188,7 +188,7 @@ const ProfitLossReport = () => {
               {/* --- Final Result --- */}
               <tr className="bg-zinc-100 ">
                 <td className="px-4 py-4 font-bold uppercase tracking-tight">Net Earnings After Tax</td>
-                <td className={`px-4 py-4 text-right font-black  ${report.earningAfterTax < 0 ? "text-red-400" : "text-primary-400"}`}>
+                <td className={`px-4 py-4 text-right font-black  ${report.earningAfterTax < 0 ? "text-red-400" : "text-secondary"}`}>
                   {formatWithDrCr(report.earningAfterTax)}
                 </td>
               </tr>
@@ -200,7 +200,7 @@ const ProfitLossReport = () => {
       {/* Loading & Empty States */}
       {isLoading && (
         <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-zinc-200">
-          <div className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mb-4" />
+          <div className="w-10 h-10 border-4 border-secondary border-t-transparent rounded-full animate-spin mb-4" />
           <p className="text-zinc-500 font-medium">Calculating Profit & Loss...</p>
         </div>
       )}

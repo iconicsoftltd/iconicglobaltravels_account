@@ -83,7 +83,7 @@ const BalanceSheetReport = () => {
               variant="outline"
               className="bg-white text-zinc-700 border-zinc-200 hover:bg-zinc-50 transition-all shadow-none"
             >
-              <FaPrint className="mr-2 text-primary-500" />
+              <FaPrint className="mr-2 text-secondary" />
               Print
             </Button>
             <Button
@@ -121,7 +121,7 @@ const BalanceSheetReport = () => {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[900px] border-collapse text-sm">
               <thead>
-                <tr className="bg-primary-500 text-white">
+                <tr className="bg-secondary text-white">
                   <th className="px-6 py-4 font-semibold text-left uppercase tracking-wider text-[11px] border-r border-white/10 w-2/5">Account</th>
                   <th className="px-6 py-4 font-semibold text-left uppercase tracking-wider text-[11px] border-r border-white/10">Classification</th>
                   <th className="px-6 py-4 font-semibold text-right uppercase tracking-wider text-[11px] border-r border-white/10">Amount</th>
@@ -197,7 +197,7 @@ const BalanceSheetReport = () => {
 
                 {/* ===== Owner's Equity ===== */}
                 <tr className="bg-zinc-50/80">
-                  <td colSpan={4} className="px-6 py-3 font-bold text-zinc-800 text-base italic border-l-4 border-primary-500">
+                  <td colSpan={4} className="px-6 py-3 font-bold text-zinc-800 text-base italic border-l-4 border-secondary">
                     Equity
                   </td>
                 </tr>
@@ -210,10 +210,10 @@ const BalanceSheetReport = () => {
                   <td className="px-6 py-3 text-right"></td>
                 </tr>
 
-                <tr className="bg-zinc-100 border-t-4 border-primary-500">
+                <tr className="bg-zinc-100 border-t-4 border-secondary">
                   <td className="px-4 py-2 font-bold text-lg uppercase tracking-tight">TOTAL LIABILITIES & EQUITY</td>
                   <td colSpan={2}></td>
-                  <td className="px-4 py-2 text-right font-black text-2xl text-primary-500">
+                  <td className="px-4 py-2 text-right font-black text-2xl text-secondary">
                     {formatWithDrCr(report.totalLiabilitiesAndEquity, "Cr")}
                   </td>
                 </tr>
@@ -226,7 +226,7 @@ const BalanceSheetReport = () => {
       {/* Loading State */}
       {isLoading && (
         <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-zinc-200">
-          <div className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mb-4" />
+          <div className="w-10 h-10 border-4 border-secondary border-t-transparent rounded-full animate-spin mb-4" />
           <p className="text-zinc-500 font-medium">Loading Balance Sheet...</p>
         </div>
       )}

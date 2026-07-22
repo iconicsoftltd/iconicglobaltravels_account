@@ -388,7 +388,7 @@ const ParticularAccountList: React.FC = () => {
       <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
         <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <Heading className="text-[#5e48d8] font-semibold">
+            <Heading className="text-secondary font-semibold">
               Particular Account Details
             </Heading>
           </DialogHeader>

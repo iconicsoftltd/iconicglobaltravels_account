@@ -44,7 +44,7 @@ export const ChangePasswordPage = () => {
   <Card className="rounded-2xl border shadow-sm overflow-hidden">
 
     {/* Header */}
-    <CardHeader className="bg-gradient-to-r from-primary-50 to-white px-6 py-5 border-b">
+    <CardHeader className="bg-white px-6 py-5 border-b border-secondary/20">
       <CardTitle className="text-lg font-semibold text-gray-800">
         Change Password
       </CardTitle>
@@ -147,7 +147,7 @@ export const ChangePasswordPage = () => {
             <Button
               type="submit"
               disabled={changePasswordLoading}
-              className="rounded-lg px-6 bg-primary text-white hover:opacity-90"
+              className="rounded-lg px-6 bg-secondary text-white hover:shadow-md hover:-translate-y-0.5"
             >
               {changePasswordLoading ? "Updating..." : "Update Password"}
             </Button>

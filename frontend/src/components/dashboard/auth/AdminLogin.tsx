@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import bgImage from "../../../assets/images/banner/account3.jpg"
 
 // Components & Utils
 import SendVerificationModal from "@/components/common/modals/SendVerificationModal";
@@ -67,11 +68,11 @@ export default function AdminLogin() {
       }
 
       toast.success(`Welcome back, ${authData.name || "Admin"}`);
-      
+
       // Store Token (1440 mins = 24 hours)
       shareWithCookies("set", `${appConfiguration.appCode}token`, 1440, token);
       loadUserFromToken(dispatch);
-      
+
       navigate("/admin_home");
     } catch (error: any) {
       const msg = error?.data?.message || "Invalid credentials. Please try again.";
@@ -101,22 +102,22 @@ export default function AdminLogin() {
   return (
     <div className="min-h-[94vh] flex bg-slate-50">
       {/* LEFT SIDE: Brand & Aesthetic */}
-      <div 
+      <div
         className="hidden lg:flex lg:w-1/2 relative bg-primary overflow-hidden"
         style={{
-          backgroundImage: `url(${appConfiguration?.loginBg})`,
+          backgroundImage: `url(${bgImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/40 to-black/60" />
+        <div className="absolute inset-0 bg-primary/20" />
         <div className="relative z-10 flex flex-col justify-end p-16 text-white w-full">
           <div className="backdrop-blur-md bg-white/10 p-8 rounded-2xl border border-white/20 shadow-2xl">
             <h1 className="text-4xl font-extrabold tracking-tight mb-4">
-            Accounts Admin Portal
+              Accounts Admin Portal
             </h1>
             <p className="text-lg text-slate-100 max-w-md leading-relaxed opacity-90">
-              The command center for your business finances. Manage invoices, 
+              The command center for your business finances. Manage invoices,
               track transactions, and oversee account security with precision.
             </p>
           </div>
@@ -127,7 +128,7 @@ export default function AdminLogin() {
       <div className="flex-1 flex items-center justify-center p-6 sm:p-12">
         <div className="w-full max-w-[440px] space-y-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Admin Sign In</h2>
+            <h2 className="text-3xl font-bold text-primary tracking-tight">Admin Sign In</h2>
             <p className="text-slate-500 mt-3 font-medium">Enter your credentials to access the dashboard</p>
           </div>
 
@@ -141,7 +142,7 @@ export default function AdminLogin() {
                   {...register("email")}
                   type="email"
                   placeholder="admin@ipfaccount.com"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:border-secondary focus:ring-4 focus:ring-secondary/10 outline-none transition-all"
                 />
               </div>
               {errors.email && <p className="text-xs font-medium text-red-500 ml-1">{errors.email.message as string}</p>}
@@ -151,10 +152,10 @@ export default function AdminLogin() {
             <div className="space-y-2">
               <div className="flex justify-between items-center px-1">
                 <label className="text-sm font-semibold text-slate-700">Password</label>
-                <button 
+                <button
                   type="button"
                   onClick={() => setModalType("forget")}
-                  className="text-xs font-bold text-primary hover:text-primary/80 transition-colors"
+                  className="text-xs font-bold text-secondary hover:underline transition-colors"
                 >
                   Forgot Password?
                 </button>
@@ -165,7 +166,7 @@ export default function AdminLogin() {
                   {...register("password")}
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className="w-full pl-11 pr-12 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all"
+                  className="w-full pl-11 pr-12 py-3 rounded-xl border border-slate-200 focus:border-secondary focus:ring-4 focus:ring-secondary/10 outline-none transition-all"
                 />
                 <button
                   type="button"
@@ -192,7 +193,7 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loginLoading}
-              className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
+              className="w-full bg-secondary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-secondary/20 hover:shadow-xl hover:-translate-y-0.5 transition-all active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
             >
               {loginLoading ? <Loader2 className="animate-spin" size={20} /> : "Sign Into Account"}
             </button>
@@ -201,9 +202,9 @@ export default function AdminLogin() {
               <button
                 type="button"
                 onClick={() => setModalType("verify")}
-                className="text-sm text-slate-500 hover:text-primary font-medium transition-colors"
+                className="text-sm text-slate-500 hover:text-secondary font-medium transition-colors"
               >
-                Account not verified? <span className="text-primary underline underline-offset-4">Resend link</span>
+                Account not verified? <span className="text-secondary underline underline-offset-4">Resend link</span>
               </button>
             </div>
           </form>
@@ -216,8 +217,8 @@ export default function AdminLogin() {
         onOpenChange={(open) => !open && setModalType(null)}
         title={modalType === "verify" ? "Verify Email" : "Reset Password"}
         des={
-          modalType === "verify" 
-            ? "We'll send a link to activate your admin account." 
+          modalType === "verify"
+            ? "We'll send a link to activate your admin account."
             : "Enter your email to receive instructions to reset your password."
         }
         verifyEmail={verifyEmail}

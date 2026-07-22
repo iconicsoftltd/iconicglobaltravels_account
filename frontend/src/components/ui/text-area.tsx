@@ -27,7 +27,7 @@ const TextArea = ({
   id,
 }: ITextInput) => {
 
-  const defaultClassValue = `block h-24 px-0 w-full -mt-2 text-sm bg-transparent border-2 border-gray-200 appearance-none rounded-md focus:outline-none focus:ring-0 focus:border-primary-100 peer focus:border-t-1 pl-2 overflow-y-auto scrollbar-none`;
+  const defaultClassValue = `block h-24 px-0 w-full -mt-2 text-sm bg-transparent border-2 border-gray-200 appearance-none rounded-md focus:outline-none focus:ring-0 focus:border-secondary/20 peer focus:border-t-1 pl-2 overflow-y-auto scrollbar-none`;
   return (
     <div className="flex flex-col gap-2 relative">
       <label

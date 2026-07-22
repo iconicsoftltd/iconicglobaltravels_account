@@ -25,7 +25,7 @@ function QuickAccessButton({
   return (
     <Button
       variant="ghost"
-      className="flex-1 h-[99px]  flex flex-col items-center justify-center  transition-all p-2 border border-transparent hover:bg-primary-50 hover:shadow-lg"
+      className="flex-1 h-[99px]  flex flex-col items-center justify-center  transition-all p-2 border border-transparent hover:bg-secondary/10 hover:shadow-lg"
       asChild
     >
       <Link
@@ -50,7 +50,7 @@ const CrmDashboardPage = () => {
       <div className="bg-white py-6">
         <Heading
           children={"CRM Dashboard"}
-          className="mb-6 border-b px-6 pb-6 border-primary-100"
+          className="mb-6 border-b px-6 pb-6 border-secondary/20"
         />
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 mb-12 px-6">
           <KpiCard
@@ -91,7 +91,7 @@ const CrmDashboardPage = () => {
       <div className="bg-white py-6">
         <Heading
           children="Quick Access"
-          className="mb-6 border-b px-6 pb-6 border-primary-100"
+          className="mb-6 border-b px-6 pb-6 border-secondary/20"
         />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-6">
           <QuickAccessButton

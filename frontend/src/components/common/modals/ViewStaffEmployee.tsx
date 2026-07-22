@@ -102,7 +102,7 @@ const ViewStaffEmployee = () => {
                   <p>
                     <a
                       href={`mailto:${employee.email}`}
-                      className="text-blue-600 hover:underline"
+                      className="text-secondary hover:underline"
                     >
                       {employee.email}
                     </a>
@@ -173,13 +173,13 @@ const ViewStaffEmployee = () => {
           <div className="space-y-3 mt-4 p-3">
             <div className="flex items-center justify-between w-[50%] bg-gray-100 p-3">
               <p className="text-sm">Resume.PDF</p>
-              <Button size="icon" variant="outline" className="bg-gray-100 text-[#5e48d8]">
+              <Button size="icon" variant="outline" className="bg-gray-100 text-secondary">
                 <Download className="h-4 w-4 text-gray-600" />
               </Button>
             </div>
             <div className="flex items-center justify-between w-[50%] bg-gray-100 p-3">
               <p className="text-sm">Joining Letter.PDF</p>
-              <Button size="icon" variant="outline" className="bg-gray-100 text-[#5e48d8]">
+              <Button size="icon" variant="outline" className="bg-gray-100 text-secondary">
                 <Download className="h-4 w-4 text-gray-600" />
               </Button>
             </div>

@@ -83,7 +83,7 @@ const CashInHandReport = () => {
               className="bg-white text-zinc-700 border-zinc-200 hover:bg-zinc-50 shadow-none transition-all active:scale-95"
               variant="outline"
             >
-              <FaPrint className="mr-2 text-primary-500" />
+              <FaPrint className="mr-2 text-secondary" />
               Print
             </Button>
             <Button
@@ -121,7 +121,7 @@ const CashInHandReport = () => {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[900px] border-collapse text-sm">
             <thead>
-              <tr className="bg-primary-500 text-white">
+              <tr className="bg-secondary text-white">
                 <th rowSpan={2} className="px-4 py-4 font-semibold text-left border-r border-white/10 uppercase tracking-wider text-[11px]">Date</th>
                 <th rowSpan={2} className="px-4 py-4 font-semibold text-left border-r border-white/10 uppercase tracking-wider text-[11px]">Description</th>
                 <th rowSpan={2} className="px-4 py-4 font-semibold text-center border-r border-white/10 uppercase tracking-wider text-[11px]">V.N./J.N.</th>
@@ -129,7 +129,7 @@ const CashInHandReport = () => {
                 <th rowSpan={2} className="px-4 py-4 font-semibold text-right border-r border-white/10 uppercase tracking-wider text-[11px]">Credit</th>
                 <th colSpan={2} className="px-4 py-2 font-semibold text-center border-b border-white/10 uppercase tracking-wider text-[11px]">Running Balance</th>
               </tr>
-              <tr className="bg-primary-600 text-white/90">
+              <tr className="bg-secondary text-white/90">
                 <th className="px-4 py-2 text-right text-[10px] uppercase border-r border-white/10">Debit</th>
                 <th className="px-4 py-2 text-right text-[10px] uppercase">Credit</th>
               </tr>
@@ -137,7 +137,7 @@ const CashInHandReport = () => {
             <tbody className="divide-y divide-zinc-100">
               {tableRows.length > 0 ? (
                 tableRows.map((row, idx) => (
-                  <tr key={idx} className="group hover:bg-primary-50/30 transition-colors">
+                  <tr key={idx} className="group hover:bg-secondary/10 transition-colors">
                     <td className="px-4 py-3 text-zinc-600 border-r border-zinc-50 whitespace-nowrap">
                       {dateFormatter(row.date)}
                     </td>
@@ -188,7 +188,7 @@ const CashInHandReport = () => {
                   Balance c/d
                 </td>
                 <td colSpan={3} className="px-4 py-2"></td>
-                <td className="px-4 py-2 text-right text-primary-700 font-black text-base border-r border-zinc-200">
+                <td className="px-4 py-2 text-right text-secondary font-black text-base border-r border-zinc-200">
                   {summary?.totalBalanceDebit || "0.00"}
                 </td>
                 <td className="px-4 py-2 text-right text-zinc-700 font-black text-base">

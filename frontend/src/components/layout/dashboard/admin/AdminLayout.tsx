@@ -27,7 +27,7 @@ export default function AdminLayout() {
 
         {/* Page Content */}
         <main
-          className={`flex-1 mt-[64px] bg-primary-50 transition-all duration-300 lg:ml-[280px]
+          className={`flex-1 mt-[64px] bg-slate-50 transition-all duration-300 lg:ml-[280px]
             } p-2 md:p-6 overflow-hidden`}
         >
           <Outlet />

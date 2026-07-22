@@ -440,7 +440,7 @@ const CreateQuotationPage = () => {
                             <Input
                                 readOnly
                                 value={totalAmount.toFixed(2)}
-                                className="w-1/2 text-right font-bold text-lg bg-indigo-50"
+                                className="w-1/2 text-right font-bold text-lg bg-secondary/10"
                             />
                         </div>
                     </div>
@@ -583,7 +583,7 @@ const CreateQuotationPage = () => {
                         <Button type="button" variant="outline" onClick={handleFormReset} className="px-6">
                             Cancel
                         </Button>
-                        <Button type="submit" className="px-6 bg-primary hover:bg-primary/90">
+                        <Button type="submit" className="px-6 bg-secondary text-white hover:shadow-md hover:-translate-y-0.5">
                             Submit
                         </Button>
                     </div>

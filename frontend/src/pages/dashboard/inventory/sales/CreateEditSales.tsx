@@ -465,7 +465,7 @@ export default function CreateEditSales() {
 
   return (
     <section className="p-2 md:p-4 shadow-sm border bg-white rounded-md">
-      <Heading className="text-[#5e48d8] font-semibold mb-4">
+      <Heading className="text-secondary font-semibold mb-4">
         {isEditMode ? "Edit Sales" : "Create Sales"}
       </Heading>
       <CardContent className="space-y-6">
@@ -617,7 +617,7 @@ export default function CreateEditSales() {
 
               <span
                 onClick={() => setIsModalOpen(true)}
-                className="bg-[#6E56CF] text-white hover:cursor-pointer mt-10 p-3 rounded-md"
+                className="bg-secondary text-white hover:cursor-pointer mt-10 p-3 rounded-md"
               >
                 <FaPlus size={20} />
               </span>
@@ -836,7 +836,7 @@ export default function CreateEditSales() {
             <Button
               type="submit"
               disabled={isLoading || isSubmitting}
-              className="hover:bg-[#6E56CF] bg-primary text-white px-6 rounded-none"
+              className="hover:shadow-md hover:-translate-y-0.5 bg-secondary text-white px-6 rounded-none"
             >
               <GrNotes className="mr-2" />
               {isLoading || isSubmitting
@@ -854,7 +854,7 @@ export default function CreateEditSales() {
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto scrollbar-hide">
             <DialogHeader>
-              <Heading className="text-[#5e48d8] font-semibold">
+              <Heading className="text-secondary font-semibold">
                 Create Particular Account
               </Heading>
             </DialogHeader>

@@ -91,13 +91,13 @@ export function ReusableTable<TData>({
         <div className="w-full h-full flex flex-col bg-white dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
             <div className="relative overflow-x-auto">
                 <Table className="w-full border-collapse">
-                    <TableHeader className="bg-primary-500 dark:bg-zinc-900/50">
+                    <TableHeader className="bg-secondary">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id} className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800">
                                 {headerGroup.headers.map((header) => (
                                     <TableHead
                                         key={header.id}
-                                        className="h-12 px-4 text-center align-middle text-white dark:text-zinc-400 text-[13px] font-bold uppercase tracking-wider whitespace-nowrap"
+                                        className="h-12 px-4 text-center align-middle text-white text-[13px] font-bold uppercase tracking-wider whitespace-nowrap"
                                     >
                                         {header.isPlaceholder
                                             ? null

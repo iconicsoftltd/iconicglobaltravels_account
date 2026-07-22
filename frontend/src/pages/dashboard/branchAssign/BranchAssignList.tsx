@@ -277,7 +277,7 @@ const BranchAssignList: React.FC = () => {
           />
         </>
       ) : (
-        <Heading className="text-[#5e48d8] font-semibold text-center justify-center text-7xl">
+        <Heading className="text-secondary font-semibold text-center justify-center text-7xl">
           No Permission for this page
         </Heading>
       )}

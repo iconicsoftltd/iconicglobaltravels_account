@@ -53,7 +53,7 @@ export default function AdminForgetPassword() {
             backgroundImage: `url(${appConfiguration?.loginBg})`,
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/20"></div>
+          <div className="absolute inset-0 bg-primary/70 border-r-8 border-secondary"></div>
           <div className="absolute right-14 bottom-16 z-10 flex flex-col justify-center items-start p-12 text-white">
             <h1 className="text-4xl font-bold mb-4">Accounts Admin Portal</h1>
             <p className="text-lg text-gray-200 max-w-md leading-relaxed">
@@ -133,8 +133,8 @@ export default function AdminForgetPassword() {
                 disabled={forgetLoading}
                 className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-all ${
                   forgetLoading
-                    ? "bg-primary/70 cursor-not-allowed"
-                    : "bg-primary hover:bg-primary shadow-md hover:shadow-lg"
+                    ? "bg-secondary/70 cursor-not-allowed"
+                    : "bg-secondary shadow-md hover:shadow-lg hover:-translate-y-0.5"
                 }`}
               >
                 {forgetLoading ? (

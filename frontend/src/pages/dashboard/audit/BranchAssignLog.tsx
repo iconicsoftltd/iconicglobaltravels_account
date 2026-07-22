@@ -121,7 +121,7 @@ const BranchAssignLogPage: React.FC = () => {
           <Button
             variant="outline"
             size="icon"
-            className="bg-gray-100 text-blue-500"
+            className="bg-gray-100 text-secondary"
             onClick={() => setSelectedLogId(row.original.id)}
           >
             <FaEye />

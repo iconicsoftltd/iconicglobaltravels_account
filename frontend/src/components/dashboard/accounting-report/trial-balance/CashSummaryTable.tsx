@@ -42,7 +42,7 @@ console.log("trail balance Data",data)
   return (
     <div className="bg-white rounded-xl shadow-md border border-zinc-200 overflow-hidden max-w-5xl mx-auto">
       <Table>
-        <TableHeader className="bg-primary-500 hover:bg-primary-600">
+        <TableHeader className="bg-secondary">
           <TableRow className="hover:bg-transparent border-none">
             <TableHead className="text-white w-[60px] font-bold uppercase text-[11px]">SL</TableHead>
             <TableHead className="text-white font-bold uppercase text-[11px]">Account Description</TableHead>

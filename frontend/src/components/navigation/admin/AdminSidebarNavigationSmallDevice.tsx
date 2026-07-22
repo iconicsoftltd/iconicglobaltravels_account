@@ -73,7 +73,7 @@ export default function AdminSidebarNavigationSmallDevice({
             animate={{ x: 0 }}
             exit={{ x: -300 }}
             transition={{ type: "spring", stiffness: 260, damping: 25 }}
-            className="absolute left-0 top-0 h-full w-[280px] bg-primary-50 shadow-xl flex flex-col border-r"
+            className="absolute left-0 top-0 h-full w-[280px] bg-white shadow-xl flex flex-col border-r"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -144,7 +144,7 @@ export default function AdminSidebarNavigationSmallDevice({
                               animate={{ height: "auto", opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
                               transition={{ duration: 0.3 }}
-                              className="ml-2 pt-1 border-gray-300/40 overflow-hidden space-y-1"
+                              className="ml-2 pt-1 border-l border-secondary/20 overflow-hidden space-y-1"
                             >
                               {link.subLinks.map((subLink, subIndex) => (
                                 <li key={subIndex}>
@@ -156,9 +156,9 @@ export default function AdminSidebarNavigationSmallDevice({
                                       }
                                       className={({ isActive }) =>
                                         cn(
-                                          "flex items-center gap-2 px-6 py-2 text-sm font-medium hover:bg-primary/10 rounded transition-all",
+                                          "flex items-center gap-2 px-6 py-2 text-sm font-medium hover:bg-secondary/10 rounded transition-all",
                                           isActive
-                                            ? "text-primary font-semibold"
+                                            ? "text-secondary font-semibold"
                                             : "text-gray-700"
                                         )
                                       }
@@ -181,7 +181,7 @@ export default function AdminSidebarNavigationSmallDevice({
                                               : subLink.key
                                           )
                                         }
-                                        className="flex items-center justify-between w-full px-6 py-2 text-sm font-medium hover:bg-primary/10 rounded"
+                                        className="flex items-center justify-between w-full px-6 py-2 text-sm font-medium hover:bg-secondary/10 rounded"
                                       >
                                         <span> {subLink.label[
                                             i18n.language as "en" | "bn"
@@ -210,7 +210,7 @@ export default function AdminSidebarNavigationSmallDevice({
                                               opacity: 0,
                                             }}
                                             transition={{ duration: 0.3 }}
-                                            className="ml-4 border-l border-gray-200 pl-3 space-y-1"
+                                            className="ml-4 border-l border-secondary/20 pl-3 space-y-1"
                                           >
                                             {subLink.subSubLinks.map(
                                               (subSubLink, subSubIndex) => (
@@ -226,9 +226,9 @@ export default function AdminSidebarNavigationSmallDevice({
                                                     }
                                                     className={({ isActive }) =>
                                                       cn(
-                                                        "block px-4 py-1 text-sm hover:bg-primary/10 rounded",
+                                                        "block px-4 py-1 text-sm hover:bg-secondary/10 rounded",
                                                         isActive
-                                                          ? "text-primary font-semibold"
+                                                          ? "text-secondary font-semibold"
                                                           : "text-gray-700"
                                                       )
                                                     }

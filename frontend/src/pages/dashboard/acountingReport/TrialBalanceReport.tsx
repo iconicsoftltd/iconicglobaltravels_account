@@ -120,7 +120,7 @@ const TrialBalanceReport = () => {
         <div className="border rounded-md max-h-[600px] overflow-auto bg-white">
           <table className="min-w-full border-collapse text-sm">
             {/* ================= HEADER ================= */}
-            <thead className="bg-primary-500 sticky top-0 text-white">
+            <thead className="bg-secondary sticky top-0 text-white">
               <tr>
                 <th rowSpan={2} className="border px-4 py-2 text-left">
                   Particulars

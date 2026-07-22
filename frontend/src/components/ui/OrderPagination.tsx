@@ -223,7 +223,7 @@ const OrderPagination = ({
               className={`min-w-[36px] px-2 py-1 rounded border text-sm sm:text-base ${
                 page === currentPage ||
                 (page === "Last" && currentPage === totalPages)
-                  ? "bg-primary text-white border-primary"
+                  ? "bg-secondary text-white border-secondary"
                   : "hover:bg-gray-50"
               } ${page === "..." && "pointer-events-none cursor-default"}`}
             >

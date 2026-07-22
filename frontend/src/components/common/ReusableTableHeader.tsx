@@ -45,7 +45,7 @@ const ReusableTableHeader: React.FC<ReusableTableHeaderProps> = ({
   createButtonLabel = "Create",
   createButtonIcon,
   searchPlaceholder = "Search...",
-  colorClass = "text-[#5e48d8]",
+  colorClass = "text-[#000000]",
   createButtonLink,
   modalWidthCls,
   modalHeightCls,
@@ -77,7 +77,7 @@ const ReusableTableHeader: React.FC<ReusableTableHeaderProps> = ({
               onSearchReset?.();
             }}
             className="pl-9 h-10 rounded border-gray-200 
-            focus:border-primary focus:ring-2 focus:ring-primary/20 
+            focus:border-secondary focus:ring-2 focus:ring-secondary/10
             text-sm"
           />
         </div>

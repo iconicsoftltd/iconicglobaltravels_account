@@ -37,7 +37,7 @@ const AdminHome = () => {
 
         {/* Title */}
         <div>
-          <h1 className="text-xl font-semibold text-gray-800">
+          <h1 className="text-xl font-semibold text-secondary">
             Dashboard Overview
           </h1>
           <p className="text-sm text-gray-500">
@@ -148,7 +148,7 @@ const AdminHome = () => {
         <DashboardCard
           title="Available Balance"
           value={availableBalance}
-          className="xl:col-span-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white"
+          className="xl:col-span-2 bg-secondary text-white [&_.dashboard-card-icon]:bg-white [&_.dashboard-card-icon]:text-secondary"
           icon={
             <>
               <path d="M4 7h16a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1z" strokeLinecap="round" strokeLinejoin="round" />

@@ -116,7 +116,7 @@ const ViewParticularAccountModal: React.FC<ViewParticularAccountModalProps> = ({
 
       {/* Group Information */}
       <div className="border-t pt-4">
-        <h4 className="text-lg font-semibold mb-3 text-[#5e48d8]">Group Information</h4>
+        <h4 className="text-lg font-semibold mb-3 text-secondary">Group Information</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label className="text-sm font-medium text-gray-500">Group Account</Label>
@@ -136,7 +136,7 @@ const ViewParticularAccountModal: React.FC<ViewParticularAccountModalProps> = ({
       {/* Contact Information */}
       {(particular.companyName || particular.mobileNumber || particular.email || particular.address) && (
         <div className="border-t pt-4 ">
-          <h4 className="text-lg font-semibold mb-3 text-[#5e48d8]">Contact Information</h4>
+          <h4 className="text-lg font-semibold mb-3 text-secondary">Contact Information</h4>
           <div className="space-y-3 grid grid-cols-1 md:grid-cols-3 gap-4">
             {particular.companyName && (
               <div className="flex items-center gap-2">
@@ -168,7 +168,7 @@ const ViewParticularAccountModal: React.FC<ViewParticularAccountModalProps> = ({
 
       {/* Dates */}
       <div className="border-t pt-4">
-        <h4 className="text-lg font-semibold mb-3 text-[#5e48d8]">Dates</h4>
+        <h4 className="text-lg font-semibold mb-3 text-secondary">Dates</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-gray-500" />

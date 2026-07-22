@@ -20,7 +20,7 @@ export default function LedgerTable({ account }: { account: LedgerData }) {
       <div className="overflow-x-auto">
         <table className="w-full text-sm border-collapse">
           {/* Header */}
-          <thead className="bg-primary-400 text-white border-b border-zinc-200">
+          <thead className="bg-secondary text-white border-b border-zinc-200">
             <tr>
               <th rowSpan={2} className="border-r border-zinc-200 px-4 py-3 text-left font-semibold uppercase text-[11px]">Date</th>
               <th rowSpan={2} className="border-r border-zinc-200 px-4 py-3 text-left font-semibold uppercase text-[11px]">Particulars</th>
@@ -28,9 +28,9 @@ export default function LedgerTable({ account }: { account: LedgerData }) {
               <th rowSpan={2} className="border-r border-zinc-200 px-4 py-3 text-center font-semibold uppercase text-[11px] w-24">V.N / J.N</th>
               <th rowSpan={2} className="border-r border-zinc-200 px-4 py-3 text-right font-semibold uppercase text-[11px]">Debit</th>
               <th rowSpan={2} className="border-r border-zinc-200 px-4 py-3 text-right font-semibold uppercase text-[11px]">Credit</th>
-              <th colSpan={2} className="px-4 py-2 text-center font-bold uppercase text-[11px] bg-primary-400 border">Running Balance</th>
+              <th colSpan={2} className="px-4 py-2 text-center font-bold uppercase text-[11px] bg-secondary border">Running Balance</th>
             </tr>
-            <tr className="bg-primary-400">
+            <tr className="bg-secondary">
               <th className="border-r border-zinc-200 px-4 py-2 text-right font-semibold text-[10px]">Debit</th>
               <th className="px-4 py-2 text-right font-semibold text-[10px]">Credit</th>
             </tr>
@@ -99,10 +99,10 @@ export default function LedgerTable({ account }: { account: LedgerData }) {
               <td className="px-4 py-4 text-right font-bold  border-t border-white/20">
                 {toFixedAmount(account.summary.totalCredit)}
               </td>
-              <td className="px-4 py-4 text-right font-black text-primary-400 text-sm">
+              <td className="px-4 py-4 text-right font-black text-secondary text-sm">
                 {account.summary.closingBalance.balanceType === "Dr" ? toFixedAmount(account.summary.closingBalance.balance) : ""}
               </td>
-              <td className="px-4 py-4 text-right font-black text-primary-400 text-sm">
+              <td className="px-4 py-4 text-right font-black text-secondary text-sm">
                 {account.summary.closingBalance.balanceType === "Cr" ? toFixedAmount(account.summary.closingBalance.balance) : ""}
               </td>
             </tr>

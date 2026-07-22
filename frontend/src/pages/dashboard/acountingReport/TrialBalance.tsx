@@ -64,7 +64,7 @@ export default function TrialBalancePage() {
               variant="outline"
               className="bg-white text-zinc-700 border-zinc-200 shadow-none"
             >
-              <FaPrint className="mr-2 text-primary-500" /> Print
+              <FaPrint className="mr-2 text-secondary" /> Print
             </Button>
             <Button
               variant="destructive"

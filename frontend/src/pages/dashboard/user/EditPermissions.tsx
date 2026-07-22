@@ -317,7 +317,7 @@ const EditPermissions = ({ onClose, editingRole }: EditPermissionsProps) => {
         </Button>
         <Button
           onClick={handleSubmit}
-          className="bg-primary text-white px-6 py-2 rounded hover:bg-blue-700"
+          className="bg-secondary text-white px-6 py-2 rounded hover:shadow-md hover:-translate-y-0.5"
           disabled={isSaving}
         >
           {isSaving && <ButtonLoader />} Update

@@ -9,6 +9,17 @@
 body {
   overflow-x: hidden;
 }
+
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Keep page width and scrolling stable while a non-modal Select is open. */
+body[data-scroll-locked]:has(.brand-select-content) {
+  overflow-y: auto !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
 @media print {
   .no-print {
     display: none !important;
@@ -324,12 +335,12 @@ td p {
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #3b82f6, #1e40af); /* Blue Gradient */
+  background: hsl(var(--secondary));
   border-radius: 10px;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #1e40af, #3b82f6); /* Inverted Gradient */
+  background: hsl(var(--secondary));
 }
 
 .custom-scrollbar::-webkit-scrollbar {

@@ -99,11 +99,11 @@ const ViewSingleReceiptVoucherList = () => {
       </div>
 
       {/* Header */}
-      <h2 className="text-2xl text-[#5e48d8] font-semibold text-center mb-4">
+      <h2 className="text-2xl text-secondary font-semibold text-center mb-4">
         Receipt Voucher
       </h2>
 
-      <div className="flex justify-between gap-4 mb-6 text-[#5e48d8] font-medium">
+      <div className="flex justify-between gap-4 mb-6 text-secondary font-medium">
         <div>
           <label className="block mb-1">Voucher No: {voucher.voucherNo}</label>
         </div>
@@ -116,16 +116,16 @@ const ViewSingleReceiptVoucherList = () => {
 
       {/* Table */}
       <div className="overflow-hidden">
-        <div className="grid grid-cols-12 bg-[#efedf7] p-2 font-semibold text-gray-700 text-center border-b border-gray-200">
-          <div className="col-span-1 text-[#5e48d8] font-medium">S/L</div>
-          <div className="col-span-2 text-[#5e48d8] font-medium">
+        <div className="grid grid-cols-12 bg-secondary/10 p-2 font-semibold text-gray-700 text-center border-b border-gray-200">
+          <div className="col-span-1 text-secondary font-medium">S/L</div>
+          <div className="col-span-2 text-secondary font-medium">
             Debit / Credit
           </div>
-          <div className="col-span-4 text-[#5e48d8] font-medium">
+          <div className="col-span-4 text-secondary font-medium">
             Particulars
           </div>
-          <div className="col-span-2 text-[#5e48d8] font-medium">Debit</div>
-          <div className="col-span-3 text-[#5e48d8] font-medium">Credit</div>
+          <div className="col-span-2 text-secondary font-medium">Debit</div>
+          <div className="col-span-3 text-secondary font-medium">Credit</div>
         </div>
 
         {voucher.particulars.map((p, index) => (
@@ -154,17 +154,17 @@ const ViewSingleReceiptVoucherList = () => {
         {/* Totals */}
         <div className="grid grid-cols-12 p-2 font-semibold text-center text-gray-700 bg-gray-50 gap-2">
           <div className="col-span-7 mt-2 text-right pr-4">Total Amount:</div>
-          <div className="col-span-2 px-3 py-2 border border-[#e4e0ff] font-medium text-gray-800">
+          <div className="col-span-2 px-3 py-2 border border-secondary/20 font-medium text-gray-800">
             {totalDebit.toFixed(2)}
           </div>
-          <div className="col-span-3 px-3 py-2 border border-[#e4e0ff] font-medium text-gray-800">
+          <div className="col-span-3 px-3 py-2 border border-secondary/20 font-medium text-gray-800">
             {totalCredit.toFixed(2)}
           </div>
         </div>
       </div>
 
       {/* Amount in Words */}
-      <div className="mt-4 p-3 bg-[#efedf7] border border-gray-200 rounded-md">
+      <div className="mt-4 p-3 bg-secondary/10 border border-gray-200 rounded-md">
         <p className="text-gray-700 font-medium text-center">
           (IN WORD: {amountInWords})
         </p>
@@ -198,7 +198,7 @@ const ViewSingleReceiptVoucherList = () => {
         <Button
           onClick={() => printVoucher(voucherData)}
           variant="outline"
-          className="hover:bg-[#6E56CF] bg-primary hover:text-white text-white px-6 rounded-none flex items-center gap-2"
+          className="hover:shadow-md hover:-translate-y-0.5 bg-secondary text-white px-6 rounded-none flex items-center gap-2"
         >
           <span>Print</span>
           <GrNotes />

@@ -36,25 +36,25 @@ const TodaysCallViewPage = () => {
                     </TabsList>
 
                     <TabsContent value="manage-call" className="mt-0 flex-grow">
-                        <h4 className="text-[14px] text-[#0A0A0A] font-semibold py-[16px] px-4 bg-primary-50 border border-primary-100">Manage Call</h4>
+                        <h4 className="text-[14px] text-[#0A0A0A] font-semibold py-[16px] px-4 bg-secondary/10 border border-secondary/20">Manage Call</h4>
                         <ManageCallTabContent />
                     </TabsContent>
 
                     {/* Placeholder Tab Contents */}
                     <TabsContent value="manage-meeting" className="mt-0 flex-grow">
-                        <h4 className="text-[14px] text-[#0A0A0A] font-semibold py-[16px] px-4 bg-primary-50 border border-primary-100">Manage Metting</h4>
+                        <h4 className="text-[14px] text-[#0A0A0A] font-semibold py-[16px] px-4 bg-secondary/10 border border-secondary/20">Manage Metting</h4>
                         <ManageMittingTabContent />
                     </TabsContent>
                     <TabsContent value="attachment" className="mt-0 flex-grow">
-                        <h4 className="text-[14px] text-[#0A0A0A] font-semibold py-[16px] px-4 bg-primary-50 border border-primary-100">Attachment</h4>
+                        <h4 className="text-[14px] text-[#0A0A0A] font-semibold py-[16px] px-4 bg-secondary/10 border border-secondary/20">Attachment</h4>
                         <AttachmentTabContent />
                     </TabsContent>
                     <TabsContent value="manage-task" className="mt-0 flex-grow">
-                        <h4 className="text-[14px] text-[#0A0A0A] font-semibold py-[16px] px-4 bg-primary-50 border border-primary-100">Manage Task</h4>
+                        <h4 className="text-[14px] text-[#0A0A0A] font-semibold py-[16px] px-4 bg-secondary/10 border border-secondary/20">Manage Task</h4>
                         <ManageTaskTabContent />
                     </TabsContent>
                     <TabsContent value="today-follow-up" className="mt-0 flex-grow">
-                        <h4 className="text-[14px] text-[#0A0A0A] font-semibold py-[16px] px-4 bg-primary-50 border border-primary-100">Today's Follow-up</h4>
+                        <h4 className="text-[14px] text-[#0A0A0A] font-semibold py-[16px] px-4 bg-secondary/10 border border-secondary/20">Today's Follow-up</h4>
                         <TodaysFollowupTabContent />
                     </TabsContent>
 

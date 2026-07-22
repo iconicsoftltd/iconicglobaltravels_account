@@ -244,7 +244,7 @@ const UserList: React.FC = () => {
           {getPermission("User", "read") && (
             <Button
               variant="outline"
-              className="bg-gray-100 text-blue-500"
+              className="bg-gray-100 text-secondary"
               size="icon"
               onClick={() => setSelectedRoleDetails(row.original)}
             >

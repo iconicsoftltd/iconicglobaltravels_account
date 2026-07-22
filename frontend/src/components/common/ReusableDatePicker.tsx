@@ -40,7 +40,7 @@ const ReusableDatePicker = ({
             variant={"outline"}
             className={cn(
               "w-full justify-between text-left font-normal text-gray-900",
-              "border-primary-100 focus:border-primary-600 focus:ring-indigo-500 bg-white hover:bg-white",
+              "border-secondary/20 focus:border-secondary focus:ring-secondary bg-white hover:bg-white",
               !date && "text-muted-foreground"
             )}
           >

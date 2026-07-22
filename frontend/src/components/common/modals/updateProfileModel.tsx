@@ -145,7 +145,7 @@ const UpdateProfileModel: React.FC<CreateStaffEmployeeModelProps> = ({
             className="block w-full rounded-md px-3 py-2 text-sm text-gray-900
             outline outline-1 -outline-offset-1 outline-gray-300
             placeholder:text-gray-400
-            focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+            focus:outline-2 focus:-outline-offset-2 focus:outline-secondary"
           />
         </div>
         {errors.name && (
@@ -166,7 +166,7 @@ const UpdateProfileModel: React.FC<CreateStaffEmployeeModelProps> = ({
             className="block w-full rounded-md px-3 py-2 text-sm text-gray-900
             outline outline-1 -outline-offset-1 outline-gray-300
             placeholder:text-gray-400
-            focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+            focus:outline-2 focus:-outline-offset-2 focus:outline-secondary"
           />
         </div>
         {errors.phone && (
@@ -187,7 +187,7 @@ const UpdateProfileModel: React.FC<CreateStaffEmployeeModelProps> = ({
             className="block w-full rounded-md px-3 py-2 text-sm text-gray-900
             outline outline-1 -outline-offset-1 outline-gray-300
             placeholder:text-gray-400
-            focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+            focus:outline-2 focus:-outline-offset-2 focus:outline-secondary"
           />
         </div>
         {errors.nid && (
@@ -208,7 +208,7 @@ const UpdateProfileModel: React.FC<CreateStaffEmployeeModelProps> = ({
             className="block w-full rounded-md px-3 py-2 text-sm text-gray-900
             outline outline-1 -outline-offset-1 outline-gray-300
             placeholder:text-gray-400
-            focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 min-h-[100px]"
+            focus:outline-2 focus:-outline-offset-2 focus:outline-secondary min-h-[100px]"
           />
         </div>
         {errors.address && (

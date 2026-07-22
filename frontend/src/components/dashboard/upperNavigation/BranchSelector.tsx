@@ -94,8 +94,8 @@ const BranchSelector = () => {
               onClick={() => handleChange(branch)}
               className={`relative flex w-full items-center gap-2 rounded-sm py-1.5 px-2 text-sm transition-colors ${
                 branch.id === selectedBranch?.id
-                  ? "bg-primary text-white"
-                  : "bg-primary-50 hover:bg-primary hover:text-white"
+                  ? "bg-secondary text-white"
+                  : "bg-secondary/10 text-secondary hover:bg-secondary/10"
               }`}
             >
               <span>{branch.name}</span>

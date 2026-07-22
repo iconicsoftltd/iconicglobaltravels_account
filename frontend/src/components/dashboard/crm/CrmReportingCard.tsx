@@ -39,14 +39,14 @@ const CrmReportingCard: React.FC<ReportCardProps> = ({
 
     return (
         <Card className="w-full h-full border-none shadow-none rounded-none p-0">
-            <CardHeader className="px-6 py-[16px] bg-primary-50 border border-primary-100">
+            <CardHeader className="px-6 py-[16px] bg-secondary/10 border border-secondary/20">
                 <CardTitle className="font-semibold text-primary text-[14px] ">{title}</CardTitle>
             </CardHeader>
             <CardContent className="p-6 space-y-5 bg-white rounded-none">
                 <div className="space-y-2">
                     <Label htmlFor={`${title.replace(/\s/g, '')}-select`} className="text-sm font-medium text-gray-700">{selectLabel} *</Label>
                     <Select value={selectedValue} onValueChange={setSelectedValue}>
-                        <SelectTrigger id={`${title.replace(/\s/g, '')}-select`} className="w-full bg-white text-gray-700 h-10 border-gray-300 focus:ring-blue-500 focus:border-blue-500">
+                        <SelectTrigger id={`${title.replace(/\s/g, '')}-select`} className="w-full bg-white text-gray-700 h-10 border-gray-300 focus:ring-secondary focus:border-secondary">
                             <SelectValue placeholder={selectPlaceholder} />
                         </SelectTrigger>
                         <SelectContent>

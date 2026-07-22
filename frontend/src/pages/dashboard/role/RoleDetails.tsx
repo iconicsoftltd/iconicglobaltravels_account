@@ -28,7 +28,7 @@ const RoleDetails: React.FC<RoleDetailsProps> = ({ role }) => {
 
   return (
     <div className="space-y-4">
-      <Heading className="text-[#5e48d8] font-semibold">Role Details</Heading>
+      <Heading className="text-secondary font-semibold">Role Details</Heading>
 
       {/* Basic Info */}
       <div className="grid grid-cols-2 gap-4 text-sm">

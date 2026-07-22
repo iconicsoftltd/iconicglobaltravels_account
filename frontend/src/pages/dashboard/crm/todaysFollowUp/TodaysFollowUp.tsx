@@ -195,11 +195,11 @@ const TodaysFollowUpPage = () => {
     return (
         <div className="bg-white">
 
-            <Heading className="p-6 border-b border-primary-100">
+            <Heading className="p-6 border-b border-secondary/20">
                 Today's Follow-up
             </Heading>
 
-            <div className="items-center text-center border-b  pt-6 px-6 pb-10 border-primary-100 mb-6">
+            <div className="items-center text-center border-b  pt-6 px-6 pb-10 border-secondary/20 mb-6">
                 {/* Logo */}
                 <div className="flex justify-center items-center mb-2">
                     <img

@@ -26,11 +26,11 @@ export interface LedgerReportResponse {
 const CashInHandTable = ({ data, tableTitle }: { data: LedgerReportResponse, tableTitle: string }) => {
   return (
     <div>
-      <Heading size="20" variant="secondary" className="p-4 bg-primary-500 text-white rounded-t-md">
+      <Heading size="20" variant="secondary" className="p-4 bg-secondary text-white rounded-t-md">
         {tableTitle}
       </Heading>
       <table className="w-full min-w-[800px] border-collapse border border-slate-400 text-sm font-sans">
-        <thead className="bg-primary-500 text-white">
+        <thead className="bg-secondary text-white">
           <tr>
             <th
               rowSpan={2}

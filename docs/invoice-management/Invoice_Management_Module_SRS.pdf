@@ -1,0 +1,363 @@
+%PDF-1.4
+1 0 obj
+<< /Length 2464 >>
+stream
+BT
+/F1 10 Tf
+50 760 Td
+14 TL
+(SOFTWARE REQUIREMENTS SPECIFICATION \(SRS\)) Tj
+T*
+() Tj
+T*
+(Invoice Management Module - Iconic Hishab Accounting Software) Tj
+T*
+() Tj
+T*
+(Prepared for: Iconic Hishab Accounting Software) Tj
+T*
+(Prepared date: 14-Sep-2026) Tj
+T*
+(Document type: Functional and non-functional requirements specification) Tj
+T*
+(Version: 1.0) Tj
+T*
+() Tj
+T*
+(1. Purpose) Tj
+T*
+(==========) Tj
+T*
+(This SRS defines the functional, data, security, accounting, reporting, and quality) Tj
+T*
+(requirements for the Invoice Management module. The module supports invoice creation, draft) Tj
+T*
+(management, payment collection, refund posting, cancellation, restore-as-draft, print/PDF) Tj
+T*
+(output, summary reporting, and permission-controlled access.) Tj
+T*
+() Tj
+T*
+(2. Scope) Tj
+T*
+(========) Tj
+T*
+(- Create invoices for customers selected from Particular Accounts, with customer display) Tj
+T*
+(based on company name/account name.) Tj
+T*
+(- Save draft invoices without voucher posting and finalize drafts later with automatic) Tj
+T*
+(accounting vouchers.) Tj
+T*
+( - Maintain date-wise payment history and preserve it during invoice edits.) Tj
+T*
+(- Allow due payment collection, payment edit, and refund workflow from the Edit Invoice) Tj
+T*
+(page; View Invoice remains read-focused with top action buttons.) Tj
+T*
+(- Show invoice list with invoice number, customer name, item names, date, total, paid, due,) Tj
+T*
+(status, and allowed actions.) Tj
+T*
+() Tj
+T*
+(3. Definitions) Tj
+T*
+(==============) Tj
+T*
+() Tj
+T*
+(Term | Meaning) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(Draft Invoice | Invoice saved for future editing; no accounting voucher is posted.) Tj
+T*
+(Final Invoice | Invoice created/finalized and included in accounting postings and reports.) Tj
+T*
+(Initial Paid Amount | Payment captured at invoice create/finalize time.) Tj
+T*
+(Payment History | Date-wise records of payments/refunds against an invoice.) Tj
+T*
+(Voucher Posting | Automatic creation of Receipt, Journal, Payment, or Reversal voucher) Tj
+T*
+(entries linked to invoice events.) Tj
+T*
+() Tj
+T*
+(4. Actors and Roles) Tj
+T*
+(===================) Tj
+T*
+() Tj
+T*
+(Actor/Role | Responsibility) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(Super Admin | Full module setup, permission assignment, and unrestricted invoice operations.) Tj
+T*
+ET
+endstream
+endobj
+2 0 obj
+<< /Type /Page /Parent 10 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 9 0 R >> >> /Contents 1 0 R >>
+endobj
+3 0 obj
+<< /Length 3065 >>
+stream
+BT
+/F1 10 Tf
+50 760 Td
+14 TL
+(Authorized Accounting User | Create, update, collect payment, refund, cancel, and report) Tj
+T*
+(based on assigned permissions and branch access.) Tj
+T*
+(Read-only User | View list/details/reports only when Invoice read permission is granted.) Tj
+T*
+(Branch Context | Every invoice operation must be scoped by selected branch ID.) Tj
+T*
+() Tj
+T*
+(5. Functional Requirements) Tj
+T*
+(==========================) Tj
+T*
+() Tj
+T*
+(ID | Requirement | Priority) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(FR-01 | Create a new invoice with customer, dates, items, rate/price, quantity, totals,) Tj
+T*
+(initial paid amount, and payment account. | High) Tj
+T*
+(FR-02 | Validate invoice quantity as a whole number with minimum value 1. | High) Tj
+T*
+(FR-03 | Save an invoice as Draft without creating Receipt or Journal voucher. | High) Tj
+T*
+(FR-04 | Finalize a Draft invoice and automatically create required vouchers. | High) Tj
+T*
+(FR-05 | Automatically calculate subtotal, grand total, paid amount, due amount, and status.) Tj
+T*
+(| High) Tj
+T*
+(FR-06 | Preserve existing payment history when a final invoice item price or quantity is) Tj
+T*
+(edited. | High) Tj
+T*
+(FR-07 | Recalculate invoice status after edit; if paid amount equals new grand total, status) Tj
+T*
+(becomes PAID. | High) Tj
+T*
+(FR-08 | Prevent invalid update where invoice total becomes less than already collected net) Tj
+T*
+(payments unless refund/adjustment is handled. | High) Tj
+T*
+(FR-09 | Collect due payment with account, amount, date, method/reference/note and create) Tj
+T*
+(linked Receipt voucher. | High) Tj
+T*
+(FR-10 | Allow editing payment history entries only for partially paid invoices and) Tj
+T*
+(recalculate invoice totals. | Medium) Tj
+T*
+(FR-11 | Support refund posting with payment account, amount, refund date, and note; refund) Tj
+T*
+(appears in history and report. | High) Tj
+T*
+(FR-12 | Allow invoice cancellation and reverse active accounting postings automatically. |) Tj
+T*
+(High) Tj
+T*
+(FR-13 | Allow cancelled invoices to be restored as Draft with paid/due reset and vouchers) Tj
+T*
+(removed from active flow. | Medium) Tj
+T*
+(FR-14 | Allow permanent delete only for Draft or Cancelled invoices. | High) Tj
+T*
+(FR-15 | Provide Invoice Summary Report with date/status filters, totals, paid, refund, due,) Tj
+T*
+(and status-wise rows. | High) Tj
+T*
+(FR-16 | Provide Print/PDF output from details/report pages; list page shall not include) Tj
+T*
+(Print/PDF buttons. | Medium) Tj
+T*
+(FR-17 | Show active menu tick/selection state for all invoice menu items. | Medium) Tj
+T*
+(FR-18 | Provide a customer + action near customer dropdown to navigate to/Create Particular) Tj
+T*
+(Account. | Medium) Tj
+T*
+(FR-19 | Enforce Invoice create/read/update/delete permissions and branch permission checks.) Tj
+T*
+(| High) Tj
+T*
+(FR-20 | Record invoice audit logs for create, update, finalize, payment, refund, cancel,) Tj
+T*
+(restore, delete, and reversal events. | Medium) Tj
+T*
+() Tj
+T*
+ET
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Parent 10 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 9 0 R >> >> /Contents 3 0 R >>
+endobj
+5 0 obj
+<< /Length 3016 >>
+stream
+BT
+/F1 10 Tf
+50 760 Td
+14 TL
+(6. Business Rules) Tj
+T*
+(=================) Tj
+T*
+( - Invoice statuses are DRAFT, DUE, PARTIALLY_PAID, PAID, OVERDUE, and CANCELLED.) Tj
+T*
+( - Draft save creates no voucher; final create/finalize posts vouchers automatically.) Tj
+T*
+( - Initial paid amount creates Receipt voucher; remaining due creates Journal voucher.) Tj
+T*
+( - Later due collection creates Receipt voucher and a payment history row.) Tj
+T*
+( - Refund creates Payment voucher and a refund history row; reports include refund totals.) Tj
+T*
+( - Full paid invoices have disabled Edit Invoice button in view page for design consistency.) Tj
+T*
+( - Delete is restricted to Draft or Cancelled invoices to protect audit/report history.) Tj
+T*
+() Tj
+T*
+(7. Data Requirements) Tj
+T*
+(====================) Tj
+T*
+() Tj
+T*
+(Entity | Main Fields | Notes) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(Invoice | branchId, customerId, invoiceNo, invoiceDate, dueDate, status, totals, paidAmount,) Tj
+T*
+(dueAmount | Unique by branchId + invoiceNo; indexed by branch/status/date.) Tj
+T*
+(InvoiceItem | itemType, name, description, quantity, unitPrice, lineTotal | Quantity whole) Tj
+T*
+(number in UI/validation; relation cascades with invoice.) Tj
+T*
+(InvoicePayment | invoiceId, paymentAccountId, voucherId, amount, paymentDate, method,) Tj
+T*
+(referenceNo, note | Refund can be represented as method Refund or negative payment amount.) Tj
+T*
+(InvoiceVoucher | invoiceId, voucherId, postingType, amount | Posting types include) Tj
+T*
+(INITIAL_PAID, INITIAL_DUE, COLLECTION, REFUND, REVERSAL.) Tj
+T*
+(InvoiceAuditLog | invoiceId, branchId, userId, action, description, data | Maintains) Tj
+T*
+(operational traceability.) Tj
+T*
+() Tj
+T*
+(8. Non-functional Requirements) Tj
+T*
+(==============================) Tj
+T*
+(- Security: JWT authentication, role permission, and branch permission checks must be) Tj
+T*
+(enforced on every API.) Tj
+T*
+(- Accuracy: monetary calculations must use decimal precision and avoid stale paid/due/status) Tj
+T*
+(values.) Tj
+T*
+(- Responsiveness: invoice pages must work on desktop, laptop, tablet, and very small mobile) Tj
+T*
+(views without clipped content.) Tj
+T*
+(- Auditability: finalized invoices must remain available for report history except allowed) Tj
+T*
+(Draft/Cancelled delete cases.) Tj
+T*
+(- Performance: list/report queries should use pagination, branch filtering, and indexed) Tj
+T*
+(status/date fields.) Tj
+T*
+() Tj
+T*
+(9. Acceptance Criteria) Tj
+T*
+(======================) Tj
+T*
+(- Users can create, save draft, finalize, edit, cancel, restore draft, delete allowed) Tj
+T*
+(invoices, collect due payment, edit payment, and refund within permission limits.) Tj
+T*
+(- Payment history shows each payment/refund with date, account, method, reference, voucher,) Tj
+T*
+(amount, and actions only where required.) Tj
+T*
+(- Summary report totals match invoice totals, paid amounts, refund amounts, due amounts, and) Tj
+T*
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 10 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 9 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 182 >>
+stream
+BT
+/F1 10 Tf
+50 760 Td
+14 TL
+(filtered status counts.) Tj
+T*
+(- Print/PDF works from details/report pages and invoice list remains action-focused without) Tj
+T*
+(Print/PDF.) Tj
+T*
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 10 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 9 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+10 0 obj
+<< /Type /Pages /Kids [ 2 0 R 4 0 R 6 0 R 8 0 R ] /Count 4 >>
+endobj
+11 0 obj
+<< /Type /Catalog /Pages 10 0 R >>
+endobj
+xref
+0 12
+0000000000 65535 f 
+0000000009 00000 n 
+0000002525 00000 n 
+0000002652 00000 n 
+0000005769 00000 n 
+0000005896 00000 n 
+0000008964 00000 n 
+0000009091 00000 n 
+0000009324 00000 n 
+0000009451 00000 n 
+0000009521 00000 n 
+0000009599 00000 n 
+trailer
+<< /Size 12 /Root 11 0 R >>
+startxref
+9650
+%%EOF

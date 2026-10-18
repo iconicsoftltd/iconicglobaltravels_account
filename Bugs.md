@@ -1,5 +1,5 @@
 # Bug #1 Report: Ledger Dropdown Shows Only 10 of 15
-Root cause: hardcoded size=10 default with no override at the call site.
+Root cause: hardcoded size=10 default with no override at the call sites.
 
 Two-layer problem:
 

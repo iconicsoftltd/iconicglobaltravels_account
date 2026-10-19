@@ -1,0 +1,336 @@
+%PDF-1.4
+1 0 obj
+<< /Length 2500 >>
+stream
+BT
+/F1 10 Tf
+50 760 Td
+14 TL
+(INVOICE MANAGEMENT MODULE DOCUMENT) Tj
+T*
+() Tj
+T*
+(Iconic Hishab Accounting Software) Tj
+T*
+() Tj
+T*
+(Prepared date: 14-Sep-2026) Tj
+T*
+(Version: 1.0) Tj
+T*
+(Audience: Developers, QA, support, deployment/admin users.) Tj
+T*
+() Tj
+T*
+(1. Module Overview) Tj
+T*
+(==================) Tj
+T*
+(The Invoice Management module manages customer invoices from draft to final accounting) Tj
+T*
+(posting. It includes invoice creation, item editing, customer selection, due collection,) Tj
+T*
+(refund, payment history, invoice cancellation/restoration, summary reporting, print/PDF) Tj
+T*
+(generation, and permission-based menu access.) Tj
+T*
+() Tj
+T*
+(2. Navigation) Tj
+T*
+(=============) Tj
+T*
+( - Main menu: Invoice.) Tj
+T*
+(- Submenus: All Invoices, Create Invoice, Draft Invoices, Due Invoices, Paid Invoices,) Tj
+T*
+(Overdue Invoices, Invoice Summary Report.) Tj
+T*
+( - All invoice submenu selections should display active tick/selection state.) Tj
+T*
+() Tj
+T*
+(3. Frontend Pages) Tj
+T*
+(=================) Tj
+T*
+() Tj
+T*
+(Component | Route/Use | Key Behavior) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(InvoiceList.tsx | /invoices and filtered status views | Shows invoice no, customer name,) Tj
+T*
+(item names, date, total, paid, due, status, action buttons; no print/PDF buttons.) Tj
+T*
+(CreateInvoice.tsx | /invoices/create and /invoices/:id/edit | Create, save draft, finalize) Tj
+T*
+(draft, edit final invoice totals, collect due, refund, edit payments, customer + shortcut.) Tj
+T*
+(InvoiceDetails.tsx | /invoices/:id | Read view with top action buttons, invoice items,) Tj
+T*
+(payment history, related vouchers.) Tj
+T*
+(InvoiceSummaryReport.tsx | /invoices/reports/summary | Date/status filtered report with) Tj
+T*
+(totals, refund total, print/PDF.) Tj
+T*
+() Tj
+T*
+(4. Backend API Endpoints) Tj
+T*
+(========================) Tj
+T*
+() Tj
+T*
+(Method | Endpoint | Purpose) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(POST | /api/v1/invoices | Create final or draft invoice.) Tj
+T*
+(GET | /api/v1/invoices | Paginated invoice list with search/status/branch filters.) Tj
+T*
+(GET | /api/v1/invoices/reports/summary | Invoice summary report.) Tj
+T*
+(GET | /api/v1/invoices/:id | Invoice detail with items, payments, vouchers, audit logs.) Tj
+T*
+(PUT | /api/v1/invoices/:id | Update draft or final invoice details according to rules.) Tj
+T*
+ET
+endstream
+endobj
+2 0 obj
+<< /Type /Page /Parent 8 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 1 0 R >>
+endobj
+3 0 obj
+<< /Length 2691 >>
+stream
+BT
+/F1 10 Tf
+50 760 Td
+14 TL
+(POST | /api/v1/invoices/:id/finalize | Finalize draft and post vouchers.) Tj
+T*
+(POST | /api/v1/invoices/:id/payments | Collect due payment and create receipt voucher.) Tj
+T*
+(PUT | /api/v1/invoices/:id/payments/:paymentId | Edit a payment entry and recalculate) Tj
+T*
+(invoice.) Tj
+T*
+(POST | /api/v1/invoices/:id/refund | Post refund and create payment voucher.) Tj
+T*
+(POST | /api/v1/invoices/:id/cancel | Cancel invoice and reverse accounting postings.) Tj
+T*
+(POST | /api/v1/invoices/:id/restore-draft | Restore cancelled invoice as draft.) Tj
+T*
+(DELETE | /api/v1/invoices/:id | Delete Draft or Cancelled invoice only.) Tj
+T*
+() Tj
+T*
+(5. Database Entities) Tj
+T*
+(====================) Tj
+T*
+() Tj
+T*
+(Entity | Purpose | Relationship) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(Invoice | Master invoice header and monetary/status totals | Has many items, payments,) Tj
+T*
+(vouchers, audit logs.) Tj
+T*
+(InvoiceItem | Line items for products/services/custom entries | Belongs to Invoice; deleted) Tj
+T*
+(with invoice.) Tj
+T*
+(InvoicePayment | Payment and refund history | Belongs to Invoice; may link to Voucher.) Tj
+T*
+(InvoiceVoucher | Bridge between invoice and accounting voucher | Stores postingType and) Tj
+T*
+(amount.) Tj
+T*
+(InvoiceAuditLog | Operational trace history | Belongs to Invoice.) Tj
+T*
+() Tj
+T*
+(6. Accounting Posting Rules) Tj
+T*
+(===========================) Tj
+T*
+() Tj
+T*
+(Event | Posting Type | Voucher Type | Expected Result) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(Final create/finalize with initial paid amount | INITIAL_PAID | Receipt | Cash/bank receipt) Tj
+T*
+(recorded and paid amount increased.) Tj
+T*
+(Final create/finalize with due amount | INITIAL_DUE | Journal | Customer receivable) Tj
+T*
+(recorded.) Tj
+T*
+(Later due collection | COLLECTION | Receipt | Payment history row and receipt voucher) Tj
+T*
+(linked.) Tj
+T*
+(Refund | REFUND | Payment | Refund shown in payment history/report and linked to voucher.) Tj
+T*
+(Cancel final invoice | REVERSAL | Journal/related reversal | Active invoice postings) Tj
+T*
+(reversed and invoice marked cancelled.) Tj
+T*
+() Tj
+T*
+(7. Status Flow) Tj
+T*
+(==============) Tj
+T*
+(DRAFT -> finalized to DUE/PARTIALLY_PAID/PAID depending on payment. DUE/PARTIALLY_PAID can) Tj
+T*
+(become PAID after collections or recalculation. Final invoices can be CANCELLED with) Tj
+T*
+(reversal. CANCELLED invoices can be restored to DRAFT. OVERDUE is used when due date passes) Tj
+T*
+(while due amount remains.) Tj
+T*
+() Tj
+T*
+(8. Page Behavior Rules) Tj
+T*
+ET
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Parent 8 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 3 0 R >>
+endobj
+5 0 obj
+<< /Length 2508 >>
+stream
+BT
+/F1 10 Tf
+50 760 Td
+14 TL
+(======================) Tj
+T*
+( - View Invoice keeps Edit Invoice, Cancel Invoice, Print, PDF, and Back buttons.) Tj
+T*
+(- Collect due payment, refund form, and payment history action/edit controls belong to Edit) Tj
+T*
+(Invoice page.) Tj
+T*
+( - Payment history itself appears in View Invoice above Related Vouchers.) Tj
+T*
+( - Full paid invoice Edit button is disabled instead of hidden.) Tj
+T*
+( - Print/PDF buttons are removed from invoice list actions.) Tj
+T*
+() Tj
+T*
+(9. Validation Rules) Tj
+T*
+(===================) Tj
+T*
+( - customerId and branchId are required positive integers.) Tj
+T*
+( - At least one invoice item is required.) Tj
+T*
+( - Quantity must be a whole number and minimum 1.) Tj
+T*
+(- Payment/refund amount must be greater than 0 and cannot exceed applicable business limits.) Tj
+T*
+( - Draft payment collection and draft refund are blocked until finalization.) Tj
+T*
+() Tj
+T*
+(10. Permission Matrix) Tj
+T*
+(=====================) Tj
+T*
+() Tj
+T*
+(Action | Permission | Notes) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(Create invoice/save draft | Invoice create | Also requires branch create permission.) Tj
+T*
+(View list/detail/report | Invoice read | Also requires branch read permission for) Tj
+T*
+(list/report.) Tj
+T*
+(Edit/finalize/cancel/restore/payment/refund | Invoice update | Mutating operations require) Tj
+T*
+(branch permission.) Tj
+T*
+(Delete draft/cancelled | Invoice delete | Should be assigned carefully beyond SuperAdmin.) Tj
+T*
+() Tj
+T*
+(11. QA Checklist) Tj
+T*
+(================) Tj
+T*
+( - Create invoice with unpaid, partial paid, and full paid examples.) Tj
+T*
+( - Save draft and confirm no vouchers are created until finalization.) Tj
+T*
+( - Collect multiple payments on different dates and verify history/report.) Tj
+T*
+( - Refund and verify summary report refund total and payment history.) Tj
+T*
+( - Edit item rate/quantity after partial payment and verify paid/due/status recalculation.) Tj
+T*
+( - Cancel final invoice and verify reversal vouchers and audit logs.) Tj
+T*
+( - Check list responsiveness on small mobile/laptop screens.) Tj
+T*
+() Tj
+T*
+(12. Deployment Notes) Tj
+T*
+(====================) Tj
+T*
+( - Apply invoice database migrations before enabling invoice routes in production.) Tj
+T*
+( - Sync Invoice permissions and assign required roles.) Tj
+T*
+( - Do not modify Docker/deployment files without explicit approval from the project owner.) Tj
+T*
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 8 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+8 0 obj
+<< /Type /Pages /Kids [ 2 0 R 4 0 R 6 0 R ] /Count 3 >>
+endobj
+9 0 obj
+<< /Type /Catalog /Pages 8 0 R >>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000002561 00000 n 
+0000002687 00000 n 
+0000005430 00000 n 
+0000005556 00000 n 
+0000008116 00000 n 
+0000008242 00000 n 
+0000008312 00000 n 
+0000008383 00000 n 
+trailer
+<< /Size 10 /Root 9 0 R >>
+startxref
+8432
+%%EOF

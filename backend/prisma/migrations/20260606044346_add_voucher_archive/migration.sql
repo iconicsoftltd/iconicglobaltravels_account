@@ -1,0 +1,2 @@
+ALTER TABLE `voucher` ADD COLUMN `archivedAt` DATETIME(3) NULL,
+ADD COLUMN `isArchived` BOOLEAN NOT NULL DEFAULT false;

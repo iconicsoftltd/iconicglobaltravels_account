@@ -1,0 +1,316 @@
+%PDF-1.4
+1 0 obj
+<< /Length 2578 >>
+stream
+BT
+/F1 10 Tf
+50 760 Td
+14 TL
+(SOFTWARE REQUIREMENTS ANALYSIS \(SRA\)) Tj
+T*
+() Tj
+T*
+(Invoice Management Module - Iconic Hishab Accounting Software) Tj
+T*
+() Tj
+T*
+(Prepared date: 14-Sep-2026) Tj
+T*
+(Version: 1.0) Tj
+T*
+(Analysis basis: implemented invoice module source, current UI feedback, and accounting) Tj
+T*
+(workflow requirements.) Tj
+T*
+() Tj
+T*
+(1. Executive Summary) Tj
+T*
+(====================) Tj
+T*
+(The invoice module is a branch-aware accounting workflow that turns customer billing) Tj
+T*
+(activity into controlled accounting vouchers. The main business challenge is preserving) Tj
+T*
+(audit history while allowing practical edits to invoice items and payments. Invoice item) Tj
+T*
+(edits should be recalculation events; payment/refund events should remain independent) Tj
+T*
+(history entries linked to vouchers.) Tj
+T*
+() Tj
+T*
+(2. Stakeholder Needs) Tj
+T*
+(====================) Tj
+T*
+() Tj
+T*
+(Stakeholder | Need | Module Response) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(Business owner | Accurate customer invoice and due tracking | List, detail, due status,) Tj
+T*
+(payment history, and summary report.) Tj
+T*
+(Accounts user | Collect partial payments later without losing previous records | Date-wise) Tj
+T*
+(payment history and receipt vouchers.) Tj
+T*
+(Manager/Auditor | Trace every financial change | Voucher links and invoice audit logs.) Tj
+T*
+(Admin | Control role access | Invoice module permissions: create/read/update/delete.) Tj
+T*
+(Mobile/laptop user | Usable list screen on small devices | Responsive table/card layout with) Tj
+T*
+(horizontal overflow protection.) Tj
+T*
+() Tj
+T*
+(3. Workflow Analysis) Tj
+T*
+(====================) Tj
+T*
+(- Create Invoice: user selects customer from Particular Accounts, enters item details,) Tj
+T*
+(optional initial paid amount, then creates final invoice or saves draft.) Tj
+T*
+(- Draft Flow: draft can be edited and later finalized; vouchers are created only during) Tj
+T*
+(finalization.) Tj
+T*
+(- Final Invoice Edit: item rate/price and quantity can be edited; existing payment history) Tj
+T*
+(stays intact; totals and status are recalculated.) Tj
+T*
+(- Payment Flow: due collection, refund, and payment edit are operational actions on Edit) Tj
+T*
+(Invoice page; View Invoice shows history and related vouchers.) Tj
+T*
+(- Report Flow: Invoice Summary Report aggregates invoice totals, paid, refund, due, and) Tj
+T*
+(status rows by filters.) Tj
+T*
+() Tj
+T*
+(4. Requirement Prioritization) Tj
+T*
+(=============================) Tj
+T*
+ET
+endstream
+endobj
+2 0 obj
+<< /Type /Page /Parent 8 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 1 0 R >>
+endobj
+3 0 obj
+<< /Length 2921 >>
+stream
+BT
+/F1 10 Tf
+50 760 Td
+14 TL
+() Tj
+T*
+(Requirement Area | Priority | Reason) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(Accurate voucher posting | Must Have | Core accounting impact; wrong vouchers affect) Tj
+T*
+(ledgers.) Tj
+T*
+(Payment/refund history | Must Have | Partial payment business flow requires date-wise) Tj
+T*
+(traceability.) Tj
+T*
+(Draft/finalize separation | Must Have | Prevents premature accounting entries.) Tj
+T*
+(Responsive invoice list | Should Have | Operational usability across devices.) Tj
+T*
+(Print/PDF | Should Have | Required for customer-facing invoice/report output.) Tj
+T*
+(Customer create shortcut | Could Have | Improves user efficiency but does not change) Tj
+T*
+(accounting logic.) Tj
+T*
+() Tj
+T*
+(5. Data and Calculation Analysis) Tj
+T*
+(================================) Tj
+T*
+(The module uses Invoice as the master record, InvoiceItem for line-level billing data,) Tj
+T*
+(InvoicePayment for payment/refund history, InvoiceVoucher for accounting posting links, and) Tj
+T*
+(InvoiceAuditLog for traceability. Paid amount should be calculated from non-refund payments) Tj
+T*
+(minus refunds or stored paidAmount synchronized after each event. Due amount equals) Tj
+T*
+(grandTotal minus paidAmount and should not rely on UI-only values.) Tj
+T*
+() Tj
+T*
+(Scenario | Expected Calculation) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(Grand total 10,000; payments 3,000 + 2,000 | Paid 5,000; Due 5,000; Status PARTIALLY_PAID.) Tj
+T*
+(Then item edit makes grand total 5,000 | Paid 5,000; Due 0; Status PAID; payment history) Tj
+T*
+(remains.) Tj
+T*
+(Refund 1,000 after paid 5,000 | Paid/net collected 4,000; refund total 1,000; Due) Tj
+T*
+(recalculated according to grand total.) Tj
+T*
+(Draft saved with initial paid amount | No voucher until finalization; finalization posts) Tj
+T*
+(initial paid/due vouchers.) Tj
+T*
+() Tj
+T*
+(6. Risk Analysis) Tj
+T*
+(================) Tj
+T*
+() Tj
+T*
+(Risk | Impact | Mitigation) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(Invoice total edited below collected amount | Incorrect paid/due state or overpayment |) Tj
+T*
+(Block the update or require refund/adjustment before allowing it.) Tj
+T*
+(Deleting finalized invoice | Audit/report data loss | Restrict delete to Draft and Cancelled) Tj
+T*
+(statuses.) Tj
+T*
+(Voucher reversal not linked | Ledger mismatch | Create InvoiceVoucher records with) Tj
+T*
+(postingType REVERSAL and audit log entries.) Tj
+T*
+(Role missing Invoice permission after deployment | Menu/actions hidden for users | Seed/sync) Tj
+T*
+(Invoice permissions and assign role permissions.) Tj
+T*
+(Small-screen table clipping | User cannot access actions | Use responsive card view or) Tj
+T*
+(horizontal scroll with min-width table.) Tj
+T*
+ET
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Parent 8 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 3 0 R >>
+endobj
+5 0 obj
+<< /Length 1998 >>
+stream
+BT
+/F1 10 Tf
+50 760 Td
+14 TL
+(Production schema not migrated | 500 errors on invoice APIs | Run migration/schema SQL) Tj
+T*
+(before enabling module in production.) Tj
+T*
+() Tj
+T*
+(7. API and Security Analysis) Tj
+T*
+(============================) Tj
+T*
+( - All invoice APIs require JWT verification.) Tj
+T*
+(- Create/update/payment/refund/cancel/delete operations require selected branch and branch) Tj
+T*
+(permission validation.) Tj
+T*
+( - Role permissions map to Module Invoice with create, read, update, and delete actions.) Tj
+T*
+( - The frontend injects selectedBranchId into invoice API requests from local storage.) Tj
+T*
+() Tj
+T*
+(8. UI Placement Analysis) Tj
+T*
+(========================) Tj
+T*
+() Tj
+T*
+(Page | Should Contain | Should Not Contain) Tj
+T*
+(-----------------------------------------------------------------------------------------------) Tj
+T*
+(Invoice List | Search/filter, customer column, item names column, status,) Tj
+T*
+(view/edit/cancel/delete/restore as allowed | Print/PDF buttons.) Tj
+T*
+(View Invoice | Top buttons, read-only items, payment history, related vouchers | Collect due) Tj
+T*
+(payment form, refund form, payment history edit action.) Tj
+T*
+(Edit Invoice | Editable item price/quantity, collect due payment, refund form, payment) Tj
+T*
+(history edit/action | Duplicate read-only report-only blocks that confuse edit workflow.) Tj
+T*
+(Summary Report | Filters, totals, refund total, list rows, print/PDF | Direct mutation) Tj
+T*
+(actions.) Tj
+T*
+() Tj
+T*
+(9. Open Items and Recommendations) Tj
+T*
+(=================================) Tj
+T*
+(- Confirm whether overpayment after invoice total reduction should be blocked or) Tj
+T*
+(automatically create credit/refund workflow.) Tj
+T*
+(- Add automated tests for payment edit, refund report total, draft finalization, and cancel) Tj
+T*
+(reversal.) Tj
+T*
+(- Keep production deployment checklist separate from feature development because Docker) Tj
+T*
+(changes should not be touched without approval.) Tj
+T*
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 8 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+8 0 obj
+<< /Type /Pages /Kids [ 2 0 R 4 0 R 6 0 R ] /Count 3 >>
+endobj
+9 0 obj
+<< /Type /Catalog /Pages 8 0 R >>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000002639 00000 n 
+0000002765 00000 n 
+0000005738 00000 n 
+0000005864 00000 n 
+0000007914 00000 n 
+0000008040 00000 n 
+0000008110 00000 n 
+0000008181 00000 n 
+trailer
+<< /Size 10 /Root 9 0 R >>
+startxref
+8230
+%%EOF

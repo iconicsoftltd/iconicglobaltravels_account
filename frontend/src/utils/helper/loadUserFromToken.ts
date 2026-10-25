@@ -1,7 +1,6 @@
 import { setUser } from "@/components/store/api/user/userSlice";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { appConfiguration } from "@/utils/constant/appConfiguration";
 
 interface DecodedToken {
   id: string;
@@ -15,8 +14,7 @@ interface DecodedToken {
 }
 
 export const loadUserFromToken = async (dispatch: any) => {
-  // const token = Cookies?.get("__accounts_beta__token");
-  const token = Cookies?.get(`${appConfiguration.appCode}token`);
+  const token = Cookies?.get("__accounts_beta__token");
 
   if (token) {
     try {

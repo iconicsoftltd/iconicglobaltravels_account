@@ -36,6 +36,7 @@ import { generateVoucherNo } from "@/utils/helper/randomValueGenerator";
 import {
   focusNextVoucherAmount,
   focusNextVoucherParticular,
+  focusVoucherParticularByIndex,
 } from "@/utils/helper/voucherKeyboardFocus";
 
 import HomeLoader from "@/components/loader/HomeLoader";
@@ -50,6 +51,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectDatePermission } from "@/components/store/store";
 const EditJournalVoucher = () => {
+  const [particularSearch, setParticularSearch] = useState("");
   const { id } = useParams();
   const datePermission = useSelector(selectDatePermission);
   const navigate = useNavigate();
@@ -233,7 +235,15 @@ const EditJournalVoucher = () => {
                   name={`entries.${index}.type`}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="border border-gray-400">
+                      <SelectTrigger
+                        className="border border-gray-400"
+                        onKeyDown={(event) => {
+                          if (event.key === "Tab" && !event.shiftKey) {
+                            event.preventDefault();
+                            focusVoucherParticularByIndex(index);
+                          }
+                        }}
+                      >
                         <SelectValue placeholder="Select one" />
                       </SelectTrigger>
                       <SelectContent>
@@ -265,7 +275,32 @@ const EditJournalVoucher = () => {
                         <SelectValue placeholder={"Select one"} />
                       </SelectTrigger>
                       <SelectContent>
-                        {options?.map((item: any) => (
+                        <div className="p-2">
+                          <Input
+                            data-voucher-search-index={index}
+                            placeholder="Search..."
+                            value={particularSearch}
+                            onChange={(e) => setParticularSearch(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" && !e.currentTarget.dataset.navUsed) {
+                                e.preventDefault();
+                                const firstItem = e.currentTarget.closest("[role=\"listbox\"]")?.querySelector<HTMLElement>("[role=\"option\"]:not([data-disabled])");
+                                firstItem?.click();
+                                return;
+                              }
+                              if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                                e.currentTarget.dataset.navUsed = "true";
+                                return;
+                              }
+                              if (e.key !== "Escape") {
+                                e.stopPropagation();
+                              }
+                            }}
+                          />
+                        </div>
+                        {options?.filter((item: any) =>
+                          String(item?.accountType || "").toLowerCase().includes(particularSearch.toLowerCase())
+                        ).map((item: any) => (
                           <SelectItem key={item.id} value={item.id.toString()}>
                             {item.accountType}
                           </SelectItem>

@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import {  ChevronsUpDown } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaCheck, FaPlus, FaTrashAlt } from "react-icons/fa";
@@ -52,6 +52,7 @@ import { generateVoucherNo } from "@/utils/helper/randomValueGenerator";
 import {
   focusNextVoucherAmount,
   focusNextVoucherParticular,
+  focusVoucherParticularByIndex,
 } from "@/utils/helper/voucherKeyboardFocus";
 import { useSelector } from "react-redux";
 import { selectDatePermission } from "@/components/store/store";
@@ -74,9 +75,9 @@ const isAllowedParticular = (item: any) => {
 };
 
 const isCashOrBank = (item: any) => {
-  const accountType = String(item?.accountType || item?.name || "")
-    .trim()
-    .toLowerCase();
+  // const accountType = String(item?.accountType || item?.name || "")
+  //   .trim()
+  //   .toLowerCase();
   const ledgerType = String(item?.ledger?.ledgerType || "")
     .trim()
     .toLowerCase();
@@ -99,6 +100,7 @@ const uniqueCashBankOptions = (items: any[] = []) => {
 };
 
 const CreateReceiptVoucherList = () => {
+  const [particularSearch, setParticularSearch] = useState("");
   const navigate = useNavigate();
   const datePermission = useSelector(selectDatePermission);
 
@@ -249,7 +251,12 @@ const CreateReceiptVoucherList = () => {
                         onValueChange={field.onChange}
                         value={field.value}
                       >
-                        <SelectTrigger>
+                        <SelectTrigger onKeyDown={(event) => {
+                          if (event.key === "Tab" && !event.shiftKey) {
+                            event.preventDefault();
+                            focusVoucherParticularByIndex(index);
+                          }
+                        }}>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -285,11 +292,12 @@ const CreateReceiptVoucherList = () => {
 
                         <PopoverContent className="w-[300px] p-0">
                           <Command>
-                            <CommandInput placeholder="Search..." />
+                            <CommandInput data-voucher-search-index={index} placeholder="Search..." value={particularSearch} onValueChange={setParticularSearch} />
                             <CommandList>
                               <CommandEmpty>No results</CommandEmpty>
-                              <CommandGroup>
-                                {options?.map((item: any) => (
+                              <CommandGroup>{options?.filter((item: any) =>
+                          String(item?.accountType || "").toLowerCase().includes(particularSearch.toLowerCase())
+                        ).map((item: any) => (
                                   <CommandItem
                                     key={item.id}
                                     onSelect={() => {

@@ -29,6 +29,7 @@ import { generateVoucherNo } from "@/utils/helper/randomValueGenerator";
 import {
   focusNextVoucherAmount,
   focusNextVoucherParticular,
+  focusVoucherParticularByIndex,
 } from "@/utils/helper/voucherKeyboardFocus";
 
 import ButtonLoader from "@/components/loader/ButtonLoader";
@@ -216,7 +217,15 @@ const CreateJournalVoucher = () => {
                   name={`entries.${index}.type`}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="border border-gray-400">
+                      <SelectTrigger
+                        className="border border-gray-400"
+                        onKeyDown={(event) => {
+                          if (event.key === "Tab" && !event.shiftKey) {
+                            event.preventDefault();
+                            focusVoucherParticularByIndex(index);
+                          }
+                        }}
+                      >
                         <SelectValue placeholder="Select one" />
                       </SelectTrigger>
                       <SelectContent>
@@ -267,7 +276,21 @@ const CreateJournalVoucher = () => {
                             placeholder="Search..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            onKeyDown={(e) => e.stopPropagation()}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" && !e.currentTarget.dataset.navUsed) {
+                                e.preventDefault();
+                                const firstItem = e.currentTarget.closest("[role=\"listbox\"]")?.querySelector<HTMLElement>("[role=\"option\"]:not([data-disabled])");
+                                firstItem?.click();
+                                return;
+                              }
+                              if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                                e.currentTarget.dataset.navUsed = "true";
+                                return;
+                              }
+                              if (e.key !== "Escape") {
+                                e.stopPropagation();
+                              }
+                            }}
                           />
                         </div>
                         {accountsLoading && (

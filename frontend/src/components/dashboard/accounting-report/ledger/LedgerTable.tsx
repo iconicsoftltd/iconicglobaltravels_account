@@ -1,5 +1,5 @@
 import { LedgerData } from "@/pages/dashboard/acountingReport/LedgerReportPage";
-import { toFixedAmount } from "@/utils/formatter";
+import { formatCurrency, toFixedAmount } from "@/utils/formatter";
 import dayjs from "dayjs";
 // Import the common helper
 
@@ -93,11 +93,11 @@ export default function LedgerTable({ account }: { account: LedgerData }) {
               <td className="px-4 py-4"></td>
               {/* <td className="px-4 py-4 text-right font-bold text-rose-400 border-t border-white/20"> */}
               <td className="px-4 py-4 text-right font-bold  border-t border-white/20">
-                {toFixedAmount(account.summary.totalDebit)}
+                {formatCurrency(account.summary.totalDebit)}
               </td>
               {/* <td className="px-4 py-4 text-right font-bold text-emerald-400 border-t border-white/20"> */}
               <td className="px-4 py-4 text-right font-bold  border-t border-white/20">
-                {toFixedAmount(account.summary.totalCredit)}
+                {formatCurrency(account.summary.totalCredit)}
               </td>
               <td className="px-4 py-4 text-right font-black text-secondary text-sm">
                 {account.summary.closingBalance.balanceType === "Dr" ? toFixedAmount(account.summary.closingBalance.balance) : ""}

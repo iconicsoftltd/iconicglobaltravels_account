@@ -1,5 +1,6 @@
 import Heading from "@/components/typography/Heading";
 import { dateFormatter } from "@/utils/helper/dateFormatter";
+import { formatCurrency } from "@/utils/formatter";
 
 export interface LedgerRow {
   date: string;
@@ -57,16 +58,16 @@ const CashInHandTable = ({ data, tableTitle }: { data: LedgerReportResponse, tab
                 {row.voucherNo}
               </td>
               <td className="border border-slate-400 px-4 py-1.5 text-right font-medium">
-                {row.debit}
+                {formatCurrency(row.debit)}
               </td>
               <td className="border border-slate-400 px-4 py-1.5 text-right font-medium">
-                {row.credit}
+                {formatCurrency(row.credit)}
               </td>
               <td className="border border-slate-400 px-4 py-1.5 text-right font-medium">
-                {row.balanceDebit}
+                {formatCurrency(row.balanceDebit)}
               </td>
               <td className="border border-slate-400 px-4 py-1.5 text-right">
-                {row.balanceCredit}
+                {formatCurrency(row.balanceCredit)}
               </td>
             </tr>
           ))}
@@ -92,7 +93,7 @@ const CashInHandTable = ({ data, tableTitle }: { data: LedgerReportResponse, tab
             <td className="border border-slate-400 px-4 py-1.5"></td>
             <td className="border border-slate-400 px-4 py-1.5"></td>
             <td className="border border-slate-400 px-4 py-1.5 text-right font-bold">
-              {data?.summary?.totalBalanceDebit}
+              {formatCurrency(data?.summary?.totalBalanceDebit)}
             </td>
             <td className="border border-slate-400 px-4 py-1.5"></td>
           </tr>

@@ -58,7 +58,7 @@ const isCashOrBank = (item: any) => {
     .trim()
     .toLowerCase();
 
-  return ["cash", "bank"].includes(accountType) && ["cash", "bank"].includes(ledgerType);
+  return ["cash", "bank", "bkash", "nagad"].includes(ledgerType);
 };
 
 const uniqueCashBankOptions = (items: any[] = []) => {

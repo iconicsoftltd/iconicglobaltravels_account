@@ -31,7 +31,6 @@ export default function TrialBalancePage() {
   const [selectedLedger, setSelectedLedger] = useState<SelectedLedger | null>(null);
 
   const currentCurrency = useSelector(selectCurrentCurrency);
-  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
   const { data: trialBalanceData, isLoading, isError } = useFetchTrialBalanceQuery(queryParams);
 
   const handleSearch = ({ reportType, fromDate, toDate, month, year }: any) => {

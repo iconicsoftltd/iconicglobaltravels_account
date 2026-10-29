@@ -66,7 +66,6 @@ export default function LedgerReportPage() {
   const { data, isLoading, isError } = useGetLedgerReportQuery(queryParams);
 
   const currentCurrency = useSelector(selectCurrentCurrency);
-  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   /* ===================== Search Handler ===================== */
   const handleSearch = ({

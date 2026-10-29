@@ -54,13 +54,13 @@ const PurchaseSummaryReport = () => {
       accessorKey: "valueExcl",
       header: "Value (Excl.)",
       cell: ({ row }) => (row.original.valueExcl ?? 0).toFixed(2),
-      footer: () => report?.data?.totals?.totalValueExcl?.toFixed(2),
+      footer: () => `${currentCurrency?.name || "BDT"} ${report?.data?.totals?.totalValueExcl?.toFixed(2)}`,
     },
     {
       accessorKey: "vatPaid",
       header: "VAT Paid",
       cell: ({ row }) => (row.original.vatPaid ?? 0).toFixed(2),
-      footer: () => report?.data?.totals?.totalVatPaid?.toFixed(2),
+      footer: () => `${currentCurrency?.name || "BDT"} ${report?.data?.totals?.totalVatPaid?.toFixed(2)}`,
     },
     {
       accessorKey: "reclaimable",

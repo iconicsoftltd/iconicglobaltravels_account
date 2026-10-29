@@ -28,10 +28,11 @@ export const formatAccounting = (
 export const formatWithDrCr = (
   value: unknown,
   side?: "Dr" | "Cr",
+  currency?: string,
 ) => {
   const amount = Number(value ?? 0);
   const resolvedSide = side ?? (amount < 0 ? "Cr" : "Dr");
-  return `${formatAccounting(amount)} ${resolvedSide}`;
+  return `${currency ? `${currency} ` : ""}${formatAccounting(amount)} ${resolvedSide}`;
 };
 
 export default formatAccounting;

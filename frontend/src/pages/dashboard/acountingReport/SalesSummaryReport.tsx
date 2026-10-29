@@ -55,7 +55,7 @@ const SalesSummaryReport = () => {
       accessorKey: "valueExcl",
       header: "Value (Excl.)",
       cell: ({ row }) => (row?.original?.valueExcl ?? 0).toFixed(2),
-      footer: () => report?.data?.totals?.totalValueExcl?.toFixed(2),
+      footer: () => `${currentCurrency?.name || "BDT"} ${report?.data?.totals?.totalValueExcl?.toFixed(2)}`,
     },
     {
       accessorKey: "vatRate",
@@ -66,13 +66,13 @@ const SalesSummaryReport = () => {
       accessorKey: "vatAmount",
       header: "VAT Amount",
       cell: ({ row }) => (row?.original?.vatAmount ?? 0).toFixed(2),
-      footer: () => report?.data?.totals?.totalVatAmount?.toFixed(2),
+      footer: () => `${currentCurrency?.name || "BDT"} ${report?.data?.totals?.totalVatAmount?.toFixed(2)}`,
     },
     {
       accessorKey: "sd",
       header: "SD (Supplementary Duty)",
       cell: ({ row }) => (row?.original?.sd ?? 0).toFixed(2),
-      footer: () => report?.data?.totals?.totalSD?.toFixed(2),
+      footer: () => `${currentCurrency?.name || "BDT"} ${report?.data?.totals?.totalSD?.toFixed(2)}`,
     },
   ];
 

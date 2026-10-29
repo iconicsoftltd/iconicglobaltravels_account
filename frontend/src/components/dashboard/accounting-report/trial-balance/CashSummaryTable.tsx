@@ -1,3 +1,5 @@
+import { formatCurrency } from "@/utils/formatter";
+
 import {
   Table,
   TableBody,
@@ -104,8 +106,8 @@ export default function CashSummaryTable({ data, onAccountClick }: Props) {
             <TableCell></TableCell>
             <TableCell className="font-black uppercase tracking-tighter text-sm">Trial Balance Totals</TableCell>
             <TableCell></TableCell>
-            <TableCell className="text-right font-black text-emerald-400 text-base">{format(data.totals.debit)}</TableCell>
-            <TableCell className="text-right font-black text-emerald-400 text-base">{format(data.totals.credit)}</TableCell>
+            <TableCell className="text-right font-black text-emerald-400 text-base">{formatCurrency(data.totals.debit)}</TableCell>
+            <TableCell className="text-right font-black text-emerald-400 text-base">{formatCurrency(data.totals.credit)}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

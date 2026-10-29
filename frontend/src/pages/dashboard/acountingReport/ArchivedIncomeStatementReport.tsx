@@ -94,7 +94,7 @@ const ArchivedIncomeStatementReport = () => {
             ))}
             <div className="flex justify-between font-semibold border-t pt-2">
               <span>Total Revenue</span>
-              <span>{report.totalRevenue?.toFixed(2)}</span>
+              <span>{currentCurrency?.name} {report.totalRevenue?.toFixed(2)}</span>
             </div>
           </div>
 
@@ -109,7 +109,7 @@ const ArchivedIncomeStatementReport = () => {
             ))}
             <div className="flex justify-between font-semibold border-t pt-2">
               <span>Total Expense</span>
-              <span>{report.totalExpense?.toFixed(2)}</span>
+              <span>{currentCurrency?.name} {report.totalExpense?.toFixed(2)}</span>
             </div>
           </div>
 

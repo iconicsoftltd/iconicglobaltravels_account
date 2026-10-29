@@ -169,7 +169,7 @@ const IncomeStatementReport = () => {
                   <td colSpan={2} className="px-6 py-4"></td>
                   {/* <td className="px-6 py-4 text-right font-bold text-emerald-700 text-lg "> */}
                   <td className="px-6 py-4 text-right font-bold  text-lg ">
-                    {formatWithDrCr(report.totalRevenue,report.totalRevenue >=0?"Dr": "Cr")}
+                    {formatWithDrCr(report.totalRevenue,report.totalRevenue >=0?"Dr": "Cr", currentCurrency?.name)}
                   </td>
                 </tr>
 
@@ -201,7 +201,7 @@ const IncomeStatementReport = () => {
   <td className="px-6 py-4 font-bold text-zinc-900">Total COGS</td>
   <td colSpan={2} className="px-6 py-4"></td>
   <td className="px-6 py-4 text-right font-bold text-lg">
-    {formatWithDrCr(report.totalCogs, "Dr")}
+    {formatWithDrCr(report.totalCogs, "Dr", currentCurrency?.name)}
   </td>
 </tr>
 
@@ -212,7 +212,7 @@ const IncomeStatementReport = () => {
   <td className="px-6 py-4 font-bold text-blue-800 text-base">Gross Profit</td>
   <td colSpan={2} className="px-6 py-4"></td>
   <td className={`px-6 py-4 text-right font-bold text-lg ${report.grossProfit >= 0 ? "text-secondary" : "text-rose-500"}`}>
-    {formatWithDrCr(report.grossProfit)}
+    {formatWithDrCr(report.grossProfit, undefined, currentCurrency?.name)}
   </td>
 </tr> */}
 
@@ -243,7 +243,7 @@ const IncomeStatementReport = () => {
                   <td colSpan={2} className="px-4 py-4"></td>
                   {/* <td className="px-4 py-4 text-right font-bold text-rose-700 text-lg "> */}
                   <td className="px-4 py-4 text-right font-bold  text-lg ">
-                    {formatWithDrCr(report.totalExpense, "Dr")}
+                    {formatWithDrCr(report.totalExpense, "Dr", currentCurrency?.name)}
                   </td>
                 </tr>
 
@@ -254,7 +254,7 @@ const IncomeStatementReport = () => {
                   </td>
                   <td colSpan={2} className="px-4 py-4"></td>
                   <td className={`px-4 py-4 text-right font-black text-2xl ${report.netIncome < 0 ? "text-rose-500" : "text-secondary"}`}>
-                    {formatWithDrCr(report.netIncome)}
+                    {formatWithDrCr(report.netIncome, undefined, currentCurrency?.name)}
                   </td>
                 </tr>
               </tbody>

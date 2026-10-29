@@ -58,16 +58,16 @@ const CashInHandTable = ({ data, tableTitle }: { data: LedgerReportResponse, tab
                 {row.voucherNo}
               </td>
               <td className="border border-slate-400 px-4 py-1.5 text-right font-medium">
-                {formatCurrency(row.debit)}
+                {row.debit}
               </td>
               <td className="border border-slate-400 px-4 py-1.5 text-right font-medium">
-                {formatCurrency(row.credit)}
+                {row.credit}
               </td>
               <td className="border border-slate-400 px-4 py-1.5 text-right font-medium">
-                {formatCurrency(row.balanceDebit)}
+                {row.balanceDebit}
               </td>
               <td className="border border-slate-400 px-4 py-1.5 text-right">
-                {formatCurrency(row.balanceCredit)}
+                {row.balanceCredit}
               </td>
             </tr>
           ))}

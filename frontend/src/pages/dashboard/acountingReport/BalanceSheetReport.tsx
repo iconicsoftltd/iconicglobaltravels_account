@@ -165,7 +165,7 @@ const BalanceSheetReport = () => {
                   <td className="px-6 py-4 font-black text-emerald-900 text-lg uppercase tracking-tight">TOTAL ASSETS</td>
                   <td colSpan={2}></td>
                   <td className="px-6 py-4 text-right font-black text-emerald-700 text-xl">
-                    {formatWithDrCr(report.totalAssets, report.totalAssets >= 0 ? "Dr" : "Cr")}
+                    {formatWithDrCr(report.totalAssets, report.totalAssets >= 0 ? "Dr" : "Cr", currentCurrency?.name)}
                   </td>
                 </tr>
 
@@ -209,7 +209,7 @@ const BalanceSheetReport = () => {
                   <td className="px-6 py-3 text-zinc-700 font-medium">Owner's Equity</td>
                   <td className="px-6 py-3 text-zinc-500 italic">Equity Balance</td>
                   <td className="px-6 py-3 text-right font-semibold text-zinc-600">
-                    {formatWithDrCr(report.ownerSecurity, "Cr")}
+                    {formatWithDrCr(report.ownerSecurity, "Cr", currentCurrency?.name)}
                   </td>
                   <td className="px-6 py-3 text-right"></td>
                 </tr>
@@ -218,7 +218,7 @@ const BalanceSheetReport = () => {
                   <td className="px-4 py-2 font-bold text-lg uppercase tracking-tight">TOTAL LIABILITIES & EQUITY</td>
                   <td colSpan={2}></td>
                   <td className="px-4 py-2 text-right font-black text-2xl text-secondary">
-                    {formatWithDrCr(report.totalLiabilitiesAndEquity, "Cr")}
+                    {formatWithDrCr(report.totalLiabilitiesAndEquity, "Cr", currentCurrency?.name)}
                   </td>
                 </tr>
               </tbody>

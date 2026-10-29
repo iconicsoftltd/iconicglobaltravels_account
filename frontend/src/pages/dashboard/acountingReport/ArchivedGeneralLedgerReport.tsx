@@ -110,7 +110,7 @@ const ArchivedGeneralLedgerReport = () => {
       cell: ({ row }) => row.original.debit?.toFixed(2),
       footer: () => (
         <span className="font-semibold">
-          {report?.totals?.totalDebit?.toFixed(2) ?? "0.00"}
+          {currentCurrency?.name} {report?.totals?.totalDebit?.toFixed(2) ?? "0.00"}
         </span>
       ),
     },
@@ -120,7 +120,7 @@ const ArchivedGeneralLedgerReport = () => {
       cell: ({ row }) => row.original.credit?.toFixed(2),
       footer: () => (
         <span className="font-semibold">
-          {report?.totals?.totalCredit?.toFixed(2) ?? "0.00"}
+          {currentCurrency?.name} {report?.totals?.totalCredit?.toFixed(2) ?? "0.00"}
         </span>
       ),
     },

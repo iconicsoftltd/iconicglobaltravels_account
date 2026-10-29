@@ -100,10 +100,10 @@ export default function LedgerTable({ account }: { account: LedgerData }) {
                 {formatCurrency(account.summary.totalCredit)}
               </td>
               <td className="px-4 py-4 text-right font-black text-secondary text-sm">
-                {account.summary.closingBalance.balanceType === "Dr" ? toFixedAmount(account.summary.closingBalance.balance) : ""}
+                {account.summary.closingBalance.balanceType === "Dr" ? formatCurrency(account.summary.closingBalance.balance) : ""}
               </td>
               <td className="px-4 py-4 text-right font-black text-secondary text-sm">
-                {account.summary.closingBalance.balanceType === "Cr" ? toFixedAmount(account.summary.closingBalance.balance) : ""}
+                {account.summary.closingBalance.balanceType === "Cr" ? formatCurrency(account.summary.closingBalance.balance) : ""}
               </td>
             </tr>
           </tbody>

@@ -263,22 +263,22 @@ const TrialBalanceReport = () => {
                         Total Amount
                       </td>
                       <td className="border px-2 py-2 text-right">
-                        {groupTotal.openingDebit.toLocaleString()}
+                        {currentCurrency?.name} {groupTotal.openingDebit.toLocaleString()}
                       </td>
                       <td className="border px-2 py-2 text-right">
-                        {groupTotal.openingCredit.toLocaleString()}
+                        {currentCurrency?.name} {groupTotal.openingCredit.toLocaleString()}
                       </td>
                       <td className="border px-2 py-2 text-right">
-                        {groupTotal.trxDebit.toLocaleString()}
+                        {currentCurrency?.name} {groupTotal.trxDebit.toLocaleString()}
                       </td>
                       <td className="border px-2 py-2 text-right">
-                        {groupTotal.trxCredit.toLocaleString()}
+                        {currentCurrency?.name} {groupTotal.trxCredit.toLocaleString()}
                       </td>
                       <td className="border px-2 py-2 text-right">
-                        {groupTotal.closingDebit.toLocaleString()}
+                        {currentCurrency?.name} {groupTotal.closingDebit.toLocaleString()}
                       </td>
                       <td className="border px-2 py-2 text-right">
-                        {groupTotal.closingCredit.toLocaleString()}
+                        {currentCurrency?.name} {groupTotal.closingCredit.toLocaleString()}
                       </td>
                     </tr>
                   </>
@@ -291,22 +291,22 @@ const TrialBalanceReport = () => {
                   Grand Total Amount
                 </td>
                 <td className="border px-2 py-3 text-right">
-                  {grandTotal.openingDebit.toLocaleString()}
+                  {currentCurrency?.name} {grandTotal.openingDebit.toLocaleString()}
                 </td>
                 <td className="border px-2 py-3 text-right">
-                  {grandTotal.openingCredit.toLocaleString()}
+                  {currentCurrency?.name} {grandTotal.openingCredit.toLocaleString()}
                 </td>
                 <td className="border px-2 py-3 text-right">
-                  {grandTotal.trxDebit.toLocaleString()}
+                  {currentCurrency?.name} {grandTotal.trxDebit.toLocaleString()}
                 </td>
                 <td className="border px-2 py-3 text-right">
-                  {grandTotal.trxCredit.toLocaleString()}
+                  {currentCurrency?.name} {grandTotal.trxCredit.toLocaleString()}
                 </td>
                 <td className="border px-2 py-3 text-right">
-                  {grandTotal.closingDebit.toLocaleString()}
+                  {currentCurrency?.name} {grandTotal.closingDebit.toLocaleString()}
                 </td>
                 <td className="border px-2 py-3 text-right">
-                  {grandTotal.closingCredit.toLocaleString()}
+                  {currentCurrency?.name} {grandTotal.closingCredit.toLocaleString()}
                 </td>
               </tr>
             </tbody>

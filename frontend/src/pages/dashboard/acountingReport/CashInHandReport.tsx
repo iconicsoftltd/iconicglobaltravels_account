@@ -153,17 +153,17 @@ const CashInHandReport = () => {
                     </td>
                     {/* <td className="px-4 py-3 text-right text-emerald-600 font-semibold italic"> */}
                     <td className="px-4 py-3 text-right  font-semibold italic">
-                      {row.debit ? formatCashAmount(row.debit) : "-"}
+                      {row.debit || "-"}
                     </td>
                     {/* <td className="px-4 py-3 text-right text-rose-600 font-semibold italic"> */}
                     <td className="px-4 py-3 text-right  font-semibold italic">
-                      {row.credit ? formatCashAmount(row.credit) : "-"}
+                      {row.credit || "-"}
                     </td>
                     <td className="px-4 py-3 text-right bg-zinc-50/50 text-zinc-800 font-bold group-hover:bg-transparent">
-                      {formatCashAmount(row.balanceDebit)}
+                      {row.balanceDebit}
                     </td>
                     <td className="px-4 py-3 text-right text-zinc-500 italic">
-                      {formatCashAmount(row.balanceCredit)}
+                      {row.balanceCredit}
                     </td>
                   </tr>
                 ))

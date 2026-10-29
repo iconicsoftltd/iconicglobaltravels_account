@@ -37,6 +37,7 @@ const ArchivedGeneralLedgerReport = () => {
   const [queryParams, setQueryParams] = useState({ fromDate, toDate });
 
   const currentCurrency = useSelector(selectCurrentCurrency);
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const handleSearch = ({ reportType, fromDate, toDate, month, year }) => {
     let _fromDate = "";
@@ -110,7 +111,7 @@ const ArchivedGeneralLedgerReport = () => {
       cell: ({ row }) => row.original.debit?.toFixed(2),
       footer: () => (
         <span className="font-semibold">
-          {currentCurrency?.name} {report?.totals?.totalDebit?.toFixed(2) ?? "0.00"}
+          {currencyLabel} {report?.totals?.totalDebit?.toFixed(2) ?? "0.00"}
         </span>
       ),
     },
@@ -120,7 +121,7 @@ const ArchivedGeneralLedgerReport = () => {
       cell: ({ row }) => row.original.credit?.toFixed(2),
       footer: () => (
         <span className="font-semibold">
-          {currentCurrency?.name} {report?.totals?.totalCredit?.toFixed(2) ?? "0.00"}
+          {currencyLabel} {report?.totals?.totalCredit?.toFixed(2) ?? "0.00"}
         </span>
       ),
     },
@@ -180,7 +181,7 @@ const ArchivedGeneralLedgerReport = () => {
               </span>
               <div className="flex items-baseline gap-2">
                 <span className="text-zinc-600 font-medium text-xs">
-                  {currentCurrency?.name}
+                  {currencyLabel}
                 </span>
                 <span className="text-xl font-black text-zinc-900">
                   {Math.abs(report.balance).toLocaleString(undefined, {

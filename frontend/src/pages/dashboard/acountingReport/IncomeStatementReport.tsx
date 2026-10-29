@@ -34,6 +34,7 @@ const IncomeStatementReport = () => {
   const [selectedLedger, setSelectedLedger] = useState<SelectedLedger | null>(null);
 
   const currentCurrency = useSelector(selectCurrentCurrency);
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const handleSearch = ({ reportType, fromDate, toDate, month, year }: any) => {
     let _fromDate = "";
@@ -136,10 +137,10 @@ const IncomeStatementReport = () => {
                     Classification
                   </th>
                   <th className="px-6 py-4 font-semibold text-right uppercase tracking-wider text-[11px] border-r border-white/10">
-                    Amount ({currentCurrency?.name})
+                    Amount ({currencyLabel})
                   </th>
                   <th className="px-6 py-4 font-semibold text-right uppercase tracking-wider text-[11px]">
-                    Subtotal ({currentCurrency?.name})
+                    Subtotal ({currencyLabel})
                   </th>
                 </tr>
               </thead>
@@ -169,7 +170,7 @@ const IncomeStatementReport = () => {
                   <td colSpan={2} className="px-6 py-4"></td>
                   {/* <td className="px-6 py-4 text-right font-bold text-emerald-700 text-lg "> */}
                   <td className="px-6 py-4 text-right font-bold  text-lg ">
-                    {formatWithDrCr(report.totalRevenue,report.totalRevenue >=0?"Dr": "Cr", currentCurrency?.name)}
+                    {formatWithDrCr(report.totalRevenue,report.totalRevenue >=0?"Dr": "Cr", currencyLabel)}
                   </td>
                 </tr>
 
@@ -201,7 +202,7 @@ const IncomeStatementReport = () => {
   <td className="px-6 py-4 font-bold text-zinc-900">Total COGS</td>
   <td colSpan={2} className="px-6 py-4"></td>
   <td className="px-6 py-4 text-right font-bold text-lg">
-    {formatWithDrCr(report.totalCogs, "Dr", currentCurrency?.name)}
+    {formatWithDrCr(report.totalCogs, "Dr", currencyLabel)}
   </td>
 </tr>
 
@@ -212,7 +213,7 @@ const IncomeStatementReport = () => {
   <td className="px-6 py-4 font-bold text-blue-800 text-base">Gross Profit</td>
   <td colSpan={2} className="px-6 py-4"></td>
   <td className={`px-6 py-4 text-right font-bold text-lg ${report.grossProfit >= 0 ? "text-secondary" : "text-rose-500"}`}>
-    {formatWithDrCr(report.grossProfit, undefined, currentCurrency?.name)}
+    {formatWithDrCr(report.grossProfit, undefined, currencyLabel)}
   </td>
 </tr> */}
 
@@ -243,7 +244,7 @@ const IncomeStatementReport = () => {
                   <td colSpan={2} className="px-4 py-4"></td>
                   {/* <td className="px-4 py-4 text-right font-bold text-rose-700 text-lg "> */}
                   <td className="px-4 py-4 text-right font-bold  text-lg ">
-                    {formatWithDrCr(report.totalExpense, "Dr", currentCurrency?.name)}
+                    {formatWithDrCr(report.totalExpense, "Dr", currencyLabel)}
                   </td>
                 </tr>
 
@@ -254,7 +255,7 @@ const IncomeStatementReport = () => {
                   </td>
                   <td colSpan={2} className="px-4 py-4"></td>
                   <td className={`px-4 py-4 text-right font-black text-2xl ${report.netIncome < 0 ? "text-rose-500" : "text-secondary"}`}>
-                    {formatWithDrCr(report.netIncome, undefined, currentCurrency?.name)}
+                    {formatWithDrCr(report.netIncome, undefined, currencyLabel)}
                   </td>
                 </tr>
               </tbody>

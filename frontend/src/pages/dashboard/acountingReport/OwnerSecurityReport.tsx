@@ -34,6 +34,7 @@ const OwnerSecurityReport = () => {
   const [selectedLedger, setSelectedLedger] = useState<SelectedLedger | null>(null);
 
   const currentCurrency = useSelector(selectCurrentCurrency);
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const handleSearch = ({ reportType, fromDate, toDate, month, year }: any) => {
     let _fromDate = "";
@@ -131,8 +132,8 @@ const OwnerSecurityReport = () => {
                 <tr className="bg-primary text-white">
                   <th className="px-6 py-4 font-semibold text-left uppercase tracking-wider text-[11px] border-r border-white/10 w-2/5">Account Name</th>
                   <th className="px-6 py-4 font-semibold text-left uppercase tracking-wider text-[11px] border-r border-white/10">Classification</th>
-                  <th className="px-6 py-4 font-semibold text-right uppercase tracking-wider text-[11px] border-r border-white/10">Amount ({currentCurrency?.name})</th>
-                  <th className="px-6 py-4 font-semibold text-right uppercase tracking-wider text-[11px]">Subtotal ({currentCurrency?.name})</th>
+                  <th className="px-6 py-4 font-semibold text-right uppercase tracking-wider text-[11px] border-r border-white/10">Amount ({currencyLabel})</th>
+                  <th className="px-6 py-4 font-semibold text-right uppercase tracking-wider text-[11px]">Subtotal ({currencyLabel})</th>
                 </tr>
               </thead>
 

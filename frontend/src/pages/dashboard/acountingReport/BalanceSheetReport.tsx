@@ -32,6 +32,7 @@ const BalanceSheetReport = () => {
   const [selectedLedger, setSelectedLedger] = useState<SelectedLedger | null>(null);
 
   const currentCurrency = useSelector(selectCurrentCurrency);
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const handleSearch = ({ reportType, fromDate, toDate, month, year }: any) => {
     let _fromDate = "";
@@ -129,7 +130,7 @@ const BalanceSheetReport = () => {
                   <th className="px-6 py-4 font-semibold text-left uppercase tracking-wider text-[11px] border-r border-white/10 w-2/5">Account</th>
                   <th className="px-6 py-4 font-semibold text-left uppercase tracking-wider text-[11px] border-r border-white/10">Classification</th>
                   <th className="px-6 py-4 font-semibold text-right uppercase tracking-wider text-[11px] border-r border-white/10">Amount</th>
-                  <th className="px-6 py-4 font-semibold text-right uppercase tracking-wider text-[11px]">Subtotal ({currentCurrency?.name})</th>
+                  <th className="px-6 py-4 font-semibold text-right uppercase tracking-wider text-[11px]">Subtotal ({currencyLabel})</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
@@ -165,7 +166,7 @@ const BalanceSheetReport = () => {
                   <td className="px-6 py-4 font-black text-emerald-900 text-lg uppercase tracking-tight">TOTAL ASSETS</td>
                   <td colSpan={2}></td>
                   <td className="px-6 py-4 text-right font-black text-emerald-700 text-xl">
-                    {formatWithDrCr(report.totalAssets, report.totalAssets >= 0 ? "Dr" : "Cr", currentCurrency?.name)}
+                    {formatWithDrCr(report.totalAssets, report.totalAssets >= 0 ? "Dr" : "Cr", currencyLabel)}
                   </td>
                 </tr>
 
@@ -209,7 +210,7 @@ const BalanceSheetReport = () => {
                   <td className="px-6 py-3 text-zinc-700 font-medium">Owner's Equity</td>
                   <td className="px-6 py-3 text-zinc-500 italic">Equity Balance</td>
                   <td className="px-6 py-3 text-right font-semibold text-zinc-600">
-                    {formatWithDrCr(report.ownerSecurity, "Cr", currentCurrency?.name)}
+                    {formatWithDrCr(report.ownerSecurity, "Cr", currencyLabel)}
                   </td>
                   <td className="px-6 py-3 text-right"></td>
                 </tr>
@@ -218,7 +219,7 @@ const BalanceSheetReport = () => {
                   <td className="px-4 py-2 font-bold text-lg uppercase tracking-tight">TOTAL LIABILITIES & EQUITY</td>
                   <td colSpan={2}></td>
                   <td className="px-4 py-2 text-right font-black text-2xl text-secondary">
-                    {formatWithDrCr(report.totalLiabilitiesAndEquity, "Cr", currentCurrency?.name)}
+                    {formatWithDrCr(report.totalLiabilitiesAndEquity, "Cr", currencyLabel)}
                   </td>
                 </tr>
               </tbody>

@@ -52,6 +52,7 @@ const ProfitLossReport = () => {
   const [selectedLedger, setSelectedLedger] = useState<SelectedLedger | null>(null);
 
   const currentCurrency = useSelector(selectCurrentCurrency);
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const handleSearch = ({ reportType, fromDate, toDate, month, year }: any) => {
     let _fromDate = "";
@@ -151,63 +152,63 @@ const ProfitLossReport = () => {
             <thead className="bg-primary">
               <tr className="bg-primary text-white">
                 <th className="sticky top-0 z-40 bg-primary px-6 py-4 text-left font-semibold uppercase tracking-wider text-[11px]">Description</th>
-                <th className="sticky top-0 z-40 bg-primary px-6 py-4 text-right font-semibold uppercase tracking-wider text-[11px]">Amount ({currentCurrency?.name})</th>
+                <th className="sticky top-0 z-40 bg-primary px-6 py-4 text-right font-semibold uppercase tracking-wider text-[11px]">Amount ({currencyLabel})</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
               {/* --- Trading Account Section --- */}
               <tr className="hover:bg-zinc-50/50 transition-colors">
                 <td className="px-6 py-4 text-zinc-700 font-medium"><button type="button" onClick={() => setSelectedLedger({ particularId: drilldownIds.totalSales, accountName: "Total Sales Revenue" })} disabled={!drilldownIds.totalSales.length} className="text-left text-sky-700 underline-offset-4 enabled:hover:underline disabled:text-zinc-700">Total Sales Revenue</button></td>
-                {/* <td className="px-6 py-4 text-right font-bold text-emerald-600">{formatWithDrCr(report.totalSales, "Cr", currentCurrency?.name)}</td> */}
-                <td className="px-6 py-4 text-right font-bold ">{formatWithDrCr(report.totalSales, "Cr", currentCurrency?.name)}</td>
+                {/* <td className="px-6 py-4 text-right font-bold text-emerald-600">{formatWithDrCr(report.totalSales, "Cr", currencyLabel)}</td> */}
+                <td className="px-6 py-4 text-right font-bold ">{formatWithDrCr(report.totalSales, "Cr", currencyLabel)}</td>
               </tr>
               <tr className="hover:bg-zinc-50/50 transition-colors">
                 <td className="px-6 py-4 text-zinc-700 font-medium"><button type="button" onClick={() => setSelectedLedger({ particularId: drilldownIds.purchaseAmount, accountName: "Cost of Goods Sold (COGS)" })} disabled={!drilldownIds.purchaseAmount.length} className="text-left text-sky-700 underline-offset-4 enabled:hover:underline disabled:text-zinc-700">Cost of Goods Sold (COGS)</button></td>
-                {/* <td className="px-6 py-4 text-right font-bold text-rose-600">{formatWithDrCr(report.purchaseAmount, "Dr", currentCurrency?.name)}</td> */}
-                <td className="px-6 py-4 text-right font-bold ">{formatWithDrCr(report.purchaseAmount, "Dr", currentCurrency?.name)}</td>
+                {/* <td className="px-6 py-4 text-right font-bold text-rose-600">{formatWithDrCr(report.purchaseAmount, "Dr", currencyLabel)}</td> */}
+                <td className="px-6 py-4 text-right font-bold ">{formatWithDrCr(report.purchaseAmount, "Dr", currencyLabel)}</td>
               </tr>
               <tr className="bg-zinc-50 font-bold border-t border-zinc-200">
                 <td className="px-6 py-4 text-zinc-900 italic">Gross Profit</td>
                 <td className="px-6 py-4 text-right text-zinc-900 border-b-2 border-double border-zinc-300">
-                  {formatWithDrCr(report.grossProfit, undefined, currentCurrency?.name)}
+                  {formatWithDrCr(report.grossProfit, undefined, currencyLabel)}
                 </td>
               </tr>
 
               {/* --- Operating Expenses Section --- */}
               <tr className="hover:bg-zinc-50/50 transition-colors">
                 <td className="px-6 py-4 text-zinc-700 font-medium pl-10"><button type="button" onClick={() => setSelectedLedger({ particularId: drilldownIds.adminExpenses, accountName: "Administrative Expenses" })} disabled={!drilldownIds.adminExpenses.length} className="text-left text-sky-700 underline-offset-4 enabled:hover:underline disabled:text-zinc-700">Administrative Expenses</button></td>
-                {/* <td className="px-6 py-4 text-right text-rose-600 font-semibold">{formatWithDrCr(report.adminExpenses, "Dr", currentCurrency?.name)}</td> */}
-                <td className="px-6 py-4 text-right  font-semibold">{formatWithDrCr(report.adminExpenses, "Dr", currentCurrency?.name)}</td>
+                {/* <td className="px-6 py-4 text-right text-rose-600 font-semibold">{formatWithDrCr(report.adminExpenses, "Dr", currencyLabel)}</td> */}
+                <td className="px-6 py-4 text-right  font-semibold">{formatWithDrCr(report.adminExpenses, "Dr", currencyLabel)}</td>
               </tr>
               <tr className="hover:bg-zinc-50/50 transition-colors">
                 <td className="px-6 py-4 text-zinc-700 font-medium pl-10"><button type="button" onClick={() => setSelectedLedger({ particularId: drilldownIds.sellingExpenses, accountName: "Selling & Distribution Expenses" })} disabled={!drilldownIds.sellingExpenses.length} className="text-left text-sky-700 underline-offset-4 enabled:hover:underline disabled:text-zinc-700">Selling & Distribution Expenses</button></td>
-                {/* <td className="px-6 py-4 text-right text-rose-600 font-semibold">{formatWithDrCr(report.sellingExpenses, "Dr", currentCurrency?.name)}</td> */}
-                <td className="px-6 py-4 text-right  font-semibold">{formatWithDrCr(report.sellingExpenses, "Dr", currentCurrency?.name)}</td>
+                {/* <td className="px-6 py-4 text-right text-rose-600 font-semibold">{formatWithDrCr(report.sellingExpenses, "Dr", currencyLabel)}</td> */}
+                <td className="px-6 py-4 text-right  font-semibold">{formatWithDrCr(report.sellingExpenses, "Dr", currencyLabel)}</td>
               </tr>
               <tr className="hover:bg-zinc-50/50 transition-colors">
                 <td className="px-6 py-4 text-zinc-700 font-medium pl-10"><button type="button" onClick={() => setSelectedLedger({ particularId: drilldownIds.nonOperatingIncome, accountName: "Other Non-Operating Income" })} disabled={!drilldownIds.nonOperatingIncome.length} className="text-left text-sky-700 underline-offset-4 enabled:hover:underline disabled:text-zinc-700">Other Non-Operating Income</button></td>
-                {/* <td className="px-6 py-4 text-right text-emerald-600 font-semibold">{formatWithDrCr(report.nonOperatingIncome, "Cr", currentCurrency?.name)}</td> */}
-                <td className="px-6 py-4 text-right  font-semibold">{formatWithDrCr(report.nonOperatingIncome, "Cr", currentCurrency?.name)}</td>
+                {/* <td className="px-6 py-4 text-right text-emerald-600 font-semibold">{formatWithDrCr(report.nonOperatingIncome, "Cr", currencyLabel)}</td> */}
+                <td className="px-6 py-4 text-right  font-semibold">{formatWithDrCr(report.nonOperatingIncome, "Cr", currencyLabel)}</td>
               </tr>
 
               {/* --- EBT Section --- */}
               <tr className="bg-zinc-50 font-bold">
                 <td className="px-6 py-4 text-zinc-900 italic">Earnings Before Tax (EBT)</td>
                 <td className="px-6 py-4 text-right text-zinc-900 border-b-2 border-double border-zinc-300" >
-                  {formatWithDrCr(report.earningBeforeTax, undefined, currentCurrency?.name)}
+                  {formatWithDrCr(report.earningBeforeTax, undefined, currencyLabel)}
                 </td>
               </tr>
               <tr className="hover:bg-zinc-50/50 transition-colors">
                 <td className="px-6 py-4 text-zinc-700 font-medium">Income Tax Expense</td>
-                {/* <td className="px-6 py-4 text-right text-rose-600 font-semibold">{formatWithDrCr(report.taxAmount, "Dr", currentCurrency?.name)}</td> */}
-                <td className="px-6 py-4 text-right font-semibold">{formatWithDrCr(report.taxAmount, "Dr", currentCurrency?.name)}</td>
+                {/* <td className="px-6 py-4 text-right text-rose-600 font-semibold">{formatWithDrCr(report.taxAmount, "Dr", currencyLabel)}</td> */}
+                <td className="px-6 py-4 text-right font-semibold">{formatWithDrCr(report.taxAmount, "Dr", currencyLabel)}</td>
               </tr>
 
               {/* --- Final Result --- */}
               <tr className="bg-zinc-100 ">
                 <td className="px-4 py-4 font-bold uppercase tracking-tight">Net Earnings After Tax</td>
                 <td className={`px-4 py-4 text-right font-black  ${report.earningAfterTax < 0 ? "text-red-400" : "text-secondary"}`}>
-                  {formatWithDrCr(report.earningAfterTax, undefined, currentCurrency?.name)}
+                  {formatWithDrCr(report.earningAfterTax, undefined, currencyLabel)}
                 </td>
               </tr>
             </tbody>

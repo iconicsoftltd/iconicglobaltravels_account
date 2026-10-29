@@ -37,6 +37,7 @@ const VoucherLedgerReport = () => {
   const [queryParams, setQueryParams] = useState({ fromDate, toDate });
 
   const currentCurrency = useSelector(selectCurrentCurrency);
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const handleSearch = ({ reportType, fromDate, toDate, month, year }) => {
     let _fromDate = "";
@@ -124,7 +125,7 @@ const VoucherLedgerReport = () => {
       cell: ({ row }) => row.original.debit?.toFixed(2),
       footer: () => (
         <span className="font-semibold">
-          {`(${currentCurrency.name})`} {currentCurrency?.name} {report?.totals?.totalDebit?.toFixed(2) ?? "0.00"}
+          {`(${currencyLabel})`} {currencyLabel} {report?.totals?.totalDebit?.toFixed(2) ?? "0.00"}
         </span>
       ),
     },
@@ -134,7 +135,7 @@ const VoucherLedgerReport = () => {
       cell: ({ row }) => row.original.credit?.toFixed(2),
       footer: () => (
         <span className="font-semibold text-center">
-          {`(${currentCurrency.name})`} {currentCurrency?.name} {report?.totals?.totalCredit?.toFixed(2) ?? "0.00"}
+          {`(${currencyLabel})`} {currencyLabel} {report?.totals?.totalCredit?.toFixed(2) ?? "0.00"}
         </span>
       ),
     },
@@ -201,7 +202,7 @@ const VoucherLedgerReport = () => {
           <div className="w-full bg-white border-t p-3 text-sm">
             <div className="flex justify-end pr-12">
               <div className="font-bold">
-                Balance: {`(${currentCurrency.name})`} {report.balance}
+                Balance: {`(${currencyLabel})`} {report.balance}
               </div>
             </div>
           </div>

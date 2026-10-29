@@ -22,6 +22,7 @@ const ArchivedIncomeStatementReport = () => {
   const [queryParams, setQueryParams] = useState({ fromDate, toDate });
 
   const currentCurrency = useSelector(selectCurrentCurrency);
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const handleSearch = ({ reportType, fromDate, toDate, month, year }) => {
     let _fromDate = "";
@@ -94,7 +95,7 @@ const ArchivedIncomeStatementReport = () => {
             ))}
             <div className="flex justify-between font-semibold border-t pt-2">
               <span>Total Revenue</span>
-              <span>{currentCurrency?.name} {report.totalRevenue?.toFixed(2)}</span>
+              <span>{currencyLabel} {report.totalRevenue?.toFixed(2)}</span>
             </div>
           </div>
 
@@ -109,7 +110,7 @@ const ArchivedIncomeStatementReport = () => {
             ))}
             <div className="flex justify-between font-semibold border-t pt-2">
               <span>Total Expense</span>
-              <span>{currentCurrency?.name} {report.totalExpense?.toFixed(2)}</span>
+              <span>{currencyLabel} {report.totalExpense?.toFixed(2)}</span>
             </div>
           </div>
 
@@ -117,7 +118,7 @@ const ArchivedIncomeStatementReport = () => {
           <div className="flex justify-between font-bold text-lg border-t-2 border-zinc-900 pt-3">
             <span>Net Income</span>
             <div className="flex items-baseline gap-2">
-              <span className="text-zinc-500 text-sm">{currentCurrency?.name}</span>
+              <span className="text-zinc-500 text-sm">{currencyLabel}</span>
               <span className={report.netIncome >= 0 ? "text-green-600" : "text-red-600"}>
                 {Math.abs(report.netIncome)?.toFixed(2)}
               </span>

@@ -61,11 +61,7 @@ export default function AdminUpperNavigation({
       {/* Left Section: Notification and Language Selector */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-3">
-          <img
-            className="h-10 w-auto max-w-48 object-contain"
-            src={appConfiguration.logo}
-            alt="Iconic Travel Hub"
-          />
+    
           <span className="text-xl font-bold hidden lg:block">
             Accounts Admin Portal
           </span>

@@ -64,6 +64,11 @@ const isCashOrBank = (item: any) => {
   return ["cash", "bank", "bkash", "nagad"].includes(ledgerType);
 };
 
+const isExcludedExpenseDebit = (item: any) => {
+  const ledgerName = String(item?.ledger?.ledgerType || "").trim().toLowerCase();
+  return ["sale", "obtaining short term loan", "obtaining long term loan", "cogs"].includes(ledgerName);
+};
+
 const uniqueCashBankOptions = (items: any[] = []) => {
   const optionMap = new Map<string, any>();
 
@@ -251,7 +256,7 @@ const EditExpenseVoucher = () => {
         {/* Rows */}
         {fields.map((field, index) => {
           const isAccount = index === 0;
-          const options = isAccount ? customers?.data : cashBankOptions;
+          const options = isAccount ? (customers?.data || []).filter((item: any) => !isExcludedExpenseDebit(item) && !isCashOrBank(item)) : cashBankOptions;
 
           return (
             <div

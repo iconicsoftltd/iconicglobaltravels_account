@@ -82,6 +82,11 @@ const isCashOrBank = (item: any) => {
   return ["cash", "bank", "bkash", "nagad"].includes(ledgerType);
 };
 
+const isExcludedExpenseDebit = (item: any) => {
+  const ledgerName = String(item?.ledger?.ledgerType || "").trim().toLowerCase();
+  return ["sale", "obtaining short term loan", "obtaining long term loan", "cogs"].includes(ledgerName);
+};
+
 const uniqueCashBankOptions = (items: any[] = []) => {
   const optionMap = new Map<string, any>();
 
@@ -140,7 +145,7 @@ const CreateExpanseVoucher = () => {
     allParticulars?.data?.filter(isAllowedParticular) || [];
 
   // Expense rule: Debit side = everything except COGS, Credit side = only Cash/Bank
-  const debitOptions = particularOptions.filter((item: any) => !isCOGS(item));
+  const debitOptions = particularOptions.filter((item: any) => !isCOGS(item) && !isExcludedExpenseDebit(item) && !isCashOrBank(item));
   const creditOptions = uniqueCashBankOptions(accounts?.data || []);
 
   const filterParticularOptions = (options: any[] = []) => {

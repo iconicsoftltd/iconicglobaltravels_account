@@ -62,6 +62,11 @@ const isCashOrBank = (item: any) => {
   return ["cash", "bank", "bkash", "nagad"].includes(ledgerType);
 };
 
+const isReceiptCreditParticular = (item: any) => {
+  const ledgerName = String(item?.ledger?.ledgerType || "").trim().toLowerCase();
+  return ["sale", "obtaining short term loan", "obtaining long term loan"].includes(ledgerName);
+};
+
 const uniqueCashBankOptions = (items: any[] = []) => {
   const optionMap = new Map<string, any>();
 
@@ -141,6 +146,7 @@ const EditVoucher = () => {
 
   const entries = watch("entries");
   const cashBankOptions = uniqueCashBankOptions(accounts?.data || []);
+  const receiptCreditOptions = (customers?.data || []).filter(isReceiptCreditParticular);
 
   const totalDebit = entries
     .filter((e) => e.type === "Debit")
@@ -254,7 +260,7 @@ const EditVoucher = () => {
         {/* Rows */}
         {fields.map((field, index) => {
           const isAccount = index === 0;
-          const options = isAccount ? cashBankOptions : customers?.data;
+          const options = isAccount ? cashBankOptions : receiptCreditOptions;
 
           return (
             <div

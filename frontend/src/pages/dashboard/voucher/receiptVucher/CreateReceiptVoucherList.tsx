@@ -85,6 +85,11 @@ const isCashOrBank = (item: any) => {
   return ["cash", "bank", "bkash", "nagad"].includes(ledgerType);
 };
 
+const isReceiptCreditParticular = (item: any) => {
+  const ledgerName = String(item?.ledger?.ledgerType || "").trim().toLowerCase();
+  return ["sale", "obtaining short term loan", "obtaining long term loan"].includes(ledgerName);
+};
+
 const uniqueCashBankOptions = (items: any[] = []) => {
   const optionMap = new Map<string, any>();
 
@@ -230,7 +235,7 @@ const CreateReceiptVoucherList = () => {
             const options =
               entryType === "Debit"
                 ? cashBankOptions
-                : particularOptions.filter((item: any) => !isCashOrBank(item));
+                : particularOptions.filter(isReceiptCreditParticular);
 
             const selectedParticular = options?.find(
               (opt: any) => opt.id === entry?.particularId,

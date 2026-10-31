@@ -60,12 +60,16 @@ export default function AdminUpperNavigation({
     >
       {/* Left Section: Notification and Language Selector */}
       <div className="flex items-center gap-4">
-        {/* <Link to={"/"} className="flex items-center gap-2"> */}
-        {/* <img className="w-16" src={appConfiguration.logo} alt="logo" /> */}
-        <span className="text-xl font-bold hidden lg:block">
-          Accounts Admin Portal
-        </span>
-        {/* </Link> */}
+        <div className="flex items-center gap-3">
+          <img
+            className="h-10 w-auto max-w-48 object-contain"
+            src={appConfiguration.logo}
+            alt="Iconic Travel Hub"
+          />
+          <span className="text-xl font-bold hidden lg:block">
+            Accounts Admin Portal
+          </span>
+        </div>
         <button
           onClick={() => setMobileSidebarOpen(true)}
           className="text-2xl lg:hidden"

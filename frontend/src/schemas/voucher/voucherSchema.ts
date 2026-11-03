@@ -5,6 +5,17 @@ export const receiptVoucherSchema = z.object({
   voucherNo: z.string().min(1, "Voucher No is required"),
   date: z.string().optional(),
   narration: z.string().optional(),
+  attachments: z
+    .array(
+      z.object({
+        fileName: z.string(),
+        originalName: z.string(),
+        mimeType: z.string(),
+        fileSize: z.number(),
+        fileUrl: z.string(),
+      })
+    )
+    .optional(),
   entries: z
     .array(
       z.object({

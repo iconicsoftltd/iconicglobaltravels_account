@@ -275,6 +275,7 @@ model Voucher {
   createdAt        DateTime              @default(now())
   updatedAt        DateTime              @updatedAt
   particulars      ParticularOnVoucher[]
+  attachments      VoucherAttachment[]
   purchase         Purchase?             @relation(fields: [purchaseId], references: [id])
   purchaseReturn   PurchaseReturn?       @relation(fields: [purchaseReturnId], references: [id])
   salesReturn      SalesReturn?          @relation(fields: [salesReturnId], references: [id])
@@ -285,6 +286,18 @@ model Voucher {
 // newly added 
    isArchived  Boolean   @default(false)
   archivedAt  DateTime?
+}
+
+model VoucherAttachment {
+  id           Int      @id @default(autoincrement())
+  voucherId    Int
+  fileName     String
+  originalName String
+  mimeType     String
+  fileSize     Int
+  fileUrl      String
+  uploadedAt   DateTime @default(now())
+  voucher      Voucher  @relation(fields: [voucherId], references: [id], onDelete: Cascade)
 }
 
 model VoucherAudit {

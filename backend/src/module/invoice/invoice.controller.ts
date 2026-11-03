@@ -83,12 +83,36 @@ async function createAutomaticVoucher(
 async function salesIncomeParticular(tx: Prisma.TransactionClient, branchId: number) {
   const ledgers = await tx.ledger.findMany({
     where: { branchId, isActive: true },
-    include: { particulars: { take: 1 } },
+    include: {
+      particulars: { take: 1, orderBy: { id: "asc" } },
+      group: true,
+    },
+    orderBy: { id: "asc" },
   });
-  const preferredNames = ["sales", "sell", "service", "income", "product sale", "products sale"];
+
+  // Prefer conventional sales/income ledger names, then fall back to any
+  // active ledger assigned to the Income group. This supports names such as
+  // "Sale", "Sales", "Service Sales" and custom income ledger names.
+  const preferredNames = [
+    "sale",
+    "sales",
+    "sell",
+    "service",
+    "service sale",
+    "service sales",
+    "income",
+    "product sale",
+    "products sale",
+    "sales revenue",
+  ];
   const ledger = preferredNames
-    .map((name) => ledgers.find((item) => item.ledgerType.trim().toLowerCase() === name && item.particulars[0]))
-    .find(Boolean);
+    .map((name) => ledgers.find(
+      (item) => item.ledgerType.trim().toLowerCase() === name && item.particulars[0],
+    ))
+    .find(Boolean)
+    ?? ledgers.find(
+      (item) => item.group?.account === "Income" && item.particulars[0],
+    );
   const particular = ledger?.particulars[0];
   if (!ledger || !particular) {
     throw new Error("No active sales or income ledger with a linked particular is configured for this branch");

@@ -24,6 +24,7 @@ import {
   useGetAllExpenseParticularQuery,
   useGetAllParticularQuery,
 } from "@/components/store/api/particularAccount/particularAccountApi";
+import { useAddThumbnailMutation } from "@/components/store/api/file/fileApi";
 import { useCreateVoucherMutation } from "@/components/store/api/voucher/receiptVoucherApi";
 
 import { generateVoucherNo } from "@/utils/helper/randomValueGenerator";
@@ -37,10 +38,8 @@ import HomeLoader from "@/components/loader/HomeLoader";
 import ButtonLoader from "@/components/loader/ButtonLoader";
 import CreateParticularButton from "@/components/common/CreateParticularButton";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FormData,
-  receiptVoucherSchema,
-} from "@/schemas/voucher/voucherSchema";
+import { receiptVoucherSchema } from "@/schemas/voucher/voucherSchema";
+import type { FormData } from "@/schemas/voucher/voucherSchema";
 import { useNavigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
@@ -85,9 +84,7 @@ const isCashOrBank = (item: any) => {
 const isExcludedExpenseDebit = (item: any) => {
   const ledgerName = String(item?.ledger?.ledgerType || "").trim().toLowerCase();
   return ["sale", "obtaining short term loan", "obtaining long term loan", "cogs"].includes(ledgerName);
-};
-
-const uniqueCashBankOptions = (items: any[] = []) => {
+};const uniqueCashBankOptions = (items: any[] = []) => {
   const optionMap = new Map<string, any>();
 
   items.filter(isCashOrBank).forEach((item) => {
@@ -98,7 +95,7 @@ const uniqueCashBankOptions = (items: any[] = []) => {
     if (!optionMap.has(key)) optionMap.set(key, item);
   });
 
-  return Array.from(optionMap.values());
+  return Array.from(optionMap.values()).sort((a, b) => { const order: Record<string, number> = { cash: 0, bank: 1, bkash: 2, nagad: 3 }; const aType = String(a?.ledger?.ledgerType || "").trim().toLowerCase(); const bType = String(b?.ledger?.ledgerType || "").trim().toLowerCase(); return (order[aType] ?? 99) - (order[bType] ?? 99); });
 };
 
 const CreateExpanseVoucher = () => {
@@ -106,8 +103,10 @@ const CreateExpanseVoucher = () => {
   const datePermission = useSelector(selectDatePermission);
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [createVoucher, { isLoading: createVoucherLoading }] =
     useCreateVoucherMutation();
+  const [uploadFile, { isLoading: fileUploading }] = useAddThumbnailMutation();
 
   const { data: accounts, isLoading: accountsLoading } =
     useGetAllAccountsParticularQuery({});
@@ -134,6 +133,7 @@ const CreateExpanseVoucher = () => {
       type: "EXPENSE",
       date: format(new Date(), "yyyy-MM-dd"),
       narration: "",
+      attachments: [],
       entries: [
         { particularId: 0, type: "Debit", amount: 0 },
         { particularId: 0, type: "Credit", amount: 0 },
@@ -197,6 +197,22 @@ const CreateExpanseVoucher = () => {
     .filter((e) => e.type === "Credit")
     .reduce((sum, e) => sum + (e.amount || 0), 0);
 
+  const uploadFiles = async (files: File[]) => {
+    if (!files.length) return [];
+
+    const uploaded: any[] = [];
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append("files", file);
+      const response = await uploadFile(formData).unwrap();
+      const payload = Array.isArray(response?.data)
+        ? response.data
+        : [response?.data].filter(Boolean);
+      uploaded.push(...payload);
+    }
+    return uploaded;
+  };
+
   const onSubmit = async (data: FormData) => {
     const payload = {
       ...data,
@@ -209,13 +225,25 @@ const CreateExpanseVoucher = () => {
     }
 
     try {
-      const result = await createVoucher(payload).unwrap();
+      const attachments = selectedFiles.length
+        ? await uploadFiles(selectedFiles)
+        : [];
+
+      if (selectedFiles.length && attachments.length !== selectedFiles.length) {
+        throw new Error("One or more attachment uploads failed.");
+      }
+
+      const result = await createVoucher({
+        ...payload,
+        attachments,
+      }).unwrap();
       if (result?.success) {
         toast.success("Voucher submitted successfully!");
         navigate("/expanse-voucher");
       }
     } catch (error: any) {
-      toast.error(error?.data?.message || "Submission failed.");
+      const message = error?.data?.message || error?.message || "Submission failed.";
+      toast.error(message.includes("upload") ? message : `Attachment upload failed: ${message}`);
     }
   };
 
@@ -346,6 +374,16 @@ const CreateExpanseVoucher = () => {
                       <SelectTrigger
                         className="border border-gray-400"
                         data-voucher-particular-index={index}
+                        onKeyDown={(event) => {
+                          if (
+                            event.key.length === 1 &&
+                            !event.ctrlKey &&
+                            !event.metaKey &&
+                            !event.altKey
+                          ) {
+                            event.preventDefault();
+                          }
+                        }}
                       >
                         <SelectValue placeholder={"Select one"} />
                       </SelectTrigger>
@@ -521,9 +559,37 @@ const CreateExpanseVoucher = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2">
-        {/* Narration */}
-        <div className="mt-6">
+      <div className="mt-6 space-y-4">
+        <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <p className="font-medium text-slate-700">Attachments</p>
+              <p className="text-xs text-slate-500">Images, PDF, DOC, DOCX, XLS, XLSX, CSV</p>
+            </div>
+            <label className="cursor-pointer rounded-md border border-primary bg-primary/5 px-3 py-2 text-sm font-medium text-primary hover:bg-primary/10">
+              <input
+                type="file"
+                multiple
+                className="hidden"
+                accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx,.csv,image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
+                onChange={(event) => setSelectedFiles(Array.from(event.target.files || []))}
+              />
+              Choose Files
+            </label>
+          </div>
+
+          {selectedFiles.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {selectedFiles.map((file, index) => (
+                <span key={`${file.name}-${index}`} className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs text-slate-700">
+                  {file.name}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div>
           <Label className="text-gray-600">Narration</Label>
           <Controller
             control={control}
@@ -543,7 +609,7 @@ const CreateExpanseVoucher = () => {
       <div className="flex justify-end gap-3 mt-6">
         <Button
           type="button"
-          disabled={createVoucherLoading}
+          disabled={createVoucherLoading || fileUploading}
           variant="red_outeline"
           onClick={() => navigate("/expanse-voucher")}
         >
@@ -551,10 +617,10 @@ const CreateExpanseVoucher = () => {
         </Button>
         <Button
           onClick={handleSubmit(onSubmit)}
-          disabled={createVoucherLoading || totalDebit !== totalCredit}
+          disabled={createVoucherLoading || fileUploading || totalDebit !== totalCredit}
           type="submit"
         >
-          {createVoucherLoading ? <ButtonLoader /> : <GrNotes className="" />}
+          {createVoucherLoading || fileUploading ? <ButtonLoader /> : <GrNotes className="" />}
           Submit
         </Button>
       </div>

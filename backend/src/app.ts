@@ -5,6 +5,7 @@ import helmet from "helmet";
 import { createServer } from "http";
 import moment from "moment-timezone";
 import morgan from "morgan";
+import path from "path";
 import errorHandler, { notfoundandler } from "./middleware/errorHandler";
 import router from "./router/router";
 const app: Application = express();
@@ -46,6 +47,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json({ limit: "4mb" }));
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // Run seeding on startup
 // seedDatabase().catch(console.error);

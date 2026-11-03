@@ -31,6 +31,7 @@ import {
   useGetVoucherByIdQuery,
   useUpdateVoucherMutation,
 } from "@/components/store/api/voucher/receiptVoucherApi";
+import { useAddThumbnailMutation } from "@/components/store/api/file/fileApi";
 
 import { generateVoucherNo } from "@/utils/helper/randomValueGenerator";
 import {
@@ -42,10 +43,8 @@ import {
 import HomeLoader from "@/components/loader/HomeLoader";
 import ButtonLoader from "@/components/loader/ButtonLoader";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FormData,
-  receiptVoucherSchema,
-} from "@/schemas/voucher/voucherSchema";
+import { receiptVoucherSchema } from "@/schemas/voucher/voucherSchema";
+import type { FormData } from "@/schemas/voucher/voucherSchema";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectDatePermission } from "@/components/store/store";
@@ -72,11 +71,12 @@ const uniqueCashBankOptions = (items: any[] = []) => {
     if (!optionMap.has(key)) optionMap.set(key, item);
   });
 
-  return Array.from(optionMap.values());
+  return Array.from(optionMap.values()).sort((a, b) => { const order: Record<string, number> = { cash: 0, bank: 1, bkash: 2, nagad: 3 }; const aType = String(a?.ledger?.ledgerType || "").trim().toLowerCase(); const bType = String(b?.ledger?.ledgerType || "").trim().toLowerCase(); return (order[aType] ?? 99) - (order[bType] ?? 99); });
 };
 
 const EditContraVoucher = () => {
   const [particularSearch, setParticularSearch] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { id } = useParams();
   const navigate = useNavigate();
   const datePermission = useSelector(selectDatePermission);
@@ -85,6 +85,7 @@ const EditContraVoucher = () => {
 
   const [editVoucher, { isLoading: updateLoading }] =
     useUpdateVoucherMutation();
+  const [uploadFile, { isLoading: fileUploading }] = useAddThumbnailMutation();
 
   const { data: accounts, isLoading: accountsLoading } =
     useGetAllAccountsParticularQuery({});
@@ -98,6 +99,7 @@ const EditContraVoucher = () => {
       type: "CONTRA",
       date: format(new Date(), "yyyy-MM-dd"),
       narration: "",
+      attachments: [],
       entries: [
         { particularId: 0, type: "Debit", amount: 0 },
         { particularId: 0, type: "Credit", amount: 0 },
@@ -120,6 +122,13 @@ const EditContraVoucher = () => {
         type: v.type,
         date: format(parseISO(v.date), "yyyy-MM-dd"),
         narration: v.narration || "",
+        attachments: (v.attachments || []).map((attachment: any) => ({
+          fileName: attachment.fileName || attachment.originalName || "attachment",
+          originalName: attachment.originalName || attachment.fileName || "attachment",
+          mimeType: attachment.mimeType || "application/octet-stream",
+          fileSize: Number(attachment.fileSize || 0),
+          fileUrl: attachment.fileUrl || attachment.url || "",
+        })),
         entries:
           v.particulars && v.particulars.length > 0
             ? v.particulars.map((p: any) => ({
@@ -138,6 +147,7 @@ const EditContraVoucher = () => {
   if (accountsLoading || voucherLoading) return <HomeLoader />;
 
   const entries = watch("entries");
+  const existingAttachments = watch("attachments") || [];
   const cashBankOptions = uniqueCashBankOptions(accounts?.data || []);
 
   const totalDebit = entries
@@ -146,6 +156,23 @@ const EditContraVoucher = () => {
   const totalCredit = entries
     .filter((e) => e.type === "Credit")
     .reduce((sum, e) => sum + (e.amount || 0), 0);
+
+  const uploadFiles = async (files: File[]) => {
+    if (!files.length) return [];
+
+    const uploaded: any[] = [];
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append("files", file);
+      const response = await uploadFile(formData).unwrap();
+      const payload = Array.isArray(response?.data)
+        ? response.data
+        : [response?.data].filter(Boolean);
+      uploaded.push(...payload);
+    }
+
+    return uploaded;
+  };
 
   const onSubmit = async (data: FormData) => {
     const payload = {
@@ -159,13 +186,27 @@ const EditContraVoucher = () => {
     }
 
     try {
-      const result = await editVoucher({ id, ...payload }).unwrap();
+      const uploadedAttachments = selectedFiles.length
+        ? await uploadFiles(selectedFiles)
+        : [];
+
+      if (selectedFiles.length && uploadedAttachments.length !== selectedFiles.length) {
+        throw new Error("One or more attachment uploads failed.");
+      }
+
+      const attachments = [
+        ...(data.attachments || []),
+        ...uploadedAttachments,
+      ];
+
+      const result = await editVoucher({ id, ...payload, attachments }).unwrap();
       if (result?.success) {
         toast.success("Voucher updated successfully!");
         navigate("/contra-voucher");
       }
     } catch (error: any) {
-      toast.error(error?.data?.message || "Update failed.");
+      const message = error?.data?.message || error?.message || "Update failed.";
+      toast.error(message.includes("upload") ? message : `Attachment upload failed: ${message}`);
     }
   };
 
@@ -295,6 +336,16 @@ const EditContraVoucher = () => {
                       <SelectTrigger
                         className="border border-gray-400"
                         data-voucher-particular-index={index}
+                        onKeyDown={(event) => {
+                          if (
+                            event.key.length === 1 &&
+                            !event.ctrlKey &&
+                            !event.metaKey &&
+                            !event.altKey
+                          ) {
+                            event.preventDefault();
+                          }
+                        }}
                       >
                         <SelectValue placeholder={"Select one"} />
                       </SelectTrigger>
@@ -445,27 +496,96 @@ const EditContraVoucher = () => {
         </div>
       </div>
 
-      {/* Narration */}
-      <div className="mt-6">
-        <Label className="text-gray-600">Note</Label>
-        <Controller
-          control={control}
-          name="narration"
-          render={({ field }) => (
-            <Textarea
-              {...field}
-              placeholder="Add any notes or remarks..."
-              className="mt-1 border border-secondary/20 focus-visible:ring-0 focus-visible:border-secondary transition-colors"
-            />
+      <div className="mt-6 space-y-4">
+        <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <p className="font-medium text-slate-700">Attachments</p>
+              <p className="text-xs text-slate-500">Images, PDF, DOC, DOCX, XLS, XLSX, CSV</p>
+            </div>
+            <label className="cursor-pointer rounded-md border border-primary bg-primary/5 px-3 py-2 text-sm font-medium text-primary hover:bg-primary/10">
+              <input
+                type="file"
+                multiple
+                className="hidden"
+                accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx,.csv,image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
+                onChange={(event) => setSelectedFiles(Array.from(event.target.files || []))}
+              />
+              Add Files
+            </label>
+          </div>
+
+          {(existingAttachments.length > 0 || selectedFiles.length > 0) && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {existingAttachments.map((attachment: any, index: number) => (
+                <span
+                  key={`existing-${attachment.fileUrl || attachment.originalName || index}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs text-slate-700"
+                >
+                  <a
+                    href={attachment.fileUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:underline"
+                  >
+                    {attachment.originalName || attachment.fileName || "Attachment"}
+                  </a>
+                  <button
+                    type="button"
+                    aria-label={`Remove ${attachment.originalName || attachment.fileName || "attachment"}`}
+                    onClick={() => {
+                      setValue(
+                        "attachments",
+                        (watch("attachments") || []).filter((_, i) => i !== index),
+                        { shouldDirty: true }
+                      );
+                    }}
+                    className="flex h-4 w-4 items-center justify-center rounded-full bg-red-100 text-[10px] font-bold text-red-600 hover:bg-red-200"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+              {selectedFiles.map((file, index) => (
+                <span
+                  key={`new-${file.name}-${index}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs text-slate-700"
+                >
+                  <span>{file.name}</span>
+                  <button
+                    type="button"
+                    aria-label={`Remove ${file.name}`}
+                    onClick={() => setSelectedFiles((prev) => prev.filter((_, i) => i !== index))}
+                    className="flex h-4 w-4 items-center justify-center rounded-full bg-red-100 text-[10px] font-bold text-red-600 hover:bg-red-200"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
           )}
-        />
+        </div>
+
+        <div>
+          <Label className="text-gray-600">Note</Label>
+          <Controller
+            control={control}
+            name="narration"
+            render={({ field }) => (
+              <Textarea
+                {...field}
+                placeholder="Add any notes or remarks..."
+                className="mt-1 border border-secondary/20 focus-visible:ring-0 focus-visible:border-secondary transition-colors"
+              />
+            )}
+          />
+        </div>
       </div>
 
-      {/* Submit */}
       <div className="flex justify-end gap-3 mt-6">
         <Button
           type="button"
-          disabled={updateLoading}
+          disabled={updateLoading || fileUploading}
           variant="red_outeline"
           onClick={() => navigate("/contra-voucher")}
         >
@@ -473,10 +593,10 @@ const EditContraVoucher = () => {
         </Button>
         <Button
           onClick={handleSubmit(onSubmit)}
-          disabled={updateLoading}
+          disabled={updateLoading || fileUploading}
           type="submit"
         >
-          {updateLoading ? <ButtonLoader /> : <GrNotes className="" />}
+          {updateLoading || fileUploading ? <ButtonLoader /> : <GrNotes className="" />}
           Update
         </Button>
       </div>

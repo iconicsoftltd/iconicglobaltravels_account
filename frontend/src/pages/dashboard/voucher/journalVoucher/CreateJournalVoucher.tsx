@@ -23,6 +23,7 @@ import { FaPlus, FaTrashAlt } from "react-icons/fa";
 import { GrNotes } from "react-icons/gr";
 
 import { useGetAllParticularQuery } from "@/components/store/api/particularAccount/particularAccountApi";
+import { useAddThumbnailMutation } from "@/components/store/api/file/fileApi";
 import { useCreateVoucherMutation } from "@/components/store/api/voucher/receiptVoucherApi";
 
 import { generateVoucherNo } from "@/utils/helper/randomValueGenerator";
@@ -35,10 +36,8 @@ import {
 import ButtonLoader from "@/components/loader/ButtonLoader";
 import HomeLoader from "@/components/loader/HomeLoader";
 import CreateParticularButton from "@/components/common/CreateParticularButton";
-import {
-  FormData,
-  receiptVoucherSchema,
-} from "@/schemas/voucher/voucherSchema";
+import { receiptVoucherSchema } from "@/schemas/voucher/voucherSchema";
+import type { FormData } from "@/schemas/voucher/voucherSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -47,6 +46,7 @@ const CreateJournalVoucher = () => {
   const navigate = useNavigate();
 
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   // ✅ SEARCH STATE
   const [searchTerm, setSearchTerm] = useState("");
@@ -63,6 +63,7 @@ const CreateJournalVoucher = () => {
 
   const [createVoucher, { isLoading: createVoucherLoading }] =
     useCreateVoucherMutation();
+  const [uploadFile, { isLoading: fileUploading }] = useAddThumbnailMutation();
 
   // ✅ SEARCHABLE API CALL
   const { data: accounts, isLoading: accountsLoading } =
@@ -89,6 +90,7 @@ const CreateJournalVoucher = () => {
       type: "JOURNAL",
       date: format(new Date(), "yyyy-MM-dd"),
       narration: "",
+      attachments: [],
       entries: [
         { particularId: 0, type: "Debit", amount: 0 },
         { particularId: 0, type: "Credit", amount: 0 },
@@ -119,6 +121,22 @@ const CreateJournalVoucher = () => {
     .filter((e) => e.type === "Credit")
     .reduce((sum, e) => sum + (e.amount || 0), 0);
 
+  const uploadFiles = async (files: File[]) => {
+    if (!files.length) return [];
+
+    const uploaded: any[] = [];
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append("files", file);
+      const response = await uploadFile(formData).unwrap();
+      const payload = Array.isArray(response?.data)
+        ? response.data
+        : [response?.data].filter(Boolean);
+      uploaded.push(...payload);
+    }
+    return uploaded;
+  };
+
   const onSubmit = async (data: FormData) => {
     const payload = {
       ...data,
@@ -131,13 +149,25 @@ const CreateJournalVoucher = () => {
     }
 
     try {
-      const result = await createVoucher(payload).unwrap();
+      const attachments = selectedFiles.length
+        ? await uploadFiles(selectedFiles)
+        : [];
+
+      if (selectedFiles.length && attachments.length !== selectedFiles.length) {
+        throw new Error("One or more attachment uploads failed.");
+      }
+
+      const result = await createVoucher({
+        ...payload,
+        attachments,
+      }).unwrap();
       if (result?.success) {
         toast.success("Voucher submitted successfully!");
         navigate("/journal-voucher");
       }
     } catch (error: any) {
-      toast.error(error?.data?.message || "Submission failed.");
+      const message = error?.data?.message || error?.message || "Submission failed.";
+      toast.error(message.includes("upload") ? message : `Attachment upload failed: ${message}`);
     }
   };
 
@@ -266,6 +296,16 @@ const CreateJournalVoucher = () => {
                       <SelectTrigger
                         className="border border-gray-400"
                         data-voucher-particular-index={index}
+                        onKeyDown={(event) => {
+                          if (
+                            event.key.length === 1 &&
+                            !event.ctrlKey &&
+                            !event.metaKey &&
+                            !event.altKey
+                          ) {
+                            event.preventDefault();
+                          }
+                        }}
                       >
                         <SelectValue placeholder="Select Particular" />
                       </SelectTrigger>
@@ -428,7 +468,36 @@ const CreateJournalVoucher = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 mt-6">
+      <div className="mt-6 space-y-4">
+        <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <p className="font-medium text-slate-700">Attachments</p>
+              <p className="text-xs text-slate-500">Images, PDF, DOC, DOCX, XLS, XLSX, CSV</p>
+            </div>
+            <label className="cursor-pointer rounded-md border border-primary bg-primary/5 px-3 py-2 text-sm font-medium text-primary hover:bg-primary/10">
+              <input
+                type="file"
+                multiple
+                className="hidden"
+                accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx,.csv,image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
+                onChange={(event) => setSelectedFiles(Array.from(event.target.files || []))}
+              />
+              Choose Files
+            </label>
+          </div>
+
+          {selectedFiles.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {selectedFiles.map((file, index) => (
+                <span key={`${file.name}-${index}`} className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs text-slate-700">
+                  {file.name}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div>
           <Label className="text-gray-600">Note / Narration</Label>
           <Controller
@@ -456,13 +525,14 @@ const CreateJournalVoucher = () => {
         <Button
           disabled={
             createVoucherLoading ||
+            fileUploading ||
             totalDebit !== totalCredit ||
             totalDebit === 0
           }
           type="submit"
           className="min-w-[120px]"
         >
-          {createVoucherLoading ? (
+          {createVoucherLoading || fileUploading ? (
             <ButtonLoader />
           ) : (
             <>

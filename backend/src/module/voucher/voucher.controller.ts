@@ -8,7 +8,7 @@ export const createVoucher = async (
 ) => {
   const session = await prisma.$transaction(async (tx) => {
     try {
-      const { branchId, type, date, narration, entries } = req.body;
+      const { branchId, type, date, narration, entries, attachments = [] } = req.body;
       const voucherDate = date ? new Date(date) : new Date();
 
       // 1️⃣ Debit & Credit check
@@ -79,52 +79,48 @@ export const createVoucher = async (
           },
         });
 
-        let newLedgerBalance = ledger.balance;
-        let newParticularBalance = particular.balance;
+        let ledgerDelta = 0;
+        let particularDelta = 0;
 
         switch (accountType) {
           case "Assets":
           case "Expense":
-            newLedgerBalance =
-              entry.type === "Debit"
-                ? ledger.balance + entry.amount
-                : ledger.balance - entry.amount;
-
-            newParticularBalance =
-              entry.type === "Debit"
-                ? particular.balance + entry.amount
-                : particular.balance - entry.amount;
+            ledgerDelta = entry.type === "Debit" ? entry.amount : -entry.amount;
+            particularDelta = entry.type === "Debit" ? entry.amount : -entry.amount;
             break;
-
           case "Liability":
           case "Equity":
           case "Income":
           case "Other_Accounts":
-            newLedgerBalance =
-              entry.type === "Debit"
-                ? ledger.balance - entry.amount
-                : ledger.balance + entry.amount;
-
-            newParticularBalance =
-              entry.type === "Debit"
-                ? particular.balance - entry.amount
-                : particular.balance + entry.amount;
+            ledgerDelta = entry.type === "Debit" ? -entry.amount : entry.amount;
+            particularDelta = entry.type === "Debit" ? -entry.amount : entry.amount;
             break;
         }
 
         await tx.ledger.update({
           where: { id: ledger.id },
-          data: { balance: newLedgerBalance },
+          data: { balance: { increment: ledgerDelta } },
         });
         await tx.particular.update({
           where: { id: particular.id },
-          data: { balance: newParticularBalance },
+          data: { balance: { increment: particularDelta } },
         });
 
         // Update in-memory for next loop
-        ledger.balance = newLedgerBalance;
-        particular.balance = newParticularBalance;
       }
+      if (attachments.length) {
+        await tx.voucherAttachment.createMany({
+          data: attachments.map((attachment: any) => ({
+            voucherId: voucher.id,
+            fileName: attachment.fileName || attachment.originalName || "attachment",
+            originalName: attachment.originalName || attachment.fileName || "attachment",
+            mimeType: attachment.mimeType || "application/octet-stream",
+            fileSize: Number(attachment.fileSize || 0),
+            fileUrl: attachment.fileUrl || attachment.url || "",
+          })),
+        });
+      }
+
       await tx.voucherAudit.create({
         data: {
           voucherId: voucher.id,
@@ -137,6 +133,7 @@ export const createVoucher = async (
             type,
             narration,
             entries,
+            attachments,
           },
         },
       });
@@ -201,35 +198,36 @@ export const getAllVouchers = async (req: Request, res: Response) => {
         whereCondition.date.lte = endDate;
       }
     }
-    if (search) {
-      whereCondition.OR = [
-        { narration: { contains: String(search) } },
-        { voucherNo: { contains: String(search) } }, // ← এটা যোগ করো
-      ];
-    }
-
-    const [vouchers, total] = await Promise.all([
-      prisma.voucher.findMany({
-        where: whereCondition,
-        include: {
-          particulars: {
-            include: {
-              particular: {
-                include: {
-                  ledger: {
-                    include: { group: true },
-                  },
-                },
+    const allVouchers = await prisma.voucher.findMany({
+      where: whereCondition,
+      include: {
+        particulars: {
+          include: {
+            particular: {
+              include: {
+                ledger: { include: { group: true } },
               },
             },
           },
         },
-        skip,
-        take,
-        orderBy: { id: "desc" },
-      }),
-      prisma.voucher.count({ where: whereCondition }),
-    ]);
+        attachments: true,
+      },
+      orderBy: { id: "desc" },
+    });
+
+    const normalizedSearch = String(search || "").trim().toLowerCase().replace(/,/g, "");
+    const filteredVouchers = normalizedSearch
+      ? allVouchers.filter((voucher) => {
+          const totalDebit = voucher.particulars.filter((entry) => entry.type === "Debit").reduce((sum, entry) => sum + Number(entry.amount), 0);
+          const totalCredit = voucher.particulars.filter((entry) => entry.type === "Credit").reduce((sum, entry) => sum + Number(entry.amount), 0);
+          const voucherDate = new Date(voucher.date);
+          const searchableValues = [voucher.id, voucher.voucherNo, voucher.narration, voucherDate.toISOString().slice(0, 10), voucherDate.toLocaleDateString("en-GB"), totalDebit, totalCredit, totalDebit.toLocaleString("en-US"), totalCredit.toLocaleString("en-US")];
+          return searchableValues.some((value) => String(value ?? "").toLowerCase().replace(/,/g, "").includes(normalizedSearch));
+        })
+      : allVouchers;
+
+    const total = filteredVouchers.length;
+    const vouchers = filteredVouchers.slice(skip, skip + take);
 
     res.status(200).json({
       success: true,
@@ -273,6 +271,7 @@ export const getVoucherById = async (req: Request, res: Response) => {
             },
           },
         },
+        attachments: true,
       },
     });
 
@@ -311,7 +310,7 @@ export const updateVoucher = async (
 
   const session = await prisma.$transaction(async (tx) => {
     try {
-      const { branchId, type, date, narration, entries } = req.body;
+      const { branchId, type, date, narration, entries, attachments = [] } = req.body;
       const voucherDate = date ? new Date(date) : new Date();
 
       // 🔍 1️⃣ Voucher check
@@ -323,6 +322,7 @@ export const updateVoucher = async (
               particular: { include: { ledger: { include: { group: true } } } },
             },
           },
+          attachments: true,
         },
       });
 
@@ -352,50 +352,41 @@ export const updateVoucher = async (
         const ledger = oldEntry.particular.ledger;
         const accountType = ledger.group.account;
 
-        let rollbackLedgerBalance = ledger.balance;
-        let rollbackParticularBalance = oldEntry.particular.balance;
+        let rollbackLedgerDelta = 0;
+        let rollbackParticularDelta = 0;
 
         switch (accountType) {
           case "Assets":
           case "Expense":
-            rollbackLedgerBalance =
-              oldEntry.type === "Debit"
-                ? ledger.balance - oldEntry.amount
-                : ledger.balance + oldEntry.amount;
-            rollbackParticularBalance =
-              oldEntry.type === "Debit"
-                ? oldEntry.particular.balance - oldEntry.amount
-                : oldEntry.particular.balance + oldEntry.amount;
+            rollbackLedgerDelta = oldEntry.type === "Debit" ? -oldEntry.amount : oldEntry.amount;
+            rollbackParticularDelta = oldEntry.type === "Debit" ? -oldEntry.amount : oldEntry.amount;
             break;
-
           case "Liability":
           case "Equity":
           case "Income":
           case "Other_Accounts":
-            rollbackLedgerBalance =
-              oldEntry.type === "Debit"
-                ? ledger.balance + oldEntry.amount
-                : ledger.balance - oldEntry.amount;
-            rollbackParticularBalance =
-              oldEntry.type === "Debit"
-                ? oldEntry.particular.balance + oldEntry.amount
-                : oldEntry.particular.balance - oldEntry.amount;
+            rollbackLedgerDelta = oldEntry.type === "Debit" ? oldEntry.amount : -oldEntry.amount;
+            rollbackParticularDelta = oldEntry.type === "Debit" ? oldEntry.amount : -oldEntry.amount;
             break;
         }
 
         await tx.ledger.update({
           where: { id: ledger.id },
-          data: { balance: rollbackLedgerBalance },
+          data: { balance: { increment: rollbackLedgerDelta } },
         });
 
         await tx.particular.update({
           where: { id: oldEntry.particular.id },
-          data: { balance: rollbackParticularBalance },
+          data: { balance: { increment: rollbackParticularDelta } },
         });
       }
 
       // 🧹 4️⃣ Delete old entries
       await tx.particularOnVoucher.deleteMany({
+        where: { voucherId: existingVoucher.id },
+      });
+
+      await tx.voucherAttachment.deleteMany({
         where: { voucherId: existingVoucher.id },
       });
 
@@ -437,48 +428,45 @@ export const updateVoucher = async (
           },
         });
 
-        let newLedgerBalance = ledger.balance;
-        let newParticularBalance = particular.balance;
+        let ledgerDelta = 0;
+        let particularDelta = 0;
 
         switch (accountType) {
           case "Assets":
           case "Expense":
-            newLedgerBalance =
-              entry.type === "Debit"
-                ? ledger.balance + entry.amount
-                : ledger.balance - entry.amount;
-            newParticularBalance =
-              entry.type === "Debit"
-                ? particular.balance + entry.amount
-                : particular.balance - entry.amount;
+            ledgerDelta = entry.type === "Debit" ? entry.amount : -entry.amount;
+            particularDelta = entry.type === "Debit" ? entry.amount : -entry.amount;
             break;
-
           case "Liability":
           case "Equity":
           case "Income":
           case "Other_Accounts":
-            newLedgerBalance =
-              entry.type === "Debit"
-                ? ledger.balance - entry.amount
-                : ledger.balance + entry.amount;
-            newParticularBalance =
-              entry.type === "Debit"
-                ? particular.balance - entry.amount
-                : particular.balance + entry.amount;
+            ledgerDelta = entry.type === "Debit" ? -entry.amount : entry.amount;
+            particularDelta = entry.type === "Debit" ? -entry.amount : entry.amount;
             break;
         }
 
         await tx.ledger.update({
           where: { id: ledger.id },
-          data: { balance: newLedgerBalance },
+          data: { balance: { increment: ledgerDelta } },
         });
         await tx.particular.update({
           where: { id: particular.id },
-          data: { balance: newParticularBalance },
+          data: { balance: { increment: particularDelta } },
         });
+      }
 
-        ledger.balance = newLedgerBalance;
-        particular.balance = newParticularBalance;
+      if (attachments.length) {
+        await tx.voucherAttachment.createMany({
+          data: attachments.map((attachment: any) => ({
+            voucherId: updatedVoucher.id,
+            fileName: attachment.fileName || attachment.originalName || "attachment",
+            originalName: attachment.originalName || attachment.fileName || "attachment",
+            mimeType: attachment.mimeType || "application/octet-stream",
+            fileSize: Number(attachment.fileSize || 0),
+            fileUrl: attachment.fileUrl || attachment.url || "",
+          })),
+        });
       }
 
       // 🧠 8️⃣ Audit log
@@ -494,6 +482,7 @@ export const updateVoucher = async (
             type,
             narration,
             entries,
+            attachments,
           },
         },
       });
@@ -544,45 +533,32 @@ export const deleteVoucher = async (
         const ledger = entry.particular.ledger;
         const accountType = ledger.group.account;
 
-        let rollbackLedgerBalance = ledger.balance;
-        let rollbackParticularBalance = entry.particular.balance;
+        let rollbackLedgerDelta = 0;
+        let rollbackParticularDelta = 0;
 
         switch (accountType) {
           case "Assets":
           case "Expense":
-            rollbackLedgerBalance =
-              entry.type === "Debit"
-                ? ledger.balance - entry.amount
-                : ledger.balance + entry.amount;
-            rollbackParticularBalance =
-              entry.type === "Debit"
-                ? entry.particular.balance - entry.amount
-                : entry.particular.balance + entry.amount;
+            rollbackLedgerDelta = entry.type === "Debit" ? -entry.amount : entry.amount;
+            rollbackParticularDelta = entry.type === "Debit" ? -entry.amount : entry.amount;
             break;
-
           case "Liability":
           case "Equity":
           case "Income":
           case "Other_Accounts":
-            rollbackLedgerBalance =
-              entry.type === "Debit"
-                ? ledger.balance + entry.amount
-                : ledger.balance - entry.amount;
-            rollbackParticularBalance =
-              entry.type === "Debit"
-                ? entry.particular.balance + entry.amount
-                : entry.particular.balance - entry.amount;
+            rollbackLedgerDelta = entry.type === "Debit" ? entry.amount : -entry.amount;
+            rollbackParticularDelta = entry.type === "Debit" ? entry.amount : -entry.amount;
             break;
         }
 
         await tx.ledger.update({
           where: { id: ledger.id },
-          data: { balance: rollbackLedgerBalance },
+          data: { balance: { increment: rollbackLedgerDelta } },
         });
 
         await tx.particular.update({
           where: { id: entry.particular.id },
-          data: { balance: rollbackParticularBalance },
+          data: { balance: { increment: rollbackParticularDelta } },
         });
       }
 

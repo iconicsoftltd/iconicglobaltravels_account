@@ -11,6 +11,30 @@ import { FaEarthAfrica, FaFilePdf, FaLocationArrow, FaPhone } from "react-icons/
 import { GrNotes } from "react-icons/gr";
 import { useNavigate, useParams } from "react-router-dom";
 
+const normalizeAttachmentUrl = (value?: string) => {
+  if (!value) return "";
+  const normalized = value.trim();
+  if (!normalized) return "";
+  const apiOrigin = (import.meta.env.VITE_API_URL || "http://localhost:4003/api/v1").replace(/\/api\/v1\/?$/, "");
+
+  if (normalized.startsWith("/uploads") || normalized.startsWith("uploads/")) {
+    return encodeURI(`${apiOrigin}/${normalized.replace(/^\/+/, "")}`);
+  }
+
+  // Older uploads may contain localhost URLs saved by the backend. Resolve
+  // them against the current deployment instead of the user's own computer.
+  if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\//i.test(normalized)) {
+    try {
+      const parsed = new URL(normalized);
+      return encodeURI(`${apiOrigin}${parsed.pathname}${parsed.search}${parsed.hash}`);
+    } catch {
+      return encodeURI(normalized);
+    }
+  }
+
+  return encodeURI(normalized);
+};
+
 const ViewSinglePaymentVoucherList = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -22,6 +46,7 @@ const ViewSinglePaymentVoucherList = () => {
   if (!singleVoucher?.data) return <p>No voucher found</p>;
 
   const voucher = singleVoucher.data;
+  const attachmentList = voucher.attachments || [];
 
   // ✅ Calculate totals
   const totalDebit = voucher.particulars
@@ -175,6 +200,55 @@ const ViewSinglePaymentVoucherList = () => {
         <div className="mt-6">
           <h3 className="font-semibold text-gray-700 mb-2">Notes</h3>
           <p>{voucher.narration}</p>
+        </div>
+      )}
+
+      {attachmentList.length > 0 && (
+        <div className="mt-6 rounded-md border border-gray-200 bg-slate-50 p-4">
+          <h3 className="font-semibold text-gray-700 mb-3">Attachments</h3>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            {attachmentList.map((attachment: any, index: number) => {
+              const fileUrl = normalizeAttachmentUrl(attachment.fileUrl || attachment.url || "");
+              const fileName = attachment.originalName || attachment.fileName || `Attachment ${index + 1}`;
+              const attachmentHints = `${fileName} ${attachment.fileName || ""} ${attachment.originalName || ""} ${fileUrl}`;
+              const extension = (fileName.split(".").pop() || "").toLowerCase();
+              const isImage = /image\//i.test(String(attachment.mimeType || "")) || /\.(png|jpe?g|gif|webp|svg|bmp|ico|jfif|avif|heic|heif)$/i.test(attachmentHints);
+
+              return (
+                <div key={`${fileName}-${index}`} className="rounded-md border border-gray-200 bg-white p-3">
+                  {fileUrl && isImage ? (
+                    <img
+                      src={fileUrl}
+                      alt={fileName}
+                      className="h-28 w-full rounded object-cover"
+                      onError={(event) => {
+                        const target = event.currentTarget as HTMLImageElement;
+                        target.style.display = "none";
+                        target.parentElement?.setAttribute("data-preview-failed", "true");
+                      }}
+                    />
+                  ) : fileUrl ? (
+                    <div className="flex h-28 items-center justify-center rounded border border-dashed border-gray-300 bg-gray-100 text-xs font-semibold uppercase tracking-wide text-gray-600">
+                      {extension || "FILE"}
+                    </div>
+                  ) : null}
+                  <div className="mt-2 flex items-center justify-between gap-3">
+                    <span className="truncate text-sm font-medium text-gray-700">{fileName}</span>
+                    {fileUrl ? (
+                      <a
+                        href={fileUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded bg-primary px-2 py-1 text-xs text-white hover:bg-primary/90"
+                      >
+                        Open
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 

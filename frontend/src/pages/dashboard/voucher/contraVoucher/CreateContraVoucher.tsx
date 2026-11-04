@@ -40,29 +40,19 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectDatePermission } from "@/components/store/store";
 
-const isCashOrBank = (item: any) => {
-  // const accountType = String(item?.accountType || item?.name || "")
-  //   .trim()
-  //   .toLowerCase();
-  const ledgerType = String(item?.ledger?.ledgerType || "")
-    .trim()
-    .toLowerCase();
-
-  return ["cash", "bank", "bkash", "nagad"].includes(ledgerType);
+const normalizeOptionText = (value: unknown) => String(value ?? "").trim().toLowerCase();
+const isReceiptDebitOption = (item: any) => {
+  const ledgerName = normalizeOptionText(item?.ledger?.ledgerType);
+  const accountName = normalizeOptionText(item?.accountType || item?.name);
+  const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
+  const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
+  const isCashBank = [ledgerName, accountName].some((name) => /^(cash|cash in hand|cash at bank|bank|bkash|nagad)$/.test(name));
+  return (groupName.includes("current asset") || groupAccount === "assets") && isCashBank;
 };
-
-const uniqueCashBankOptions = (items: any[] = []) => {
-  const optionMap = new Map<string, any>();
-
-  items.filter(isCashOrBank).forEach((item) => {
-    const key = String(item?.accountType || item?.name || item?.id)
-      .trim()
-      .toLowerCase();
-
-    if (!optionMap.has(key)) optionMap.set(key, item);
-  });
-
-  return Array.from(optionMap.values()).sort((a, b) => { const order: Record<string, number> = { cash: 0, bank: 1, bkash: 2, nagad: 3 }; const aType = String(a?.ledger?.ledgerType || "").trim().toLowerCase(); const bType = String(b?.ledger?.ledgerType || "").trim().toLowerCase(); return (order[aType] ?? 99) - (order[bType] ?? 99); });
+const uniqueVoucherOptions = (items: any[] = []) => {
+  const seen = new Map<string, any>();
+  items.forEach((item) => { const key = String(item?.id ?? item?.accountType ?? item?.name); if (!seen.has(key)) seen.set(key, item); });
+  return Array.from(seen.values());
 };
 
 const CreateContraVoucher = () => {
@@ -104,7 +94,7 @@ const CreateContraVoucher = () => {
   });
 
   // Contra rule: both Dr and Cr only show Cash/Bank particulars
-  const cashBankOptions = uniqueCashBankOptions(accounts?.data || []);
+  const cashBankOptions = uniqueVoucherOptions((accounts?.data || []).filter(isReceiptDebitOption));
   const filteredCashBankOptions = cashBankOptions.filter((item: any) =>
     String(item?.accountType || item?.name || "")
       .toLowerCase()

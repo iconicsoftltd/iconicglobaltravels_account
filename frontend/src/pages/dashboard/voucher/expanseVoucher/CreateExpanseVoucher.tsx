@@ -45,57 +45,25 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectDatePermission } from "@/components/store/store";
 
-const isAllowedParticular = (item: any) => {
-  const names = [
-    item?.accountType,
-    item?.name,
-    item?.ledger?.ledgerType,
-    item?.ledger?.group?.account,
-  ]
-    .filter(Boolean)
-    .map((value) => String(value).trim().toLowerCase());
-
-  return !names.some(
-    (name) =>
-      name.includes("receivable") ||
-      name.includes("received"),
-  );
+const normalizeOptionText = (value: unknown) => String(value ?? "").trim().toLowerCase();
+const isCashBankOption = (item: any) =>
+  [normalizeOptionText(item?.ledger?.ledgerType), normalizeOptionText(item?.accountType || item?.name)]
+    .some((name) => /^(cash|cash in hand|cash at bank|bank|bkash|nagad)$/.test(name));
+const isCurrentAssetOption = (item: any) => {
+  const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
+  const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
+  return groupName.includes("current asset") || (groupAccount === "assets" && !groupName.includes("fixed asset"));
 };
-
-const isCOGS = (item: any) => {
-  const names = [item?.accountType, item?.name, item?.ledger?.ledgerType]
-    .filter(Boolean)
-    .map((value) => String(value).trim().toLowerCase());
-
-  return names.some((name) => name.includes("cogs"));
+const isExpenseDebitOption = (item: any) => {
+  const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
+  return groupName.includes("indirect expense") || groupName.includes("fixed asset") ||
+    (isCurrentAssetOption(item) && !isCashBankOption(item));
 };
-
-const isCashOrBank = (item: any) => {
-  // const accountType = String(item?.accountType || item?.name || "")
-  //   .trim()
-  //   .toLowerCase();
-  const ledgerType = String(item?.ledger?.ledgerType || "")
-    .trim()
-    .toLowerCase();
-
-  return ["cash", "bank", "bkash", "nagad"].includes(ledgerType);
-};
-
-const isExcludedExpenseDebit = (item: any) => {
-  const ledgerName = String(item?.ledger?.ledgerType || "").trim().toLowerCase();
-  return ["sale", "obtaining short term loan", "obtaining long term loan", "cogs"].includes(ledgerName);
-};const uniqueCashBankOptions = (items: any[] = []) => {
-  const optionMap = new Map<string, any>();
-
-  items.filter(isCashOrBank).forEach((item) => {
-    const key = String(item?.accountType || item?.name || item?.id)
-      .trim()
-      .toLowerCase();
-
-    if (!optionMap.has(key)) optionMap.set(key, item);
-  });
-
-  return Array.from(optionMap.values()).sort((a, b) => { const order: Record<string, number> = { cash: 0, bank: 1, bkash: 2, nagad: 3 }; const aType = String(a?.ledger?.ledgerType || "").trim().toLowerCase(); const bType = String(b?.ledger?.ledgerType || "").trim().toLowerCase(); return (order[aType] ?? 99) - (order[bType] ?? 99); });
+const isReceiptDebitOption = (item: any) => isCurrentAssetOption(item) && isCashBankOption(item);
+const uniqueVoucherOptions = (items: any[] = []) => {
+  const seen = new Map<string, any>();
+  items.forEach((item) => { const key = String(item?.id ?? item?.accountType ?? item?.name); if (!seen.has(key)) seen.set(key, item); });
+  return Array.from(seen.values());
 };
 
 const CreateExpanseVoucher = () => {
@@ -141,12 +109,9 @@ const CreateExpanseVoucher = () => {
     },
   });
 
-  const particularOptions =
-    allParticulars?.data?.filter(isAllowedParticular) || [];
-
-  // Expense rule: Debit side = everything except COGS, Credit side = only Cash/Bank
-  const debitOptions = particularOptions.filter((item: any) => !isCOGS(item) && !isExcludedExpenseDebit(item) && !isCashOrBank(item));
-  const creditOptions = uniqueCashBankOptions(accounts?.data || []);
+  const allOptions = allParticulars?.data || [];
+  const debitOptions = uniqueVoucherOptions(allOptions.filter(isExpenseDebitOption));
+  const creditOptions = uniqueVoucherOptions((accounts?.data || []).filter(isReceiptDebitOption));
 
   const filterParticularOptions = (options: any[] = []) => {
     const query = searchTerm.trim().toLowerCase();

@@ -56,49 +56,27 @@ import {
 import { useSelector } from "react-redux";
 import { selectDatePermission } from "@/components/store/store";
 
-const isAllowedParticular = (item: any) => {
-  const names = [
-    item?.accountType,
-    item?.name,
-    item?.ledger?.ledgerType,
-    item?.ledger?.group?.account,
-  ]
-    .filter(Boolean)
-    .map((value) => String(value).trim().toLowerCase());
-
-  return !names.some(
-    (name) =>
-      name.includes("payable") ||
-      name.includes("paid"),
-  );
+const normalizeOptionText = (value: unknown) => String(value ?? "").trim().toLowerCase();
+const isCashBankOption = (item: any) =>
+  [normalizeOptionText(item?.ledger?.ledgerType), normalizeOptionText(item?.accountType || item?.name)]
+    .some((name) => /^(cash|cash in hand|cash at bank|bank|bkash|nagad)$/.test(name));
+const isCurrentAssetOption = (item: any) => {
+  const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
+  const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
+  return groupName.includes("current asset") || (groupAccount === "assets" && !groupName.includes("fixed asset"));
 };
-
-const isCashOrBank = (item: any) => {
-  // const accountType = String(item?.accountType || item?.name || "")
-  //   .trim()
-  //   .toLowerCase();
-  const ledgerType = String(item?.ledger?.ledgerType || "")
-    .trim()
-    .toLowerCase();
-
-  return ["cash", "bank", "bkash", "nagad"].includes(ledgerType);
+const isReceiptDebitOption = (item: any) => isCurrentAssetOption(item) && isCashBankOption(item);
+const isReceiptCreditOption = (item: any) => {
+  if (isCurrentAssetOption(item)) return !isCashBankOption(item);
+  const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
+  const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
+  return groupAccount === "income" || groupAccount === "liability" || groupAccount === "equity" ||
+    /income|non.?operating|short.?term liability|long.?term liability|equity/.test(groupName);
 };
-
-const isReceiptCreditParticular = (item: any) => {
-  const ledgerName = String(item?.ledger?.ledgerType || "").trim().toLowerCase();
-  return ["sale", "obtaining short term loan", "obtaining long term loan"].includes(ledgerName);
-};const uniqueCashBankOptions = (items: any[] = []) => {
-  const optionMap = new Map<string, any>();
-
-  items.filter(isCashOrBank).forEach((item) => {
-    const key = String(item?.accountType || item?.name || item?.id)
-      .trim()
-      .toLowerCase();
-
-    if (!optionMap.has(key)) optionMap.set(key, item);
-  });
-
-  return Array.from(optionMap.values()).sort((a, b) => { const order: Record<string, number> = { cash: 0, bank: 1, bkash: 2, nagad: 3 }; const aType = String(a?.ledger?.ledgerType || "").trim().toLowerCase(); const bType = String(b?.ledger?.ledgerType || "").trim().toLowerCase(); return (order[aType] ?? 99) - (order[bType] ?? 99); });
+const uniqueVoucherOptions = (items: any[] = []) => {
+  const seen = new Map<string, any>();
+  items.forEach((item) => { const key = String(item?.id ?? item?.accountType ?? item?.name); if (!seen.has(key)) seen.set(key, item); });
+  return Array.from(seen.values());
 };
 
 const CreateReceiptVoucherList = () => {
@@ -160,9 +138,9 @@ const CreateReceiptVoucherList = () => {
 
   if (accountsLoading || particularLoading) return <HomeLoader />;
 
-  const particularOptions =
-    allParticulars?.data?.filter(isAllowedParticular) || [];
-  const cashBankOptions = uniqueCashBankOptions(accounts?.data || []);
+  const allOptions = allParticulars?.data || [];
+  const cashBankOptions = uniqueVoucherOptions((accounts?.data || []).filter(isReceiptDebitOption));
+  const receiptCreditOptions = uniqueVoucherOptions(allOptions.filter(isReceiptCreditOption));
 
   const uploadFiles = async (files: File[]) => {
     if (!files.length) return [];
@@ -265,7 +243,7 @@ const CreateReceiptVoucherList = () => {
             const options =
               entryType === "Debit"
                 ? cashBankOptions
-                : particularOptions.filter(isReceiptCreditParticular);
+                : receiptCreditOptions;
 
             const selectedParticular = options?.find(
               (opt: any) => opt.id === entry?.particularId,

@@ -7,6 +7,21 @@ const toNumber = (value: Prisma.Decimal | number | string | null | undefined) =>
 
 const money = (value: number) => new Prisma.Decimal(value.toFixed(2));
 
+async function removeLinkedVoucher(tx: Prisma.TransactionClient, voucher: any) {
+  for (const entry of voucher.particulars || []) {
+    const account = entry.particular.ledger.group.account;
+    const delta = account === "Assets" || account === "Expense"
+      ? (entry.type === "Debit" ? -Number(entry.amount) : Number(entry.amount))
+      : (entry.type === "Debit" ? Number(entry.amount) : -Number(entry.amount));
+    await tx.ledger.update({ where: { id: entry.particular.ledger.id }, data: { balance: { increment: delta } } });
+    await tx.particular.update({ where: { id: entry.particular.id }, data: { balance: { increment: delta } } });
+  }
+  await tx.particularOnVoucher.deleteMany({ where: { voucherId: voucher.id } });
+  await tx.voucherAttachment.deleteMany({ where: { voucherId: voucher.id } });
+  await tx.voucherAudit.deleteMany({ where: { voucherId: voucher.id } });
+  await tx.voucher.delete({ where: { id: voucher.id } });
+}
+
 const accountDelta = (account: string, entryType: "Debit" | "Credit", amount: number) => {
   const debitIncreases = account === "Assets" || account === "Expense";
   return debitIncreases === (entryType === "Debit") ? amount : -amount;
@@ -386,6 +401,11 @@ export const updateDraftInvoice = async (req: Request, res: Response, next: Next
         },
         include: { items: true },
       });
+      const linkedVouchers = await tx.invoiceVoucher.findMany({ where: { invoiceId }, select: { voucherId: true } });
+      if (linkedVouchers.length) {
+        await tx.voucher.updateMany({ where: { id: { in: linkedVouchers.map((link) => link.voucherId) } }, data: { date: invoiceDate } });
+      }
+      await tx.invoicePayment.updateMany({ where: { invoiceId }, data: { paymentDate: invoiceDate } });
       await tx.invoiceAuditLog.create({ data: { invoiceId, branchId, userId: req.user?.id, action: "UPDATE_FINAL", description: `Final invoice ${existing.invoiceNo} details updated without changing payment history`, data: { alreadyPaidAmount, dueAmount } } });
       return updated;
     });
@@ -600,6 +620,14 @@ export const restoreDraftInvoice = async (req: Request, res: Response, next: Nex
       const branchId = Number(req.body.branchId);
       if (invoice.branchId !== branchId) throw new Error("Invoice does not belong to the selected branch");
 
+      const linkedVouchers = await tx.invoiceVoucher.findMany({ where: { invoiceId }, select: { voucherId: true } });
+      if (linkedVouchers.length) {
+        const vouchers = await tx.voucher.findMany({
+          where: { id: { in: linkedVouchers.map((link) => link.voucherId) } },
+          include: { particulars: { include: { particular: { include: { ledger: { include: { group: true } } } } } } },
+        });
+        for (const voucher of vouchers) await removeLinkedVoucher(tx, voucher);
+      }
       await tx.invoicePayment.deleteMany({ where: { invoiceId } });
       await tx.invoiceVoucher.deleteMany({ where: { invoiceId } });
 

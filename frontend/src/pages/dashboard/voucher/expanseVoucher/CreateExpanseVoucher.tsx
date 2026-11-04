@@ -78,8 +78,8 @@ const CreateExpanseVoucher = () => {
 
   const { data: accounts, isLoading: accountsLoading } =
     useGetAllAccountsParticularQuery({});
-  const {  isLoading: customerLoading } =
-    useGetAllExpenseParticularQuery({});
+  const { data: expenseParticulars, isLoading: customerLoading } =
+    useGetAllExpenseParticularQuery({ size: 1000 });
   const { data: allParticulars, isLoading: particularLoading } =
     useGetAllParticularQuery({ size: 1000 });
 
@@ -109,7 +109,10 @@ const CreateExpanseVoucher = () => {
     },
   });
 
-  const allOptions = allParticulars?.data || [];
+  const allOptions = [
+    ...(allParticulars?.data || []),
+    ...(expenseParticulars?.data || []),
+  ];
   const debitOptions = uniqueVoucherOptions(allOptions.filter(isExpenseDebitOption));
   const creditOptions = uniqueVoucherOptions((accounts?.data || []).filter(isReceiptDebitOption));
 

@@ -49,34 +49,15 @@ const normalizeOptionText = (value: unknown) => String(value ?? "").trim().toLow
 const isCashBankOption = (item: any) =>
   [normalizeOptionText(item?.ledger?.ledgerType), normalizeOptionText(item?.accountType || item?.name)]
     .some((name) => /^(cash|cash in hand|cash at bank|bank|bkash|nagad)$/.test(name));
-const isReceivableOption = (item: any) =>
-  [
-    normalizeOptionText(item?.ledger?.ledgerType),
-    normalizeOptionText(item?.ledger?.group?.accountType),
-    normalizeOptionText(item?.accountType || item?.name),
-  ].some((name) => /^(accounts receivable|account receivable|receivable)$/.test(name));
 const isCurrentAssetOption = (item: any) => {
   const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
   const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
-  const ledgerGroup = normalizeOptionText(item?.ledger?.ledgerType);
-  return groupName.includes("current asset") || ledgerGroup.includes("current asset") ||
-    (groupAccount === "assets" && !groupName.includes("fixed asset") && !ledgerGroup.includes("fixed asset"));
+  return groupName.includes("current asset") || (groupAccount === "assets" && !groupName.includes("fixed asset"));
 };
 const isExpenseDebitOption = (item: any) => {
   const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
-  const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
-  const ledgerGroup = normalizeOptionText(item?.ledger?.ledgerType);
-  const itemGroup = normalizeOptionText(item?.group?.accountType || item?.groupName);
-  const optionName = normalizeOptionText(item?.accountType || item?.name);
-  const isDirectExpense = [groupName, ledgerGroup, itemGroup, optionName].some(
-    (value) => value === "direct expense" || value === "cogs" || value === "cost of goods sold",
-  );
-  if (isDirectExpense) return false;
-  return groupName.includes("indirect expense") || ledgerGroup.includes("indirect expense") ||
-    itemGroup.includes("indirect expense") ||
-    groupAccount === "expense" ||
-    groupName.includes("fixed asset") || ledgerGroup.includes("fixed asset") ||
-    (isCurrentAssetOption(item) && !isCashBankOption(item) && !isReceivableOption(item));
+  return groupName.includes("indirect expense") || groupName.includes("fixed asset") ||
+    (isCurrentAssetOption(item) && !isCashBankOption(item));
 };
 const isReceiptDebitOption = (item: any) => isCurrentAssetOption(item) && isCashBankOption(item);
 const uniqueVoucherOptions = (items: any[] = []) => {
@@ -97,8 +78,8 @@ const CreateExpanseVoucher = () => {
 
   const { data: accounts, isLoading: accountsLoading } =
     useGetAllAccountsParticularQuery({});
-  const { data: expenseParticulars, isLoading: customerLoading } =
-    useGetAllExpenseParticularQuery({ size: 1000 });
+  const {  isLoading: customerLoading } =
+    useGetAllExpenseParticularQuery({});
   const { data: allParticulars, isLoading: particularLoading } =
     useGetAllParticularQuery({ size: 1000 });
 
@@ -128,10 +109,7 @@ const CreateExpanseVoucher = () => {
     },
   });
 
-  const allOptions = [
-    ...(allParticulars?.data || []),
-    ...(expenseParticulars?.data || []),
-  ];
+  const allOptions = allParticulars?.data || [];
   const debitOptions = uniqueVoucherOptions(allOptions.filter(isExpenseDebitOption));
   const creditOptions = uniqueVoucherOptions((accounts?.data || []).filter(isReceiptDebitOption));
 

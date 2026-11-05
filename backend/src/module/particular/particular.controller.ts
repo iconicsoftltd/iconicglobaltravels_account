@@ -566,14 +566,7 @@ export const getAllAccounts = async (req: Request, res: Response) => {
 
     const particulars = await prisma.particular.findMany({
       where: {
-        ledger: {
-          ledgerType: {
-            in: ["Cash", "Bank"],
-          },
-        },
-        accountType: {
-          in: ["Cash", "Bank"],
-        },
+        OR: [{ ledger: { ledgerType: "Cash" } }, { ledger: { ledgerType: "Bank" } }, { ledger: { ledgerType: "Bkash" } }, { ledger: { ledgerType: "Nagad" } }],
         branchId: Number(branchId),
         AND: whereCondition,
       },
@@ -591,14 +584,7 @@ export const getAllAccounts = async (req: Request, res: Response) => {
 
     const total = await prisma.particular.count({
       where: {
-        ledger: {
-          ledgerType: {
-            in: ["Cash", "Bank"],
-          },
-        },
-        accountType: {
-          in: ["Cash", "Bank"],
-        },
+        OR: [{ ledger: { ledgerType: "Cash" } }, { ledger: { ledgerType: "Bank" } }, { ledger: { ledgerType: "Bkash" } }, { ledger: { ledgerType: "Nagad" } }],
         branchId: Number(branchId),
         AND: whereCondition,
       },

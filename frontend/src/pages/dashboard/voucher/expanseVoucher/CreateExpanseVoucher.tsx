@@ -52,11 +52,19 @@ const isCashBankOption = (item: any) =>
 const isCurrentAssetOption = (item: any) => {
   const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
   const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
-  return groupName.includes("current asset") || (groupAccount === "assets" && !groupName.includes("fixed asset"));
+  const ledgerGroup = normalizeOptionText(item?.ledger?.ledgerType);
+  return groupName.includes("current asset") || ledgerGroup.includes("current asset") ||
+    (groupAccount === "assets" && !groupName.includes("fixed asset") && !ledgerGroup.includes("fixed asset"));
 };
 const isExpenseDebitOption = (item: any) => {
   const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
-  return groupName.includes("indirect expense") || groupName.includes("fixed asset") ||
+  const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
+  const ledgerGroup = normalizeOptionText(item?.ledger?.ledgerType);
+  const itemGroup = normalizeOptionText(item?.group?.accountType || item?.groupName);
+  return groupName.includes("indirect expense") || ledgerGroup.includes("indirect expense") ||
+    itemGroup.includes("indirect expense") ||
+    (groupAccount === "expense" && !groupName.includes("direct expense") && !ledgerGroup.includes("direct expense")) ||
+    groupName.includes("fixed asset") || ledgerGroup.includes("fixed asset") ||
     (isCurrentAssetOption(item) && !isCashBankOption(item));
 };
 const isReceiptDebitOption = (item: any) => isCurrentAssetOption(item) && isCashBankOption(item);

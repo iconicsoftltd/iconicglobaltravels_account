@@ -66,7 +66,10 @@ const isCurrentAssetOption = (item: any) => {
   return groupName.includes("current asset") || (groupAccount === "assets" && !groupName.includes("fixed asset"));
 };
 const isReceiptDebitOption = (item: any) => isCurrentAssetOption(item) && isCashBankOption(item);
+const isAccountsPayableOption = (item: any) =>
+  normalizeOptionText(item?.ledger?.ledgerType).includes("accounts payable");
 const isReceiptCreditOption = (item: any) => {
+  if (isAccountsPayableOption(item)) return false;
   if (isCurrentAssetOption(item)) return !isCashBankOption(item);
   const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
   const groupAccount = normalizeOptionText(item?.ledger?.group?.account);

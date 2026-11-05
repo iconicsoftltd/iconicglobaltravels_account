@@ -28,7 +28,7 @@ import { Calendar } from "@/components/ui/calendar";
 
 import {
   useGetAllAccountsParticularQuery,
-  useGetAllExpenseParticularQuery,
+  useGetAllParticularQuery,
 } from "@/components/store/api/particularAccount/particularAccountApi";
 import {
   useGetVoucherByIdQuery,
@@ -63,10 +63,36 @@ const isCashOrBank = (item: any) => {
   return ["cash", "bank", "bkash", "nagad"].includes(ledgerType);
 };
 
-const isExcludedExpenseDebit = (item: any) => {
-  const ledgerName = String(item?.ledger?.ledgerType || "").trim().toLowerCase();
-  return ["sale", "obtaining short term loan", "obtaining long term loan", "cogs"].includes(ledgerName);
-};const uniqueCashBankOptions = (items: any[] = []) => {
+const normalizeOptionText = (value: unknown) => String(value ?? "").trim().toLowerCase();
+const isCurrentAssetOption = (item: any) => {
+  const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
+  const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
+  return groupName.includes("current asset") || (groupAccount === "assets" && !groupName.includes("fixed asset"));
+};
+const isAccountsPayableLiabilityOption = (item: any) => {
+  const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
+  const ledgerType = normalizeOptionText(item?.ledger?.ledgerType);
+  return /(?:short|long)\s*term\s*liabilit(?:y|ies)/.test(groupName) && ledgerType.includes("accounts payable");
+};
+const isExpenseDebitOption = (item: any) => {
+  const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
+  const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
+  const ledgerType = normalizeOptionText(item?.ledger?.ledgerType);
+  const itemGroup = normalizeOptionText(item?.group?.accountType || item?.groupName);
+  const optionName = normalizeOptionText(item?.accountType || item?.name);
+  const isDirectExpense = [groupName, ledgerType, itemGroup, optionName].some(
+    (value) => value === "direct expense" || value === "cogs" || value === "cost of goods sold",
+  );
+  if (isDirectExpense) return false;
+  return groupName.includes("indirect expense") || ledgerType.includes("indirect expense") ||
+    itemGroup.includes("indirect expense") || groupName.includes("fixed asset") || ledgerType.includes("fixed asset") ||
+    isAccountsPayableLiabilityOption(item) ||
+    (groupAccount === "expense" && !groupName.includes("direct expense")) ||
+    (isCurrentAssetOption(item) && !isCashOrBank(item) && ![
+      "accounts receivable", "account receivable", "receivable",
+    ].includes(optionName));
+};
+const uniqueCashBankOptions = (items: any[] = []) => {
   const optionMap = new Map<string, any>();
 
   items.filter(isCashOrBank).forEach((item) => {
@@ -95,8 +121,8 @@ const EditExpenseVoucher = () => {
 
   const { data: accounts, isLoading: accountsLoading } =
     useGetAllAccountsParticularQuery({});
-  const { data: customers, isLoading: customersLoading } =
-    useGetAllExpenseParticularQuery({});
+  const { data: allParticulars, isLoading: particularLoading } =
+    useGetAllParticularQuery({ size: 1000 });
   const { data: singleVoucher, isLoading: voucherLoading } =
     useGetVoucherByIdQuery(id);
 
@@ -152,7 +178,7 @@ const EditExpenseVoucher = () => {
     }
   }, [singleVoucher, reset]);
 
-  if (accountsLoading || customersLoading || voucherLoading)
+  if (accountsLoading || particularLoading || voucherLoading)
     return <HomeLoader />;
 
   const entries = watch("entries");
@@ -295,7 +321,9 @@ const EditExpenseVoucher = () => {
         {/* Rows */}
         {fields.map((field, index) => {
           const isAccount = index === 0;
-          const options = isAccount ? (customers?.data || []).filter((item: any) => !isExcludedExpenseDebit(item) && !isCashOrBank(item)) : cashBankOptions;
+          const options = isAccount
+            ? (allParticulars?.data || []).filter(isExpenseDebitOption)
+            : cashBankOptions;
 
           return (
             <div

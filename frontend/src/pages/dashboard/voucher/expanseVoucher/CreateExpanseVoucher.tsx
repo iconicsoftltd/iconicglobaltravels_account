@@ -60,6 +60,12 @@ const isCurrentAssetOption = (item: any) => {
   const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
   return groupName.includes("current asset") || (groupAccount === "assets" && !groupName.includes("fixed asset"));
 };
+const isAccountsPayableLiabilityOption = (item: any) => {
+  const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
+  const ledgerType = normalizeOptionText(item?.ledger?.ledgerType);
+  const isTermLiability = /(?:short|long)\s*term\s*liabilit(?:y|ies)/.test(groupName);
+  return isTermLiability && ledgerType.includes("accounts payable");
+};
 const isExpenseDebitOption = (item: any) => {
   const groupName = normalizeOptionText(item?.ledger?.group?.accountType);
   const groupAccount = normalizeOptionText(item?.ledger?.group?.account);
@@ -72,6 +78,7 @@ const isExpenseDebitOption = (item: any) => {
   if (isDirectExpense) return false;
   return groupName.includes("indirect expense") || ledgerGroup.includes("indirect expense") ||
     itemGroup.includes("indirect expense") || groupName.includes("fixed asset") || ledgerGroup.includes("fixed asset") ||
+    isAccountsPayableLiabilityOption(item) ||
     (groupAccount === "expense" && !groupName.includes("direct expense")) ||
     (isCurrentAssetOption(item) && !isCashBankOption(item) && !isReceivableOption(item));
 };

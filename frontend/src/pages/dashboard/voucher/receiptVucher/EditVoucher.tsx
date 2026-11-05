@@ -50,6 +50,11 @@ import type { FormData } from "@/schemas/voucher/voucherSchema";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectDatePermission } from "@/components/store/store";
+const getVoucherOptionLabel = (item: any) => {
+  const particular = item?.accountType || item?.name || "";
+  const ledger = item?.ledger?.ledgerType || "";
+  return particular && ledger ? `${particular} (${ledger})` : particular || ledger || "Unnamed";
+};
 const isCashOrBank = (item: any) => {
   // const accountType = String(item?.accountType || item?.name || "")
   //   .trim()
@@ -404,7 +409,7 @@ const EditVoucher = () => {
                           String(item?.accountType || "").toLowerCase().includes(particularSearch.toLowerCase())
                         ).map((item: any) => (
                           <SelectItem key={item.id} value={item.id.toString()}>
-                            {item.accountType}
+                            {getVoucherOptionLabel(item)}
                           </SelectItem>
                         ))}
                       </SelectContent>

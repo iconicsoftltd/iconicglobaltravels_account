@@ -57,6 +57,11 @@ import { useSelector } from "react-redux";
 import { selectDatePermission } from "@/components/store/store";
 
 const normalizeOptionText = (value: unknown) => String(value ?? "").trim().toLowerCase();
+const getVoucherOptionLabel = (item: any) => {
+  const particular = item?.accountType || item?.name || "";
+  const ledger = item?.ledger?.ledgerType || "";
+  return particular && ledger ? `${particular} (${ledger})` : particular || ledger || "Unnamed";
+};
 const isCashBankOption = (item: any) =>
   [normalizeOptionText(item?.ledger?.ledgerType), normalizeOptionText(item?.accountType || item?.name)]
     .some((name) => /^(cash|cash in hand|cash at bank|bank|bkash|nagad)$/.test(name));
@@ -307,11 +312,7 @@ const CreateReceiptVoucherList = () => {
                           }
                         }}
                           >
-                            {selectedParticular?.accountType ||
-                              selectedParticular?.name ||
-                              selectedParticular?.ledger?.ledgerType ||
-                              selectedParticular?.ledger?.group?.account ||
-                              "Select Particular"}
+                            {selectedParticular ? getVoucherOptionLabel(selectedParticular) : "Select Particular"}
                             <ChevronsUpDown />
                           </Button>
                         </PopoverTrigger>
@@ -339,7 +340,7 @@ const CreateReceiptVoucherList = () => {
                                           : "opacity-0",
                                       )}
                                     />
-                                    {item.accountType || item.name}
+                                    {getVoucherOptionLabel(item)}
                                   </CommandItem>
                                 ))}
                               </CommandGroup>

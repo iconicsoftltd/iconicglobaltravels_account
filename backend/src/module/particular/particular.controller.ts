@@ -641,36 +641,70 @@ export const updateParticular = async (req: Request, res: Response) => {
   try {
     const { id } = req.user;
     const particularId = Number(req.params.id);
-    const { ...data } = req.body;
+    const { ledgerId: requestedLedgerId, ...data } = req.body;
+    const nextLedgerId = Number(requestedLedgerId);
 
-    const existing = await prisma.particular.findUnique({
-      where: { id: particularId },
+    const result = await prisma.$transaction(async (tx) => {
+      const existing = await tx.particular.findUnique({
+        where: { id: particularId },
+      });
+
+      if (!existing) return null;
+
+      if (requestedLedgerId !== undefined && !Number.isInteger(nextLedgerId)) {
+        throw new Error("A valid ledgerId is required");
+      }
+
+      const affectedLedgerIds = new Set([existing.ledgerId]);
+      if (requestedLedgerId !== undefined && nextLedgerId !== existing.ledgerId) {
+        const newLedger = await tx.ledger.findUnique({ where: { id: nextLedgerId } });
+        if (!newLedger) throw new Error("Ledger not found");
+        if (newLedger.branchId !== existing.branchId) {
+          throw new Error("Particular and ledger must belong to the same branch");
+        }
+        affectedLedgerIds.add(nextLedgerId);
+      }
+
+      const updated = await tx.particular.update({
+        where: { id: particularId },
+        data: {
+          ...data,
+          ...(requestedLedgerId !== undefined ? { ledgerId: nextLedgerId } : {}),
+        },
+      });
+
+      // Keep every affected ledger equal to the sum of its particulars.
+      for (const ledgerId of affectedLedgerIds) {
+        const aggregate = await tx.particular.aggregate({
+          where: { ledgerId },
+          _sum: { balance: true },
+        });
+        await tx.ledger.update({
+          where: { id: ledgerId },
+          data: { balance: aggregate._sum.balance ?? 0 },
+        });
+      }
+
+      await tx.particularLog.create({
+        data: {
+          branchId: updated.branchId,
+          ip: req.ip || "0.0.0.0",
+          updatedById: id,
+          particularId: updated.id,
+          data: updated,
+          action: "UPDATED",
+        },
+      });
+
+      return updated;
     });
 
-    if (!existing) {
+    if (!result) {
       return res.status(404).json({
         success: false,
         message: "Particular not found",
       });
     }
-
-    const result = await prisma.particular.update({
-      where: { id: particularId },
-      data: {
-        ...data,
-      },
-    });
-
-    await prisma.particularLog.create({
-      data: {
-        branchId: result.branchId,
-        ip: req.ip || "0.0.0.0",
-        updatedById: id,
-        particularId: result.id,
-        data: result,
-        action: "UPDATED",
-      },
-    });
 
     res.status(200).json({
       success: true,

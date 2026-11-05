@@ -144,7 +144,7 @@ export const particularAccountApi = apiSlice.injectEndpoints({
           body: { ...body, branchId },
         });
       },
-      invalidatesTags: ["particular"],
+      invalidatesTags: ["particular", "ledger"],
     }),
 
     // DELETE EMPLOYEE

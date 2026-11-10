@@ -11,6 +11,7 @@ const PdfSalesSummaryReport = (
 ) => {
   const logo = appConfiguration.logo;
   const report = reportData?.data;
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const doc = new jsPDF("portrait", "mm", "a4");
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -48,7 +49,7 @@ const PdfSalesSummaryReport = (
       index + 1,
       row.description || "-",
       {
-        content: `${currentCurrency.name} ${row.valueExcl?.toFixed(2) || "0.00"}`,
+        content: `${currencyLabel} ${row.valueExcl?.toFixed(2) || "0.00"}`,
         styles: { halign: "right" },
       },
       {
@@ -56,11 +57,11 @@ const PdfSalesSummaryReport = (
         styles: { halign: "right" },
       },
       {
-        content: `${currentCurrency.name} ${row.vatAmount?.toFixed(2) || "0.00"}`,
+        content: `${currencyLabel} ${row.vatAmount?.toFixed(2) || "0.00"}`,
         styles: { halign: "right" },
       },
       {
-        content: `${currentCurrency.name} ${row.sd?.toFixed(2) || "0.00"}`,
+        content: `${currencyLabel} ${row.sd?.toFixed(2) || "0.00"}`,
         styles: { halign: "right" },
       },
     ]) || [];
@@ -73,16 +74,16 @@ const PdfSalesSummaryReport = (
       styles: { fontStyle: "bold", halign: "right" },
     },
     {
-      content: `${currentCurrency.name} ${report?.totals?.totalValueExcl?.toFixed(2) || "0.00"}`,
+      content: `${currencyLabel} ${report?.totals?.totalValueExcl?.toFixed(2) || "0.00"}`,
       styles: { fontStyle: "bold", halign: "right" },
     },
     "",
     {
-      content: `${currentCurrency.name} ${report?.totals?.totalVatAmount?.toFixed(2) || "0.00"}`,
+      content: `${currencyLabel} ${report?.totals?.totalVatAmount?.toFixed(2) || "0.00"}`,
       styles: { fontStyle: "bold", halign: "right" },
     },
     {
-      content: `${currentCurrency.name} ${report?.totals?.totalSD?.toFixed(2) || "0.00"}`,
+      content: `${currencyLabel} ${report?.totals?.totalSD?.toFixed(2) || "0.00"}`,
       styles: { fontStyle: "bold", halign: "right" },
     },
   ]);

@@ -78,7 +78,7 @@ const InvoicePrint = (invoice: any, currentCurrency: any) => {
           .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
           .box { border: 1px solid #e5e7eb; padding: 12px; min-height: 112px; }
           table { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 12px; }
-          th { background: #BD06B3; color: #fff; text-align: left; padding: 9px; border: 1px solid #BD06B3; }
+          th { background: #BD06B3; color: #fff; text-align: left; padding: 9px; border: 1px solid #BD06B3; font-size: 13px; font-weight: 700; }
           td { padding: 9px; border: 1px solid #e5e7eb; vertical-align: top; }
           td span { display: block; margin-top: 3px; color: #6b7280; font-size: 11px; }
           .right { text-align: right; }

@@ -10,6 +10,7 @@ const PdfIncomeStatementReport = (
 ) => {
   const logo = appConfiguration.logo;
   const report = reportData?.data;
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   // Create new PDF document
   const doc = new jsPDF({
@@ -77,7 +78,7 @@ const PdfIncomeStatementReport = (
         item.account || "-",
         item.classification || "-",
         { 
-          content: `(${currentCurrency.name}) ${item.amount?.toFixed(2) || "0.00"}`,
+          content: `(${currencyLabel}) ${item.amount?.toFixed(2) || "0.00"}`,
           styles: { halign: 'right' }
         },
         ""
@@ -109,7 +110,7 @@ const PdfIncomeStatementReport = (
     { content: '', styles: { fillColor: [229, 231, 235] } },
     { content: '', styles: { fillColor: [229, 231, 235] } },
     { 
-      content: `(${currentCurrency.name}) ${report?.totalRevenue?.toFixed(2) || "0.00"}`,
+      content: `(${currencyLabel}) ${report?.totalRevenue?.toFixed(2) || "0.00"}`,
       styles: { 
         fontStyle: 'bold', 
         halign: 'right',
@@ -149,7 +150,7 @@ const PdfIncomeStatementReport = (
         item.account || "-",
         item.classification || "-",
         { 
-          content: `(${currentCurrency.name}) ${item.amount?.toFixed(2) || "0.00"}`,
+          content: `(${currencyLabel}) ${item.amount?.toFixed(2) || "0.00"}`,
           styles: { halign: 'right' }
         },
         ""
@@ -181,7 +182,7 @@ const PdfIncomeStatementReport = (
     { content: '', styles: { fillColor: [229, 231, 235] } },
     { content: '', styles: { fillColor: [229, 231, 235] } },
     { 
-      content: `(${currentCurrency.name}) ${report?.totalExpense?.toFixed(2) || "0.00"}`,
+      content: `(${currencyLabel}) ${report?.totalExpense?.toFixed(2) || "0.00"}`,
       styles: { 
         fontStyle: 'bold', 
         halign: 'right',
@@ -212,7 +213,7 @@ const PdfIncomeStatementReport = (
     { content: '', styles: { fillColor: netIncomeColor } },
     { content: '', styles: { fillColor: netIncomeColor } },
     { 
-      content: `(${currentCurrency.name}) ${report?.netIncome?.toFixed(2) || "0.00"}`,
+      content: `(${currencyLabel}) ${report?.netIncome?.toFixed(2) || "0.00"}`,
       styles: { 
         fontStyle: 'bold', 
         halign: 'right',
@@ -229,10 +230,10 @@ const PdfIncomeStatementReport = (
   autoTable(doc, {
     startY: margin + 50,
     head: [[
-      { content: 'Account', styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } },
+      { content: 'Account Name', styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } },
       { content: 'Classification', styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } },
-      { content: 'Amount', styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } },
-      { content: 'Amount', styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } }
+      { content: `Amount (${currencyLabel})`, styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } },
+      { content: `Subtotal (${currencyLabel})`, styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } }
     ]],
     body: [...revenueTableData, ...expensesTableData],
     theme: 'grid',

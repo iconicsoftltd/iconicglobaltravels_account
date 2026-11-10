@@ -9,6 +9,7 @@ const PurchaseSummaryReportPrint = (
 ) => {
   const logo = appConfiguration.logo;
   const report = reportData?.data;
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const html = `
 <!DOCTYPE html>
@@ -72,10 +73,10 @@ const PurchaseSummaryReportPrint = (
           <td class="border p-2 text-center">${index + 1}</td>
           <td class="border p-2">${row.description || "-"}</td>
           <td class="border p-2 text-right">
-            (${currentCurrency.name}) ${row.valueExcl?.toFixed(2) || "0.00"}
+            (${currencyLabel}) ${row.valueExcl?.toFixed(2) || "0.00"}
           </td>
           <td class="border p-2 text-right">
-            (${currentCurrency.name}) ${row.vatPaid?.toFixed(2) || "0.00"}
+            (${currencyLabel}) ${row.vatPaid?.toFixed(2) || "0.00"}
           </td>
           <td class="border p-2 text-center">${row.reclaimable || "-"}</td>
         </tr>
@@ -93,10 +94,10 @@ const PurchaseSummaryReportPrint = (
         <tr class="bg-gray-100 font-semibold">
           <td colspan="2" class="border p-2 text-right">Total:</td>
           <td class="border p-2 text-right">
-            (${currentCurrency.name}) ${report?.totals?.totalValueExcl?.toFixed(2) || "0.00"}
+            (${currencyLabel}) ${report?.totals?.totalValueExcl?.toFixed(2) || "0.00"}
           </td>
           <td class="border p-2 text-right">
-            (${currentCurrency.name}) ${report?.totals?.totalVatPaid?.toFixed(2) || "0.00"}
+            (${currencyLabel}) ${report?.totals?.totalVatPaid?.toFixed(2) || "0.00"}
           </td>
           <td class="border p-2"></td>
         </tr>

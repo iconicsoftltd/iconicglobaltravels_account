@@ -71,31 +71,14 @@ const CashInHandTable = ({ data, tableTitle }: { data: LedgerReportResponse, tab
               </td>
             </tr>
           ))}
-          {/* Spacer Row */}
-          <tr className="h-8">
-            <td className="border border-slate-400"></td>
-            <td className="border border-slate-400"></td>
-            <td className="border border-slate-400"></td>
-            <td className="border border-slate-400"></td>
-            <td className="border border-slate-400"></td>
-            <td className="border border-slate-400"></td>
-            <td className="border border-slate-400"></td>
-          </tr>
-          {/* Red Balance Line Row */}
-          <tr className="border-t-2">
-            <td className="border border-slate-400 px-4 py-1.5 text-center font-bold italic">
-              {/* 31/12/25 */}
-            </td>
-            <td className="border border-slate-400 px-4 py-1.5 font-medium">
-              Balance c/d
-            </td>
+          <tr className="border-t-2 bg-gray-100 font-bold">
+            <td className="border border-slate-400 px-4 py-1.5 text-center">Total</td>
             <td className="border border-slate-400 px-4 py-1.5"></td>
-            <td className="border border-slate-400 px-4 py-1.5"></td>
-            <td className="border border-slate-400 px-4 py-1.5"></td>
-            <td className="border border-slate-400 px-4 py-1.5 text-right font-bold">
-              {formatCurrency(data?.summary?.totalBalanceDebit)}
-            </td>
-            <td className="border border-slate-400 px-4 py-1.5"></td>
+            <td className="border border-slate-400 px-4 py-1.5">BALANCE C/D</td>
+            <td className="border border-slate-400 px-4 py-1.5 text-right">{formatCurrency(data?.summary?.totalDebit)}</td>
+            <td className="border border-slate-400 px-4 py-1.5 text-right">{formatCurrency(data?.summary?.totalCredit)}</td>
+            <td className="border border-slate-400 px-4 py-1.5 text-right">{formatCurrency(data?.summary?.totalBalanceDebit)}</td>
+            <td className="border border-slate-400 px-4 py-1.5 text-right">{formatCurrency(data?.summary?.totalBalanceCredit)}</td>
           </tr>
         </tbody>
       </table>

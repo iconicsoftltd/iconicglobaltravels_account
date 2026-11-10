@@ -11,6 +11,7 @@ const PdfProfitLossReport = (
 ) => {
   const logo = appConfiguration.logo;
   const report = reportData?.data;
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const doc = new jsPDF({
     orientation: "portrait",
@@ -104,7 +105,7 @@ const PdfProfitLossReport = (
   // ================= Generate Table =================
   autoTable(doc, {
     startY: margin + 45,
-    head: [["Description", `Amount (${currentCurrency?.name ?? ""})`]],
+    head: [["Description", `Amount (${currencyLabel})`]],
     body: tableBody,
     theme: "grid",
     styles: {

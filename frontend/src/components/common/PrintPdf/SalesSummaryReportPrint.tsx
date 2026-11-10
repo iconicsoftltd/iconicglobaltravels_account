@@ -9,6 +9,7 @@ const SalesSummaryReportPrint = (
 ) => {
   const logo = appConfiguration.logo;
   const report = reportData?.data;
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const html = `
 <!DOCTYPE html>
@@ -81,14 +82,14 @@ const SalesSummaryReportPrint = (
         <tr class="bg-gray-100 font-semibold">
           <td colspan="2" class="border p-2 text-right">Total:</td>
           <td class="border p-2 text-right">
-            (${currentCurrency.name}) ${report?.totals?.totalValueExcl?.toFixed(2) || "0.00"}
+            (${currencyLabel}) ${report?.totals?.totalValueExcl?.toFixed(2) || "0.00"}
           </td>
           <td class="border p-2"></td>
           <td class="border p-2 text-right">
-            (${currentCurrency.name}) ${report?.totals?.totalVatAmount?.toFixed(2) || "0.00"}
+            (${currencyLabel}) ${report?.totals?.totalVatAmount?.toFixed(2) || "0.00"}
           </td>
           <td class="border p-2 text-right">
-            (${currentCurrency.name}) ${report?.totals?.totalSD?.toFixed(2) || "0.00"}
+            (${currencyLabel}) ${report?.totals?.totalSD?.toFixed(2) || "0.00"}
           </td>
         </tr>
 

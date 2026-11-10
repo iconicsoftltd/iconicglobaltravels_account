@@ -98,8 +98,6 @@ const EditVoucher = () => {
   const datePermission = useSelector(selectDatePermission);
   const navigate = useNavigate();
 
-  const [date, setDate] = useState<Date | undefined>(new Date());
-
   const [editVoucher, { isLoading: updateLoading }] =
     useUpdateVoucherMutation();
   const [uploadFile, { isLoading: fileUploading }] = useAddThumbnailMutation();
@@ -134,7 +132,6 @@ const EditVoucher = () => {
   useEffect(() => {
     if (singleVoucher?.data) {
       const v = singleVoucher.data;
-      setDate(v.date ? parseISO(v.date) : new Date());
       reset({
         voucherNo: v.voucherNo,
         type: v.type,
@@ -196,10 +193,10 @@ const EditVoucher = () => {
   };
 
   const onSubmit = async (data: FormData) => {
-    const payload = {
-      ...data,
-      date: date ? format(date, "yyyy-MM-dd") : undefined,
-    };
+    if (!data.date) {
+      toast.error("Select a voucher date.");
+      return;
+    }
 
     if (totalDebit !== totalCredit) {
       toast.error("Debit and Credit totals must be equal!");
@@ -222,7 +219,7 @@ const EditVoucher = () => {
 
       const result = await editVoucher({
         id,
-        ...payload,
+        ...data,
         attachments,
       }).unwrap();
       if (result?.success) {

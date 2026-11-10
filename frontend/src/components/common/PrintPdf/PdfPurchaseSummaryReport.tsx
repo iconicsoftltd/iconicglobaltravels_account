@@ -11,6 +11,7 @@ const PdfPurchaseSummaryReport = (
 ) => {
   const logo = appConfiguration.logo;
   const report = reportData?.data;
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const doc = new jsPDF("portrait", "mm", "a4");
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -48,11 +49,11 @@ const PdfPurchaseSummaryReport = (
       index + 1,
       row.description || "-",
       {
-        content: `${currentCurrency.name} ${row.valueExcl?.toFixed(2) || "0.00"}`,
+        content: `${currencyLabel} ${row.valueExcl?.toFixed(2) || "0.00"}`,
         styles: { halign: "right" },
       },
       {
-        content: `${currentCurrency.name} ${row.vatPaid?.toFixed(2) || "0.00"}`,
+        content: `${currencyLabel} ${row.vatPaid?.toFixed(2) || "0.00"}`,
         styles: { halign: "right" },
       },
       {
@@ -69,11 +70,11 @@ const PdfPurchaseSummaryReport = (
       styles: { fontStyle: "bold", halign: "right" },
     },
     {
-      content: `${currentCurrency.name} ${report?.totals?.totalValueExcl?.toFixed(2) || "0.00"}`,
+      content: `${currencyLabel} ${report?.totals?.totalValueExcl?.toFixed(2) || "0.00"}`,
       styles: { fontStyle: "bold", halign: "right" },
     },
     {
-      content: `${currentCurrency.name} ${report?.totals?.totalVatPaid?.toFixed(2) || "0.00"}`,
+      content: `${currencyLabel} ${report?.totals?.totalVatPaid?.toFixed(2) || "0.00"}`,
       styles: { fontStyle: "bold", halign: "right" },
     },
     "",

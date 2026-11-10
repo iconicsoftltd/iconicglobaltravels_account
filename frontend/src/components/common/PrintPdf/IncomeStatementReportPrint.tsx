@@ -7,6 +7,7 @@ const IncomeStatementReportPrint = (
   reportType: string,
 ) => {
   const logo = appConfiguration.logo;
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
   const report = reportData?.data;
 
   const html = `
@@ -69,16 +70,16 @@ const IncomeStatementReportPrint = (
               <thead class="bg-gray-100">
                 <tr>
                   <th class="border border-gray-300 p-2 text-center font-semibold">
-                    Account
+                    Account Name
                   </th>
                   <th class="border border-gray-300 p-2 text-center font-semibold">
                     Classification
                   </th>
                   <th class="border border-gray-300 p-2 text-center font-semibold">
-                    Amount
+                    Amount (${currencyLabel})
                   </th>
                   <th class="border border-gray-300 p-2 text-center font-semibold">
-                    Amount
+                    Subtotal (${currencyLabel})
                   </th>
                 </tr>
               </thead>
@@ -99,7 +100,7 @@ const IncomeStatementReportPrint = (
                   <tr key="rev-${i}" class="${i % 2 === 0 ? "bg-white" : "bg-gray-50"}">
                     <td class="border border-gray-300 p-2">${item.account || "-"}</td>
                     <td class="border border-gray-300 p-2">${item.classification || "-"}</td>
-                    <td class="border border-gray-300 p-2 text-right">(${currentCurrency.name}) ${item.amount?.toFixed(2) || "0.00"}</td>
+                    <td class="border border-gray-300 p-2 text-right">(${currencyLabel}) ${item.amount?.toFixed(2) || "0.00"}</td>
                     <td class="border border-gray-300 p-2 text-right"></td>
                   </tr>
                 `,
@@ -113,7 +114,7 @@ const IncomeStatementReportPrint = (
                   <td class="border border-gray-300 p-2"></td>
                   <td class="border border-gray-300 p-2 text-right"></td>
                   <td class="border border-gray-300 p-2 text-right font-bold">
-                    (${currentCurrency.name}) ${report?.totalRevenue?.toFixed(2) || "0.00"}
+                    (${currencyLabel}) ${report?.totalRevenue?.toFixed(2) || "0.00"}
                   </td>
                 </tr>
 
@@ -135,7 +136,7 @@ ${
   <tr class="${i % 2 === 0 ? "bg-white" : "bg-gray-50"}">
     <td class="border border-gray-300 p-2">${item.account || "-"}</td>
     <td class="border border-gray-300 p-2">${item.classification || "-"}</td>
-    <td class="border border-gray-300 p-2 text-right">(${currentCurrency.name}) ${item.amount?.toFixed(2) || "0.00"}</td>
+    <td class="border border-gray-300 p-2 text-right">(${currencyLabel}) ${item.amount?.toFixed(2) || "0.00"}</td>
     <td class="border border-gray-300 p-2 text-right"></td>
   </tr>
 `,
@@ -149,7 +150,7 @@ ${
   <td class="border border-gray-300 p-2"></td>
   <td class="border border-gray-300 p-2 text-right"></td>
   <td class="border border-gray-300 p-2 text-right font-bold">
-    (${currentCurrency.name}) ${report?.totalCogs?.toFixed(2) || "0.00"}
+    (${currencyLabel}) ${report?.totalCogs?.toFixed(2) || "0.00"}
   </td>
 </tr>
 
@@ -176,7 +177,7 @@ ${
                   <tr key="exp-${i}" class="${i % 2 === 0 ? "bg-white" : "bg-gray-50"}">
                     <td class="border border-gray-300 p-2">${item.account || "-"}</td>
                     <td class="border border-gray-300 p-2">${item.classification || "-"}</td>
-                    <td class="border border-gray-300 p-2 text-right">(${currentCurrency.name}) ${item.amount?.toFixed(2) || "0.00"}</td>
+                    <td class="border border-gray-300 p-2 text-right">(${currencyLabel}) ${item.amount?.toFixed(2) || "0.00"}</td>
                     <td class="border border-gray-300 p-2 text-right"></td>
                   </tr>
                 `,
@@ -190,7 +191,7 @@ ${
                   <td class="border border-gray-300 p-2"></td>
                   <td class="border border-gray-300 p-2 text-right"></td>
                   <td class="border border-gray-300 p-2 text-right font-bold">
-                    (${currentCurrency.name}) ${report?.totalExpense?.toFixed(2) || "0.00"}
+                    (${currencyLabel}) ${report?.totalExpense?.toFixed(2) || "0.00"}
                   </td>
                 </tr>
 
@@ -206,7 +207,7 @@ ${
                   <td class="border border-gray-300 p-2"></td>
                   <td class="border border-gray-300 p-2 text-right"></td>
                   <td class="border border-gray-300 p-2 text-right text-lg">
-                    (${currentCurrency.name}) ${report?.netIncome?.toFixed(2) || "0.00"}
+                    (${currencyLabel}) ${report?.netIncome?.toFixed(2) || "0.00"}
                   </td>
                 </tr>
               </tbody>

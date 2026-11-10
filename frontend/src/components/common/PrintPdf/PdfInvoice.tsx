@@ -67,7 +67,7 @@ console.log("invoice" , invoice,currentCurrency)
     ]),
     theme: "grid",
     styles: { fontSize: 8, cellPadding: 2, lineColor: [229, 231, 235], lineWidth: 0.2 },
-    headStyles: { fillColor: [188, 6, 176], textColor: [255, 255, 255], fontStyle: "bold" },
+    headStyles: { fillColor: [188, 6, 176], textColor: [255, 255, 255], fontStyle: "bold", fontSize: 9 },
     columnStyles: { 0: { cellWidth: 12 }, 3: { halign: "right" }, 4: { halign: "right" }, 5: { halign: "right" } },
     margin: { left: margin, right: margin },
   });
@@ -101,7 +101,7 @@ console.log("invoice" , invoice,currentCurrency)
       : [["", "No payment received yet.", "", ""]],
     theme: "grid",
     styles: { fontSize: 8, cellPadding: 2, lineColor: [229, 231, 235], lineWidth: 0.2 },
-    headStyles: { fillColor: [188, 6, 176], textColor: [255, 255, 255], fontStyle: "bold" },
+    headStyles: { fillColor: [188, 6, 176], textColor: [255, 255, 255], fontStyle: "bold", fontSize: 9 },
     columnStyles: { 3: { halign: "right" } },
     margin: { left: margin, right: margin },
   });

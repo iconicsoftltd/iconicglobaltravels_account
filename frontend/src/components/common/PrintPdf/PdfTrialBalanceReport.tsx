@@ -10,6 +10,7 @@ const PdfTrialBalanceReport = (
   reportType: string
 ) => {
   const logo = appConfiguration.logo;
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
   const reportList = reportData?.report || [];
   const grandTotal = reportData?.grandTotal;
 
@@ -31,7 +32,7 @@ const PdfTrialBalanceReport = (
 
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("Ledger Report", pageWidth / 2, margin + 22, {
+    doc.text("Trial Balance Report", pageWidth / 2, margin + 22, {
       align: "center",
     });
 
@@ -72,7 +73,7 @@ const PdfTrialBalanceReport = (
     [
       { content: "Particulars", rowSpan: 2 },
       { content: "Opening Balance", colSpan: 2 },
-      { content: "Transaction", colSpan: 2 },
+      { content: "Transaction Details", colSpan: 2 },
       { content: "Closing", colSpan: 2 },
     ],
     [
@@ -141,7 +142,7 @@ const PdfTrialBalanceReport = (
 
       /* ===== Ledger Subtotal ===== */
       body.push([
-        { content: `Sub Total (${currentCurrency?.name})`, styles: { fontStyle: "bold", halign: "right" } },
+        { content: `Sub Total (${currencyLabel})`, styles: { fontStyle: "bold", halign: "right" } },
         ledger.subtotal.openingDebit.toLocaleString(),
         ledger.subtotal.openingCredit.toLocaleString(),
         ledger.subtotal.trxDebit.toLocaleString(),
@@ -157,7 +158,7 @@ const PdfTrialBalanceReport = (
 
     /* ===== Group Total ===== */
     body.push([
-      { content: `Total Amount (${currentCurrency?.name})`, styles: { fontStyle: "bold", halign: "right"} },
+      { content: `Total Amount (${currencyLabel})`, styles: { fontStyle: "bold", halign: "right"} },
       groupTotal.openingDebit.toLocaleString(),
       groupTotal.openingCredit.toLocaleString(),
       groupTotal.trxDebit.toLocaleString(),
@@ -171,7 +172,7 @@ const PdfTrialBalanceReport = (
   if (grandTotal) {
     body.push([
       {
-        content: `Grand Total Amount (${currentCurrency?.name})`,
+        content: `Grand Total Amount (${currencyLabel})`,
         styles: { fontStyle: "bold", halign: "right", fillColor: [209, 213, 219] },
       },
       grandTotal.openingDebit.toLocaleString(),

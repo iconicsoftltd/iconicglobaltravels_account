@@ -11,6 +11,7 @@ const PdfVoucherLedgerReport = (
 ) => {
   const logo = appConfiguration.logo;
   const report = reportData?.data;
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
 
   const doc = new jsPDF({
     orientation: "portrait",
@@ -70,11 +71,11 @@ const PdfVoucherLedgerReport = (
       row.invoice || "-",
       row.details || "-",
       {
-        content: `${currentCurrency.name} ${row.debit?.toFixed(2) || "0.00"}`,
+        content: `${currencyLabel} ${row.debit?.toFixed(2) || "0.00"}`,
         styles: { halign: "right" },
       },
       {
-        content: `${currentCurrency.name} ${row.credit?.toFixed(2) || "0.00"}`,
+        content: `${currencyLabel} ${row.credit?.toFixed(2) || "0.00"}`,
         styles: { halign: "right" },
       },
     ]) || [];
@@ -87,13 +88,13 @@ const PdfVoucherLedgerReport = (
       styles: { fontStyle: "bold", halign: "center" },
     },
     {
-      content: `${currentCurrency.name} ${
+      content: `${currencyLabel} ${
         report?.totals?.totalDebit?.toFixed(2) || "0.00"
       }`,
       styles: { fontStyle: "bold", halign: "right" },
     },
     {
-      content: `${currentCurrency.name} ${
+      content: `${currencyLabel} ${
         report?.totals?.totalCredit?.toFixed(2) || "0.00"
       }`,
       styles: { fontStyle: "bold", halign: "right" },
@@ -108,7 +109,7 @@ const PdfVoucherLedgerReport = (
       styles: { fontStyle: "bold", halign: "right" },
     },
     {
-      content: `(${currentCurrency.name}) ${
+      content: `${currencyLabel} ${
         report?.balance?.toFixed(2) || "0.00"
       }`,
       styles: { fontStyle: "bold", halign: "right" },

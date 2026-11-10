@@ -9,6 +9,7 @@ const ProfitLossReportPrint = (
   reportType: string
 ) => {
   const logo = appConfiguration.logo;
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
   const report = reportData?.data;
   const rows = report
     ? [
@@ -64,7 +65,7 @@ const ProfitLossReportPrint = (
             <thead>
               <tr class="bg-fuchsia-700 text-white">
                 <th class="border border-fuchsia-700 p-2 text-left uppercase">Description</th>
-                <th class="border border-fuchsia-700 p-2 text-right uppercase">Amount (${currentCurrency?.name ?? ""})</th>
+                <th class="border border-fuchsia-700 p-2 text-right uppercase">Amount (${currencyLabel})</th>
               </tr>
             </thead>
             <tbody>

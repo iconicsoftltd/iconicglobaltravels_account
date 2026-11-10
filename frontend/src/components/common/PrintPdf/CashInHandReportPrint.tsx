@@ -78,16 +78,15 @@ const CashInHandReportPrint = (
               </tr>`
     }
 
-        <!-- Balance c/d -->
         <tr class="bg-gray-100 font-semibold">
+          <td class="border p-2 text-center">Total</td>
           <td class="border p-2"></td>
+          <td class="border p-2 text-left">BALANCE C/D</td>
           <td class="border p-2"></td>
-          <td class="border p-2 text-left">Balance c/d</td>
-          <td class="border p-2"></td>
-          <td class="border p-2"></td>
-          <td class="border p-2"></td>
-          <td class="border p-2 text-right">${currentCurrency.name} ${report?.summary?.totalBalanceDebit?.toFixed(2) || "0.00"}</td>
-          <td class="border p-2"></td>
+          <td class="border p-2 text-right">${currentCurrency.name} ${Number(report?.summary?.totalDebit || 0).toFixed(2)}</td>
+          <td class="border p-2 text-right">${currentCurrency.name} ${Number(report?.summary?.totalCredit || 0).toFixed(2)}</td>
+          <td class="border p-2 text-right">${currentCurrency.name} ${Number(report?.summary?.totalBalanceDebit || 0).toFixed(2)}</td>
+          <td class="border p-2 text-right">${currentCurrency.name} ${Number(report?.summary?.totalBalanceCredit || 0).toFixed(2)}</td>
         </tr>
 
       </tbody>

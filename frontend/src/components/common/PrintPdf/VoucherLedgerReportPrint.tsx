@@ -8,6 +8,7 @@ const VoucherLedgerReportPrint = (
   reportType: string
 ) => {
   const logo = appConfiguration.logo;
+  const currencyLabel = currentCurrency?.name?.toUpperCase() === "BDT" ? "৳" : currentCurrency?.name || "৳";
   const report = reportData?.data;
 
   const html = `
@@ -98,12 +99,12 @@ const VoucherLedgerReportPrint = (
               <tr class="font-semibold bg-gray-100">
                 <td colspan="3" class="border border-gray-300 p-2 text-right">Total Amount:</td>
                 <td class="border border-gray-300 p-2 text-right">
-                 (${currentCurrency.name}) ${
+                 ${currencyLabel} ${
     report?.totals?.totalDebit?.toFixed(2) ?? "0.00"
   }
                 </td>
                 <td class="border border-gray-300 p-2 text-right">
-                 (${currentCurrency.name}) ${
+                 ${currencyLabel} ${
     report?.totals?.totalCredit?.toFixed(2) ?? "0.00"
   }
                 </td>
@@ -113,7 +114,7 @@ const VoucherLedgerReportPrint = (
               <tr class="font-bold bg-gray-200">
                 <td colspan="3" class="border border-gray-300 p-2 text-right">Balance:</td>
                 <td colspan="2" class="border border-gray-300 p-2 text-right">
-                  (${currentCurrency.name}) ${
+                  ${currencyLabel} ${
     report?.balance?.toFixed(2) ?? "0.00"
   }
                 </td>

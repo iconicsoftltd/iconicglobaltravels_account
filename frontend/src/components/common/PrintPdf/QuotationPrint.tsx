@@ -109,7 +109,7 @@ const QuotationPrint = (selectedQuotationData: any[], currentCurrency: any) => {
           * { -webkit-print-color-adjust: exact; print-color-adjust: exact; color-adjust: exact; }
           body { margin:0; padding:20px; font-family:'Segoe UI',sans-serif; background:#fff; color:#000; }
           .page-break { page-break-after: always; }
-          .signature-section { position:absolute; bottom:20px; left:0; right:0; padding:0 24px; display:flex; justify-content:space-between; gap:16px; }
+          .signature-section { position:static; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px; width:100%; margin-top:0; padding:72px 24px 0;  page-break-inside:avoid; break-inside:avoid; }
         </style>
       </head>
       <body>
@@ -129,6 +129,12 @@ const QuotationPrint = (selectedQuotationData: any[], currentCurrency: any) => {
             setTimeout(() => { window.close(); }, 500);
           }, 300);
         </script>
+      <div class="signature-section text-sm">
+        <p>General Manager</p>
+        <p>Finance Manager</p>
+        <p>Accounts Officer</p>
+        <p>Prepared By</p>
+      </div>
       </body>
     </html>
   `);

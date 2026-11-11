@@ -30,12 +30,21 @@ const PurchaseChalanPrint = (selectedPurchaseData: any[], currentCurrency: any) 
             body { -webkit-print-color-adjust: exact; color-adjust: exact; }
             .page-break { page-break-after: always; }
              .signature-section {
-      position: absolute;
-      bottom: 20px;
-      left: 0;
-      right: 0;
-      padding: 0 24px;
+      position: static;
+      display: grid !important;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+      width: 100%;
+      margin-top: 0;
+      padding: 72px 24px 0;
+        /* signature separator removed to keep report layout clean */
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
+      .signature-section p {
+        text-align: center;
+        white-space: nowrap;
+      }
     .content-container {
       min-height: calc(100vh - 100px);
     }
@@ -133,7 +142,7 @@ const PurchaseChalanPrint = (selectedPurchaseData: any[], currentCurrency: any) 
             })
             .join("")}
             </div>
-            <div class="flex justify-between text-sm signature-section">
+<div class="signature-section text-sm">
               <p class="font-semibold underline">General Manager (B D)</p>
               <p class="font-semibold underline">Accounts</p>
               <p class="font-semibold underline">Admin</p>

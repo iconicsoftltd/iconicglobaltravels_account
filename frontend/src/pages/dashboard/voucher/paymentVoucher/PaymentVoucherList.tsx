@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useVoucherListFilters } from "@/hooks/useVoucherListFilters";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,9 +35,8 @@ interface VoucherRowType {
 }
 
 const PaymentVoucherList: React.FC = () => {
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [searchTerm, setSearchTerm] = useState("");
+  const { page, setPage, rowsPerPage, setRowsPerPage, searchTerm, setSearchTerm } =
+    useVoucherListFilters("voucher-list-filters-payment");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [selectedRows, setSelectedRows] = useState<number[]>([]);

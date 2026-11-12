@@ -142,7 +142,7 @@ const PdfTrialBalanceReport = (
 
       /* ===== Ledger Subtotal ===== */
       body.push([
-        { content: `Sub Total (${currencyLabel})`, styles: { fontStyle: "bold", halign: "right" } },
+        { content: `Sub Total ${currencyLabel}`, styles: { fontStyle: "bold", halign: "right" } },
         ledger.subtotal.openingDebit.toLocaleString(),
         ledger.subtotal.openingCredit.toLocaleString(),
         ledger.subtotal.trxDebit.toLocaleString(),
@@ -158,7 +158,7 @@ const PdfTrialBalanceReport = (
 
     /* ===== Group Total ===== */
     body.push([
-      { content: `Total Amount (${currencyLabel})`, styles: { fontStyle: "bold", halign: "right"} },
+      { content: `Total Amount ${currencyLabel}`, styles: { fontStyle: "bold", halign: "right"} },
       groupTotal.openingDebit.toLocaleString(),
       groupTotal.openingCredit.toLocaleString(),
       groupTotal.trxDebit.toLocaleString(),
@@ -172,7 +172,7 @@ const PdfTrialBalanceReport = (
   if (grandTotal) {
     body.push([
       {
-        content: `Grand Total Amount (${currencyLabel})`,
+        content: `Grand Total Amount ${currencyLabel}`,
         styles: { fontStyle: "bold", halign: "right", fillColor: [209, 213, 219] },
       },
       grandTotal.openingDebit.toLocaleString(),

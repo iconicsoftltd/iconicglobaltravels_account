@@ -66,8 +66,8 @@ const BalanceSheetReportPrint = (
                 <tr>
                   <th class="border border-gray-300 p-2 text-center font-semibold">Account</th>
                   <th class="border border-gray-300 p-2 text-center font-semibold">Classification</th>
-                  <th class="border border-gray-300 p-2 text-center font-semibold">Amount (${currencyLabel})</th>
-                  <th class="border border-gray-300 p-2 text-center font-semibold">Subtotal (${currencyLabel})</th>
+                  <th class="border border-gray-300 p-2 text-center font-semibold">Amount ${currencyLabel}</th>
+                  <th class="border border-gray-300 p-2 text-center font-semibold">Subtotal ${currencyLabel}</th>
                 </tr>
               </thead>
               <tbody>
@@ -89,7 +89,7 @@ const BalanceSheetReportPrint = (
                     <tr class="${j % 2 === 0 ? "bg-white" : "bg-gray-50"}">
                       <td class="border border-gray-300 p-2">${item.account || "-"}</td>
                       <td class="border border-gray-300 p-2">${item.classification || "-"}</td>
-                      <td class="border border-gray-300 p-2 text-right">(${currencyLabel}) ${item.amount?.toFixed(2) || "0.00"}</td>
+                      <td class="border border-gray-300 p-2 text-right">${currencyLabel} ${item.amount?.toFixed(2) || "0.00"}</td>
                       <td class="border border-gray-300 p-2 text-right"></td>
                     </tr>
                   `
@@ -100,7 +100,7 @@ const BalanceSheetReportPrint = (
                     <td class="border border-gray-300 p-2">Total ${group.groupName}</td>
                     <td class="border border-gray-300 p-2"></td>
                     <td class="border border-gray-300 p-2 text-right"></td>
-                    <td class="border border-gray-300 p-2 text-right font-bold">(${currencyLabel}) ${group.totalAmount?.toFixed(2) || "0.00"}</td>
+                    <td class="border border-gray-300 p-2 text-right font-bold">${currencyLabel} ${group.totalAmount?.toFixed(2) || "0.00"}</td>
                   </tr>
                   <tr><td colspan="4" class="p-2 bg-white"></td></tr>
                 `).join("") || '<tr><td colspan="4" class="border border-gray-300 p-2 text-center text-gray-500">No assets data</td></tr>'
@@ -110,7 +110,7 @@ const BalanceSheetReportPrint = (
                   <td class="border border-gray-300 p-2 text-lg">TOTAL ASSETS</td>
                   <td class="border border-gray-300 p-2"></td>
                   <td class="border border-gray-300 p-2 text-right"></td>
-                  <td class="border border-gray-300 p-2 text-right font-bold text-lg">(${currencyLabel}) ${report?.totalAssets?.toFixed(2) || "0.00"}</td>
+                  <td class="border border-gray-300 p-2 text-right font-bold text-lg">${currencyLabel} ${report?.totalAssets?.toFixed(2) || "0.00"}</td>
                 </tr>
 
                 <tr><td colspan="4" class="p-4 bg-white"></td></tr>
@@ -155,14 +155,14 @@ const BalanceSheetReportPrint = (
                   <td class="p-2 text-lg border border-gray-300">Owner's Equity</td>
                   <td class="border border-gray-300 p-2"></td>
                   <td class="border border-gray-300 p-2"></td>
-                  <td class="border border-gray-300 p-2 text-right font-bold">(${currencyLabel}) ${report?.ownerSecurity?.toFixed(2) || "0.00"}</td>
+                  <td class="border border-gray-300 p-2 text-right font-bold">${currencyLabel} ${report?.ownerSecurity?.toFixed(2) || "0.00"}</td>
                 </tr>
 
                 <tr class="font-bold bg-gray-200">
                   <td class="border border-gray-300 p-2 text-lg">TOTAL LIABILITIES & EQUITY</td>
                   <td class="border border-gray-300 p-2"></td>
                   <td class="border border-gray-300 p-2 text-right"></td>
-                  <td class="border border-gray-300 p-2 text-right font-bold text-lg">(${currencyLabel}) ${report?.totalLiabilitiesAndEquity?.toFixed(2) || "0.00"}</td>
+                  <td class="border border-gray-300 p-2 text-right font-bold text-lg">${currencyLabel} ${report?.totalLiabilitiesAndEquity?.toFixed(2) || "0.00"}</td>
                 </tr>
               </tbody>
             </table>

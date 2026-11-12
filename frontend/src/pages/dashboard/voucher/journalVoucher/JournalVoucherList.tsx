@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -29,6 +29,18 @@ import ReusableTableHeader from "@/components/common/ReusableTableHeader";
 import VoucherDateRangeFilter from "@/components/common/VoucherDateRangeFilter";
 import { MdRestore } from "react-icons/md";
 
+const JOURNAL_FILTERS_KEY = "voucher-list-filters-journal";
+
+const getSavedJournalFilters = () => {
+  if (typeof window === "undefined") return {};
+  try {
+    const saved = window.sessionStorage.getItem(JOURNAL_FILTERS_KEY);
+    return saved ? JSON.parse(saved) : {};
+  } catch {
+    return {};
+  }
+};
+
 interface VoucherRowType {
   id: number;
   invoice: string;
@@ -41,15 +53,23 @@ interface VoucherRowType {
 
 const JournalVoucherList: React.FC = () => {
   // --- State Management ---
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState<number | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  const savedFilters = getSavedJournalFilters();
+  const [page, setPage] = useState(savedFilters.page ?? 1);
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(savedFilters.rowsPerPage ?? null);
+  const [searchTerm, setSearchTerm] = useState(savedFilters.searchTerm ?? "");
+  const [fromDate, setFromDate] = useState(savedFilters.fromDate ?? "");
+  const [toDate, setToDate] = useState(savedFilters.toDate ?? "");
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [voucherToDelete, setVoucherToDelete] = useState<any | null>(null);
-  const [activeTab, setActiveTab] = useState<"active" | "archived">("active"); // নতুন
+  const [activeTab, setActiveTab] = useState<"active" | "archived">(savedFilters.activeTab ?? "active"); // নতুন
+
+  useEffect(() => {
+    window.sessionStorage.setItem(
+      JOURNAL_FILTERS_KEY,
+      JSON.stringify({ page, rowsPerPage, searchTerm, fromDate, toDate, activeTab }),
+    );
+  }, [page, rowsPerPage, searchTerm, fromDate, toDate, activeTab]);
 
   const [deleteVoucher, { isLoading: isDeleting }] = useDeleteVoucherMutation();
   const [archiveVoucher] = useArchiveVoucherMutation(); // নতুন

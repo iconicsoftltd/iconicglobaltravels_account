@@ -82,14 +82,14 @@ const SalesSummaryReportPrint = (
         <tr class="bg-gray-100 font-semibold">
           <td colspan="2" class="border p-2 text-right">Total:</td>
           <td class="border p-2 text-right">
-            (${currencyLabel}) ${report?.totals?.totalValueExcl?.toFixed(2) || "0.00"}
+            ${currencyLabel} ${report?.totals?.totalValueExcl?.toFixed(2) || "0.00"}
           </td>
           <td class="border p-2"></td>
           <td class="border p-2 text-right">
-            (${currencyLabel}) ${report?.totals?.totalVatAmount?.toFixed(2) || "0.00"}
+            ${currencyLabel} ${report?.totals?.totalVatAmount?.toFixed(2) || "0.00"}
           </td>
           <td class="border p-2 text-right">
-            (${currencyLabel}) ${report?.totals?.totalSD?.toFixed(2) || "0.00"}
+            ${currencyLabel} ${report?.totals?.totalSD?.toFixed(2) || "0.00"}
           </td>
         </tr>
 

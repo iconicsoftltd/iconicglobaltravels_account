@@ -74,7 +74,7 @@ const ProfitLossReportPrint = (
             <thead>
               <tr class="bg-fuchsia-700 text-white">
                 <th class="border border-fuchsia-700 p-2 text-left uppercase">Description</th>
-                <th class="border border-fuchsia-700 p-2 text-right uppercase">Amount (${currencyLabel})</th>
+                <th class="border border-fuchsia-700 p-2 text-right uppercase">Amount ${currencyLabel}</th>
               </tr>
             </thead>
             <tbody>

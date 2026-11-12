@@ -78,7 +78,7 @@ const PdfBalanceSheetReport = (
             item.account || "-",
             item.classification || "-",
             { 
-              content: `(${currencyLabel}) ${item.amount?.toFixed(2) || "0.00"}`,
+              content: `${currencyLabel} ${item.amount?.toFixed(2) || "0.00"}`,
               styles: { halign: 'right' }
             },
             ""
@@ -106,7 +106,7 @@ const PdfBalanceSheetReport = (
         { content: '', styles: { fillColor: [229, 231, 235] } },
         { content: '', styles: { fillColor: [229, 231, 235] } },
         { 
-          content: `(${currencyLabel}) ${group.totalAmount?.toFixed(2) || "0.00"}`,
+          content: `${currencyLabel} ${group.totalAmount?.toFixed(2) || "0.00"}`,
           styles: { 
             fontStyle: 'bold', 
             halign: 'right',
@@ -146,7 +146,7 @@ const PdfBalanceSheetReport = (
     { content: '', styles: { fillColor: [209, 213, 219] } },
     { content: '', styles: { fillColor: [209, 213, 219] } },
     { 
-      content: `(${currencyLabel}) ${report?.totalAssets?.toFixed(2) || "0.00"}`,
+      content: `${currencyLabel} ${report?.totalAssets?.toFixed(2) || "0.00"}`,
       styles: { 
         fontStyle: 'bold', 
         halign: 'right',
@@ -182,7 +182,7 @@ const PdfBalanceSheetReport = (
             item.account || "-",
             item.classification || "-",
             { 
-              content: `(${currencyLabel}) ${item.amount?.toFixed(2) || "0.00"}`,
+              content: `${currencyLabel} ${item.amount?.toFixed(2) || "0.00"}`,
               styles: { halign: 'right' }
             },
             ""
@@ -210,7 +210,7 @@ const PdfBalanceSheetReport = (
         { content: '', styles: { fillColor: [229, 231, 235] } },
         { content: '', styles: { fillColor: [229, 231, 235] } },
         { 
-          content: `(${currencyLabel}) ${group.totalAmount?.toFixed(2) || "0.00"}`,
+          content: `${currencyLabel} ${group.totalAmount?.toFixed(2) || "0.00"}`,
           styles: { 
             fontStyle: 'bold', 
             halign: 'right',
@@ -249,7 +249,7 @@ const PdfBalanceSheetReport = (
     { content: '', styles: { fillColor: [243, 244, 246] } },
     { content: '', styles: { fillColor: [243, 244, 246] } },
     { 
-      content: `(${currencyLabel}) ${report?.ownerSecurity?.toFixed(2) || "0.00"}`,
+      content: `${currencyLabel} ${report?.ownerSecurity?.toFixed(2) || "0.00"}`,
       styles: { 
         fontStyle: 'bold', 
         halign: 'right',
@@ -271,7 +271,7 @@ const PdfBalanceSheetReport = (
     { content: '', styles: { fillColor: [209, 213, 219] } },
     { content: '', styles: { fillColor: [209, 213, 219] } },
     { 
-      content: `(${currencyLabel}) ${report?.totalLiabilitiesAndEquity?.toFixed(2) || "0.00"}`,
+      content: `${currencyLabel} ${report?.totalLiabilitiesAndEquity?.toFixed(2) || "0.00"}`,
       styles: { 
         fontStyle: 'bold', 
         halign: 'right',

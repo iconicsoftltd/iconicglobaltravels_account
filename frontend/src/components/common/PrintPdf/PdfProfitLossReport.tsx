@@ -105,7 +105,7 @@ const PdfProfitLossReport = (
   // ================= Generate Table =================
   autoTable(doc, {
     startY: margin + 45,
-    head: [["Description", `Amount (${currencyLabel})`]],
+    head: [["Description", `Amount ${currencyLabel}`]],
     body: tableBody,
     theme: "grid",
     styles: {

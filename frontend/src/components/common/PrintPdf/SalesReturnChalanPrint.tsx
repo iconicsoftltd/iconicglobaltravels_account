@@ -5,7 +5,14 @@ const SalesReturnChalanPrint = (
   currentCurrency: any
 ) => {
   const logo = appConfiguration.logo;
-
+  const formatPrintCurrency = (currency: any) => {
+    const value = String(currency?.name || currency?.code || "").trim();
+    const normalized = value.toUpperCase();
+    return normalized === "BDT" || normalized === "TAKA" || value === "৳"
+      ? "&#2547;"
+      : value;
+  };
+  const currencyLabel = formatPrintCurrency(currentCurrency);
   const html = `
     <!DOCTYPE html>
     <html>
@@ -28,7 +35,11 @@ const SalesReturnChalanPrint = (
             });
           };
         </script>
-        <style>
+        <style>          /* PDF_LAYOUT_NORMALIZATION */
+          table { width: 100% !important; table-layout: auto !important; border-collapse: collapse; }
+          th, td { box-sizing: border-box; }
+          td.text-right, th.text-right, .amount, .currency { white-space: nowrap !important; word-break: keep-all !important; overflow-wrap: normal !important; font-variant-numeric: tabular-nums; }
+          @media print { body { overflow: visible !important; } table { page-break-inside: auto; } tr { page-break-inside: avoid; } }
           @media print {
             body { -webkit-print-color-adjust: exact; color-adjust: exact; }
             .page-break { page-break-after: always; }
@@ -80,7 +91,7 @@ const SalesReturnChalanPrint = (
                       }</p>
                       <p><span class="font-semibold">Customer Name:</span> ${customer}</p>
                       <p><span class="font-semibold">Customer Balance:</span> (${
-                        currentCurrency.name
+                        currencyLabel
                       }) ${
                 salesReturn.customer?.balance?.toFixed(2) || "0.00"
               }</p>
@@ -92,7 +103,7 @@ const SalesReturnChalanPrint = (
                         salesReturn.account?.accountType
                       }</p>
                       <p><span class="font-semibold">Account Balance:</span> (${
-                        currentCurrency.name
+                        currencyLabel
                       }) ${
                 salesReturn.account?.balance?.toFixed(2) || "0.00"
               }</p>

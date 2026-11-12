@@ -25,7 +25,11 @@ const ServiceSalesChalanPrint = (selectedSalesData: any[]) => {
           });
         };
       </script>
-      <style>
+      <style>          /* PDF_LAYOUT_NORMALIZATION */
+          table { width: 100% !important; table-layout: auto !important; border-collapse: collapse; }
+          th, td { box-sizing: border-box; }
+          td.text-right, th.text-right, .amount, .currency { white-space: nowrap !important; word-break: keep-all !important; overflow-wrap: normal !important; font-variant-numeric: tabular-nums; }
+          @media print { body { overflow: visible !important; } table { page-break-inside: auto; } tr { page-break-inside: avoid; } }
         @media print {
           body { -webkit-print-color-adjust: exact; color-adjust: exact; }
           .page-break { page-break-after: always; }

@@ -78,7 +78,7 @@ const PdfIncomeStatementReport = (
         item.account || "-",
         item.classification || "-",
         { 
-          content: `(${currencyLabel}) ${item.amount?.toFixed(2) || "0.00"}`,
+          content: `${currencyLabel} ${item.amount?.toFixed(2) || "0.00"}`,
           styles: { halign: 'right' }
         },
         ""
@@ -110,7 +110,7 @@ const PdfIncomeStatementReport = (
     { content: '', styles: { fillColor: [229, 231, 235] } },
     { content: '', styles: { fillColor: [229, 231, 235] } },
     { 
-      content: `(${currencyLabel}) ${report?.totalRevenue?.toFixed(2) || "0.00"}`,
+      content: `${currencyLabel} ${report?.totalRevenue?.toFixed(2) || "0.00"}`,
       styles: { 
         fontStyle: 'bold', 
         halign: 'right',
@@ -150,7 +150,7 @@ const PdfIncomeStatementReport = (
         item.account || "-",
         item.classification || "-",
         { 
-          content: `(${currencyLabel}) ${item.amount?.toFixed(2) || "0.00"}`,
+          content: `${currencyLabel} ${item.amount?.toFixed(2) || "0.00"}`,
           styles: { halign: 'right' }
         },
         ""
@@ -182,7 +182,7 @@ const PdfIncomeStatementReport = (
     { content: '', styles: { fillColor: [229, 231, 235] } },
     { content: '', styles: { fillColor: [229, 231, 235] } },
     { 
-      content: `(${currencyLabel}) ${report?.totalExpense?.toFixed(2) || "0.00"}`,
+      content: `${currencyLabel} ${report?.totalExpense?.toFixed(2) || "0.00"}`,
       styles: { 
         fontStyle: 'bold', 
         halign: 'right',
@@ -213,7 +213,7 @@ const PdfIncomeStatementReport = (
     { content: '', styles: { fillColor: netIncomeColor } },
     { content: '', styles: { fillColor: netIncomeColor } },
     { 
-      content: `(${currencyLabel}) ${report?.netIncome?.toFixed(2) || "0.00"}`,
+      content: `${currencyLabel} ${report?.netIncome?.toFixed(2) || "0.00"}`,
       styles: { 
         fontStyle: 'bold', 
         halign: 'right',
@@ -232,8 +232,8 @@ const PdfIncomeStatementReport = (
     head: [[
       { content: 'Account Name', styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } },
       { content: 'Classification', styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } },
-      { content: `Amount (${currencyLabel})`, styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } },
-      { content: `Subtotal (${currencyLabel})`, styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } }
+      { content: `Amount ${currencyLabel}`, styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } },
+      { content: `Subtotal ${currencyLabel}`, styles: { fontStyle: 'bold', fillColor: [249, 250, 251] } }
     ]],
     body: [...revenueTableData, ...expensesTableData],
     theme: 'grid',

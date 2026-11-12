@@ -11,6 +11,11 @@ const PdfLedgerReport = (
  // particularName: string = "All" // ✅ ADD
 ) => {
   const logo = appConfiguration.logo;
+  const currencyLabel = currentCurrency?.symbol || currentCurrency?.name || "৳";
+  const formatAmount = (value: any) =>
+    value === null || value === undefined || value === ""
+      ? ""
+      : `${currencyLabel} ${Number(value).toFixed(2)}`;
 
   const doc = new jsPDF("landscape", "mm", "a4"); // ✅ landscape — column বেশি তাই
 
@@ -122,7 +127,8 @@ const PdfLedgerReport = (
       "",// ✅ Particular empty
       "",
       "",
-      "",
+      formatAmount(account.summary.totalDebit),
+      formatAmount(account.summary.totalCredit),
       account.summary.closingBalance.balanceType === "Dr"
         ? `${currentCurrency.name} ${account.summary.closingBalance.balance.toFixed(
             2

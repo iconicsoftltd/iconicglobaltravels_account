@@ -2,7 +2,14 @@ import { appConfiguration } from "@/utils/constant/appConfiguration";
 
 const PurchaseChalanPrint = (selectedPurchaseData: any[], currentCurrency: any) => {
   const logo = appConfiguration.logo;
-
+  const formatPrintCurrency = (currency: any) => {
+    const value = String(currency?.name || currency?.code || "").trim();
+    const normalized = value.toUpperCase();
+    return normalized === "BDT" || normalized === "TAKA" || value === "৳"
+      ? "&#2547;"
+      : value;
+  };
+  const currencyLabel = formatPrintCurrency(currentCurrency);
   const html = `
     <!DOCTYPE html>
     <html>
@@ -25,7 +32,11 @@ const PurchaseChalanPrint = (selectedPurchaseData: any[], currentCurrency: any) 
             });
           };
         </script>
-        <style>
+        <style>          /* PDF_LAYOUT_NORMALIZATION */
+          table { width: 100% !important; table-layout: auto !important; border-collapse: collapse; }
+          th, td { box-sizing: border-box; }
+          td.text-right, th.text-right, .amount, .currency { white-space: nowrap !important; word-break: keep-all !important; overflow-wrap: normal !important; font-variant-numeric: tabular-nums; }
+          @media print { body { overflow: visible !important; } table { page-break-inside: auto; } tr { page-break-inside: avoid; } }
           @media print {
             body { -webkit-print-color-adjust: exact; color-adjust: exact; }
             .page-break { page-break-after: always; }
@@ -76,7 +87,7 @@ const PurchaseChalanPrint = (selectedPurchaseData: any[], currentCurrency: any) 
                       }</p>
                       <p><span class="font-semibold">Supplier Name:</span> ${supplier}</p>
                       <p><span class="font-semibold">Supplier Balance:</span>(${
-                        currentCurrency.name
+                        currencyLabel
                       }) ${purchase.supplier?.balance?.toFixed(2)} </p>
                     </div>
                     <div class="text-right">
@@ -85,7 +96,7 @@ const PurchaseChalanPrint = (selectedPurchaseData: any[], currentCurrency: any) 
                         purchase.account?.accountType
                       }</p>
                       <p><span class="font-semibold">Account Balance:</span>(${
-                        currentCurrency.name
+                        currencyLabel
                       }) ${purchase.account?.balance?.toFixed(2)} </p>
                     </div>
                   </div>

@@ -8,6 +8,11 @@ const LedgerReportPrint = (
   reportType: string,
 ) => {
   const logo = appConfiguration.logo;
+  const currencyLabel = currentCurrency?.symbol || currentCurrency?.name || "৳";
+  const formatAmount = (value: any) =>
+    value === null || value === undefined || value === ""
+      ? ""
+      : `${currencyLabel} ${Number(value).toFixed(2)}`;
 
   const html = `
 <!DOCTYPE html>
@@ -189,7 +194,8 @@ ${format(new Date(account.summary.closingBalance.date), "dd/MM/yyyy")}
 
 <td class="border p-2"></td>
 <td class="border p-2"></td>
-<td class="border p-2"></td>
+<td class="border p-2 text-right">${formatAmount(account.summary.totalDebit)}</td>
+<td class="border p-2 text-right">${formatAmount(account.summary.totalCredit)}</td>
 
 <td class="border p-2 text-right">
 ${

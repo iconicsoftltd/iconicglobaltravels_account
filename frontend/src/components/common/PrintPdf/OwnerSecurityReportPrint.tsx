@@ -116,10 +116,10 @@ const OwnerSecurityReportPrint = (
 
           <!-- Footer Signatures -->
 <div class="signature-section text-sm">
-            <p class="font-semibold underline">General Manager</p>
-            <p class="font-semibold underline">Finance Manager</p>
-            <p class="font-semibold underline">Accounts Officer</p>
             <p class="font-semibold underline">Prepared By</p>
+            <p class="font-semibold underline">Accountant</p>
+            <p class="font-semibold underline">Finance Director</p>
+            <p class="font-semibold underline">Managing Director</p>
           </div>
         </div>
       </body>

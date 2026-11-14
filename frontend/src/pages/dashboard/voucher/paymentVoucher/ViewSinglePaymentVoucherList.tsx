@@ -253,16 +253,11 @@ const ViewSinglePaymentVoucherList = () => {
       )}
 
       {/* Footer */}
-      <div className="mt-6 flex justify-between gap-4">
-        <div className="text-center">
-          <p className="text-gray-600 text-sm underline">Authorised By</p>
-        </div>
-        <div className="text-center">
-          <p className="text-gray-600 text-sm underline">Account</p>
-        </div>
-        <div className="text-center">
-          <p className="text-gray-600 text-sm underline">Signature</p>
-        </div>
+      <div className="mt-16 grid grid-cols-4 gap-6 text-sm">
+        <p className="text-center whitespace-nowrap font-semibold underline">Prepared By</p>
+        <p className="text-center whitespace-nowrap font-semibold underline">Accountant</p>
+        <p className="text-center whitespace-nowrap font-semibold underline">Finance Director</p>
+        <p className="text-center whitespace-nowrap font-semibold underline">Managing Director</p>
       </div>
 
       {/* Buttons */}

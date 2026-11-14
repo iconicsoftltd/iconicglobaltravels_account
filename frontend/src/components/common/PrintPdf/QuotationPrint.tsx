@@ -130,10 +130,10 @@ const QuotationPrint = (selectedQuotationData: any[], currentCurrency: any) => {
           }, 300);
         </script>
       <div class="signature-section text-sm">
-        <p>General Manager</p>
-        <p>Finance Manager</p>
-        <p>Accounts Officer</p>
         <p>Prepared By</p>
+        <p>Accountant</p>
+        <p>Finance Director</p>
+        <p>Managing Director</p>
       </div>
       </body>
     </html>

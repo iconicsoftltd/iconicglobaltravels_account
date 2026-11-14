@@ -379,7 +379,7 @@ const PdfBalanceSheetReport = (
   doc.setFont("helvetica", "normal");
   
   const signatureWidth = (pageWidth - 2 * margin) / 4;
-  const signatures = ["General Manager", "Finance Manager", "Accounts Officer", "Prepared By"];
+  const signatures = ["Prepared By", "Accountant", "Finance Director", "Managing Director"];
   
   signatures.forEach((signature, index) => {
     const x = margin + (signatureWidth * index) + (signatureWidth / 2);

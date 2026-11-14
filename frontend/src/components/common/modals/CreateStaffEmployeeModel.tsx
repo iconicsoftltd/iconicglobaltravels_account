@@ -152,7 +152,12 @@ const CreateStaffEmployeeModel: React.FC<CreateStaffEmployeeModelProps> = ({
   /** Submit / Update Employee */
   const onSubmit = async (data: EmployeeData) => {
     try {
-      let imageUrl = data.image || "";
+    let imageUrl =
+      typeof data.image === "string"
+        ? data.image
+        : typeof editingEmployee?.image === "string"
+          ? editingEmployee.image
+          : "";
 
       // If no preview and no new file => throw validation
       if (!file && !preview) {

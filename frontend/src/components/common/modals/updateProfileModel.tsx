@@ -83,7 +83,12 @@ const UpdateProfileModel: React.FC<CreateStaffEmployeeModelProps> = ({
   /** Submit / Update Employee */
   const onSubmit = async (data: EmployeeData) => {
     try {
-      let imageUrl = data.image || "";
+      let imageUrl =
+        typeof data.image === "string"
+          ? data.image
+          : typeof editingEmployee?.image === "string"
+            ? editingEmployee.image
+            : "";
 
       // If no preview and no new file => throw validation
       if (!file && !preview) {
@@ -97,13 +102,21 @@ const UpdateProfileModel: React.FC<CreateStaffEmployeeModelProps> = ({
         formData.append("image", file);
         const uploadResponse = await addThumbnail(formData).unwrap();
         if (uploadResponse?.data) {
-          imageUrl = Array.isArray(uploadResponse.data)
+          const uploadedImage = Array.isArray(uploadResponse.data)
             ? uploadResponse.data[0]
-            : uploadResponse.data;
+            : typeof uploadResponse.data === "string"
+              ? uploadResponse.data
+              : typeof uploadResponse.data?.url === "string"
+                ? uploadResponse.data.url
+                : "";
+          if (uploadedImage) imageUrl = uploadedImage;
         }
       }
 
-      const payload = { ...data, image: imageUrl };
+      const payload = {
+        ...data,
+        image: typeof imageUrl === "string" ? imageUrl : "",
+      };
 
       if (editingEmployee) {
         const result = await updateEmployee({

@@ -143,10 +143,17 @@ export const downloadVoucherPdf = (voucherData: VoucherReportData) => {
   }
 
   const signatureY = doc.internal.pageSize.getHeight() - 18;
-  ["Authorised By", "Account", "Signature"].forEach((label, index) => {
-    const x = margin + ((pageWidth - margin * 2) * index) / 2;
-    const align = index === 0 ? "left" : index === 2 ? "right" : "center";
-    doc.text(label, x, signatureY, { align });
+  ["Prepared By", "Accountant", "Finance Director", "Managing Director"].forEach((label, index) => {
+    const colWidth = (pageWidth - margin * 2) / 4;
+    const x = margin + colWidth * index + colWidth / 2;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(17, 24, 39);
+    doc.text(label, x, signatureY, { align: "center" });
+    const w = doc.getTextWidth(label);
+    doc.setDrawColor(17, 24, 39);
+    doc.setLineWidth(0.2);
+    doc.line(x - w / 2, signatureY + 0.8, x + w / 2, signatureY + 0.8);
   });
 
   const safeVoucherNo = (voucherData.voucherNo || "voucher").replace(/[^a-z0-9-_]/gi, "-");

@@ -210,7 +210,7 @@ const PdfTrialBalanceReport = (
   /* ================= SIGNATURE ================= */
   const signY = pageHeight - 15;
   const signWidth = (pageWidth - margin * 2) / 4;
-  ["Prepared By", "Accounts", "Finance Manager", "Authorized By"].forEach(
+  ["Prepared By", "Accountant", "Finance Director", "Managing Director"].forEach(
     (text, i) => {
       const x = margin + signWidth * i + signWidth / 2;
       doc.text(text, x, signY, { align: "center" });

@@ -235,7 +235,7 @@ const PdfPurchaseReturn = (selectedPurchaseReturnData: any[], currentCurrency: a
     doc.setFont("helvetica", "normal");
     
     const signatureWidth = (pageWidth - 2 * margin) / 4;
-    const signatures = ["General Manager (B D)", "Accounts", "Admin", "Prepared By"];
+    const signatures = ["Prepared By", "Accountant", "Finance Director", "Managing Director"];
     
     signatures.forEach((signature, index) => {
       const x = margin + (signatureWidth * index) + (signatureWidth / 2);

@@ -131,9 +131,9 @@ const PdfProfitLossReport = (
   const signatureWidth = (pageWidth - 2 * margin) / 4;
   const signatures = [
     "Prepared By",
-    "Accounts Officer",
-    "Finance Manager",
-    "General Manager",
+    "Accountant",
+    "Finance Director",
+    "Managing Director",
   ];
 
   signatures.forEach((signature, index) => {

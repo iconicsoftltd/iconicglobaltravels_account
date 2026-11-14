@@ -15,10 +15,10 @@ const TrialBalanceReportPrint2 = (reportData: any, currentCurrency: any, queryPa
 ${rows.map((item: any, i: number) => `<tr><td class="border p-2 text-center">${i + 1}</td><td class="border p-2">${item.accountDescription}</td><td class="border p-2">${item.ledgerNo || ""}</td><td class="border p-2 text-right">${item.debit ? `${currency} ${Number(item.debit).toFixed(2)}` : ""}</td><td class="border p-2 text-right">${item.credit ? `${currency} ${Number(item.credit).toFixed(2)}` : ""}</td></tr>`).join("")}
 <tr class="bg-gray-200 font-bold"><td class="border p-2"></td><td class="border p-2">Total</td><td class="border p-2"></td><td class="border p-2 text-right">${currency} ${Number(reportData.totals.debit).toFixed(2)}</td><td class="border p-2 text-right">${currency} ${Number(reportData.totals.credit).toFixed(2)}</td></tr>
 </tbody></table></div><div class="signature-section text-sm" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;width:100%;margin-top:0;padding:72px 24px 0;page-break-inside:avoid;break-inside:avoid;">
-  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">General Manager</p>
-  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Finance Manager</p>
-  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Accounts Officer</p>
   <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Prepared By</p>
+  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Accountant</p>
+  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Finance Director</p>
+  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Managing Director</p>
 </div></body></html>`;
   const iframe = document.createElement("iframe");
   iframe.style.position = "fixed"; iframe.style.width = "0"; iframe.style.height = "0"; iframe.style.border = "0";

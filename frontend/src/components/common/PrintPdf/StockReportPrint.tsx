@@ -206,10 +206,10 @@ ${report?.summary?.totalTransfer || 0}
 
 </div>
 <div class="signature-section text-sm" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;width:100%;margin-top:0;padding:72px 24px 0;page-break-inside:avoid;break-inside:avoid;">
-  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">General Manager</p>
-  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Finance Manager</p>
-  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Accounts Officer</p>
   <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Prepared By</p>
+  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Accountant</p>
+  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Finance Director</p>
+  <p style="text-align:center;white-space:nowrap;font-weight:600;text-decoration:underline;">Managing Director</p>
 </div>
 </body>
 </html>

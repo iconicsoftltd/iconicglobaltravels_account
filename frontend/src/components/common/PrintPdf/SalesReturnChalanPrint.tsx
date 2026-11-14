@@ -160,7 +160,7 @@ const SalesReturnChalanPrint = (
             .join("")}
         </div>
 <div class="signature-section text-sm">
-                    <p class="font-semibold underline">General Manager (B D)</p>
+                    <p class="font-semibold underline">Managing Director</p>
                     <p class="font-semibold underline">Accounts</p>
                     <p class="font-semibold underline">Admin</p>
                     <p class="font-semibold underline">Prepared By</p>
